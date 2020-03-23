@@ -23,6 +23,8 @@ public class Transaction {
 
         if(type.equals(TransactionType.REGULARINCOME) || type.equals(TransactionType.REGULARPAYMENT)) {
             this.transactionInterval = transactionInterval;
+
+            // For endDate
             Calendar calendar = Calendar.getInstance();
             Calendar c = Calendar.getInstance();
             c.setTime(date);
