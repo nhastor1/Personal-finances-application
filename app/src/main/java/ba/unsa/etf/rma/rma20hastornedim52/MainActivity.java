@@ -3,6 +3,7 @@ package ba.unsa.etf.rma.rma20hastornedim52;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -40,6 +41,16 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
 
         textViewGloablAmount.setText(getString(R.string.global_amount, mPresenter.getAccount().getBudget()));
         textViewLimit.setText(getString(R.string.limit, mPresenter.getAccount().getTotalLimit()));
+
+        // Setting spinerSortBy
+        ArrayAdapter<String> spinnerSortByAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, new String[] {
+                "Price - Ascending", "Price - Descending", "Title - Ascending", "Title - Descending", "Date - Ascending", "Date - Descending"
+        });
+        spinnerSortByAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSortBy.setAdapter(spinnerSortByAdapter);
+
+
 
     }
 }
