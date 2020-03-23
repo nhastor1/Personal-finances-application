@@ -40,5 +40,6 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
 
         textViewGloablAmount.setText(getString(R.string.global_amount, mPresenter.getAccount().getBudget()));
         textViewLimit.setText(getString(R.string.limit, mPresenter.getAccount().getTotalLimit()));
+
     }
 }
