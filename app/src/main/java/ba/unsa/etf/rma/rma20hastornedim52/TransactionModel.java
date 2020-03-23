@@ -5,7 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class TransactionModel {
+public class TransactionModel implements MainMVP.Model {
     public static List<Transaction> transactions = new ArrayList<Transaction>(){
         {
             Calendar calendar = Calendar.getInstance();
