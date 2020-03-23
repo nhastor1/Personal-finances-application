@@ -1,5 +1,6 @@
 package ba.unsa.etf.rma.rma20hastornedim52;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class Transaction {
@@ -11,7 +12,7 @@ public class Transaction {
     private int transactionInterval;
     private Date endDate;
 
-    public Transaction(Date date, double amount, String title, TransactionType type, String itemDescription, int transactionInterval, Date endDate) {
+    public Transaction(Date date, double amount, String title, TransactionType type, String itemDescription, int transactionInterval) {
         this.date = date;
         this.amount = amount;
         setTitle(title);
@@ -20,11 +21,14 @@ public class Transaction {
         if(!(type.equals(TransactionType.INDIVIDUALINCOME) || type.equals(TransactionType.REGULARINCOME)))
             this.itemDescription = itemDescription;
 
-        if(type.equals(TransactionType.REGULARINCOME) || type.equals(TransactionType.REGULARPAYMENT))
+        if(type.equals(TransactionType.REGULARINCOME) || type.equals(TransactionType.REGULARPAYMENT)) {
             this.transactionInterval = transactionInterval;
-
-        if(type.equals(TransactionType.REGULARPAYMENT) || type.equals(TransactionType.REGULARINCOME))
-            this.endDate = endDate;
+            Calendar calendar = Calendar.getInstance();
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+            c.add(Calendar.DATE, transactionInterval);
+            endDate = c.getTime();
+        }
     }
 
     public Date getDate() {
