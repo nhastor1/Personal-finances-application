@@ -61,20 +61,7 @@ public class TransactionPresenter implements MainMVP.Presenter{
     }
 
     public int getYear(Date date){
-        CharSequence s  = DateFormat.format("YYYY", date.getTime());
-        return Integer.parseInt((String) s);
-    }
-
-    public String getCurrentMonth(){
-        Date d = new Date();
-        CharSequence s  = DateFormat.format("MM", d.getTime());
-        int monthNumber = Integer.parseInt((String) s);
-        return months[monthNumber];
-    }
-
-    public int getCurrentYear(){
-        Date d = new Date();
-        CharSequence s  = DateFormat.format("yyyy", d.getTime());
+        CharSequence s  = DateFormat.format("yyyy", date.getTime());
         return Integer.parseInt((String) s);
     }
 }

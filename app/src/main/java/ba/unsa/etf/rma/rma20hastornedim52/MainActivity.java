@@ -1,10 +1,11 @@
 package ba.unsa.etf.rma.rma20hastornedim52;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.icu.text.SimpleDateFormat;
+import android.os.Build;
 import android.os.Bundle;
-import android.text.format.DateFormat;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
     private Button buttonRight;
     private Button buttonAddTransaction;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,9 +85,31 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
 
 
         // Setting textViewMonth
-        textViewMonth.setText(getString(R.string.month_year, getPresenter().getCurrentMonth(), getPresenter().getCurrentYear()));
+        setDate();
 
+        // Setting buttonRight
+        buttonRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(date.getTime());
+                cal.add(Calendar.MONTH, 1);
+                date = cal.getTime();
+                setDate();
+            }
+        });
 
+        // Setting buttonLeft
+        buttonLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(date.getTime());
+                cal.add(Calendar.MONTH, -1);
+                date = cal.getTime();
+                setDate();
+            }
+        });
     }
 
     public TransactionPresenter getPresenter() {
@@ -103,5 +127,9 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
     @Override
     public void notifyMovieListDataSetChanged(){
         transactionListViewAdapter.notifyDataSetChanged();
+    }
+
+    private void setDate(){
+        textViewMonth.setText(getString(R.string.month_year, getPresenter().getMonth(date), getPresenter().getYear(date)));
     }
 }
