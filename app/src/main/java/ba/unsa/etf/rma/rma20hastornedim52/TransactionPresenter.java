@@ -1,7 +1,9 @@
 package ba.unsa.etf.rma.rma20hastornedim52;
 
 import android.content.Context;
+import android.text.format.DateFormat;
 
+import java.util.Date;
 import java.util.List;
 
 public class TransactionPresenter implements MainMVP.Presenter{
@@ -10,6 +12,11 @@ public class TransactionPresenter implements MainMVP.Presenter{
     private MainMVP.Interactor interactor;
     private Account account;
     private List<Transaction> transactions;
+
+    private String[] months = {
+            "", "January","February","March","April","May","June","July",
+            "August","September","October","November","December"
+    };
 
     public TransactionPresenter(MainMVP.View view, Context context) {
         this.context = context;
@@ -39,5 +46,35 @@ public class TransactionPresenter implements MainMVP.Presenter{
     public void refreshTransactions(){
         view.setTransactions(interactor.get());
         view.notifyMovieListDataSetChanged();
+    }
+
+    public String getMonth(int i){
+        if(i>12 || i<1)
+            throw new IllegalArgumentException("Wrong number of month");
+        return months[i];
+    }
+
+    public String getMonth(Date date){
+        CharSequence s  = DateFormat.format("MM", date.getTime());
+        int monthNumber = Integer.parseInt((String) s);
+        return months[monthNumber];
+    }
+
+    public int getYear(Date date){
+        CharSequence s  = DateFormat.format("YYYY", date.getTime());
+        return Integer.parseInt((String) s);
+    }
+
+    public String getCurrentMonth(){
+        Date d = new Date();
+        CharSequence s  = DateFormat.format("MM", d.getTime());
+        int monthNumber = Integer.parseInt((String) s);
+        return months[monthNumber];
+    }
+
+    public int getCurrentYear(){
+        Date d = new Date();
+        CharSequence s  = DateFormat.format("yyyy", d.getTime());
+        return Integer.parseInt((String) s);
     }
 }

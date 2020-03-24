@@ -2,7 +2,9 @@ package ba.unsa.etf.rma.rma20hastornedim52;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -10,6 +12,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MainMVP.View {
@@ -17,6 +21,7 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
     private TransactionPresenter mPresenter;
     private TransactionListViewAdapter transactionListViewAdapter;
     private FilterSpinnerAdapter transactionSpinnerAdapter;
+    private Date date = new Date();
 
     private TextView textViewGloablAmount;
     private TextView textViewLimit;
@@ -75,6 +80,10 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
                 R.layout.spinner_filter_element, types);
         transactionSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerFilter.setAdapter(transactionSpinnerAdapter);
+
+
+        // Setting textViewMonth
+        textViewMonth.setText(getString(R.string.month_year, getPresenter().getCurrentMonth(), getPresenter().getCurrentYear()));
 
 
     }
