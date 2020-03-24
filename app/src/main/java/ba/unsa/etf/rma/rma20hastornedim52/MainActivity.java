@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
                     default:
                         transactionListViewAdapter = getPresenter().filterAll();
                 }
-                listViewTransaction.setAdapter(transactionListViewAdapter);
+                sort(spinnerSortBy.getSelectedItem().toString());
                 notifyMovieListDataSetChanged();
             }
 
@@ -153,27 +153,7 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItem = parent.getItemAtPosition(position).toString();
-                switch (selectedItem) {
-                    case "Price - Ascending":
-                        transactionListViewAdapter = getPresenter().sortPriceASC();
-                        break;
-                    case "Price - Descending":
-                        transactionListViewAdapter = getPresenter().sortPriceDSC();
-                        break;
-                    case "Title - Ascending":
-                        transactionListViewAdapter = getPresenter().sortTitleASC();
-                        break;
-                    case "Title - Descending":
-                        transactionListViewAdapter = getPresenter().sortTitleDSC();
-                        break;
-                    case "Date - Ascending":
-                        transactionListViewAdapter = getPresenter().sortDateASC();
-                        break;
-                    case "Date - Descending":
-                        transactionListViewAdapter = getPresenter().sortDateDSC();
-                }
-                listViewTransaction.setAdapter(transactionListViewAdapter);
-                notifyMovieListDataSetChanged();
+                sort(selectedItem);
             }
 
             @Override
@@ -203,5 +183,29 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
 
     private void setDate(){
         textViewMonth.setText(getString(R.string.month_year, getPresenter().getMonth(date), getPresenter().getYear(date)));
+    }
+
+    private void sort(String selectedItem){
+        switch (selectedItem) {
+            case "Price - Ascending":
+                transactionListViewAdapter = getPresenter().sortPriceASC();
+                break;
+            case "Price - Descending":
+                transactionListViewAdapter = getPresenter().sortPriceDSC();
+                break;
+            case "Title - Ascending":
+                transactionListViewAdapter = getPresenter().sortTitleASC();
+                break;
+            case "Title - Descending":
+                transactionListViewAdapter = getPresenter().sortTitleDSC();
+                break;
+            case "Date - Ascending":
+                transactionListViewAdapter = getPresenter().sortDateASC();
+                break;
+            case "Date - Descending":
+                transactionListViewAdapter = getPresenter().sortDateDSC();
+        }
+        listViewTransaction.setAdapter(transactionListViewAdapter);
+        notifyMovieListDataSetChanged();
     }
 }
