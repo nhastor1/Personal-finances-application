@@ -2,7 +2,10 @@ package ba.unsa.etf.rma.rma20hastornedim52;
 
 import android.content.Context;
 import android.text.format.DateFormat;
+import android.view.SurfaceControl;
+import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -63,5 +66,41 @@ public class TransactionPresenter implements MainMVP.Presenter{
     public int getYear(Date date){
         CharSequence s  = DateFormat.format("yyyy", date.getTime());
         return Integer.parseInt((String) s);
+    }
+
+    public TransactionListViewAdapter filterAll(){
+        return new TransactionListViewAdapter(context.getApplicationContext(),
+                R.layout.list_element_transaction, TransactionModel.transactions);
+    }
+
+    public TransactionListViewAdapter filterIndividualincome(){
+        return filter(TransactionType.INDIVIDUALINCOME);
+    }
+
+    public TransactionListViewAdapter filterRegularpayment(){
+        return filter(TransactionType.REGULARPAYMENT);
+    }
+
+    public TransactionListViewAdapter filterRegularincome(){
+        return filter(TransactionType.REGULARINCOME);
+    }
+
+    public TransactionListViewAdapter filterIndividualpayment(){
+        return filter(TransactionType.INDIVIDUALPAYMENT);
+    }
+
+    public TransactionListViewAdapter filterPurchase(){
+        return filter(TransactionType.PURCHASE);
+    }
+
+    public TransactionListViewAdapter filter(TransactionType type){
+        List<Transaction> transactions = new ArrayList<>();
+        for(Transaction t : TransactionModel.transactions)
+            if(t.getType().equals(type))
+                transactions.add(t);
+
+        return new TransactionListViewAdapter(context.getApplicationContext(),
+                R.layout.list_element_transaction, transactions);
+
     }
 }

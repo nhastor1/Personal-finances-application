@@ -82,4 +82,6 @@ public class TransactionListViewAdapter extends ArrayAdapter<Transaction> {
     public void setTransaction(List<Transaction> transactions){
         this.addAll(transactions);
     }
+
+
 }

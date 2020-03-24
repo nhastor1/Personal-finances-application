@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -110,6 +112,41 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
                 setDate();
             }
         });
+
+        // Setting filter on listViewTransaction
+        spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = parent.getItemAtPosition(position).toString();
+                switch (selectedItem) {
+                    case "INDIVIDUALINCOME":
+                        transactionListViewAdapter = getPresenter().filterIndividualincome();
+                        break;
+                    case "REGULARINCOME":
+                        transactionListViewAdapter = getPresenter().filterRegularincome();
+                        break;
+                    case "INDIVIDUALPAYMENT":
+                        transactionListViewAdapter = getPresenter().filterIndividualpayment();
+                        break;
+                    case "REGULARPAYMENT":
+                        transactionListViewAdapter = getPresenter().filterRegularpayment();
+                        break;
+                    case "PURCHASE":
+                        transactionListViewAdapter = getPresenter().filterPurchase();
+                        break;
+                    default:
+                        transactionListViewAdapter = getPresenter().filterAll();
+                }
+                listViewTransaction.setAdapter(transactionListViewAdapter);
+                notifyMovieListDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
     }
 
     public TransactionPresenter getPresenter() {
