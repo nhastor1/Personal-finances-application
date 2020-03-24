@@ -147,6 +147,41 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
             }
         });
 
+
+        // Setting sortBy on listViewTransaction
+        spinnerSortBy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = parent.getItemAtPosition(position).toString();
+                switch (selectedItem) {
+                    case "Price - Ascending":
+                        transactionListViewAdapter = getPresenter().sortPriceASC();
+                        break;
+                    case "Price - Descending":
+                        transactionListViewAdapter = getPresenter().sortPriceDSC();
+                        break;
+                    case "Title - Ascending":
+                        transactionListViewAdapter = getPresenter().sortTitleASC();
+                        break;
+                    case "Title - Descending":
+                        transactionListViewAdapter = getPresenter().sortTitleDSC();
+                        break;
+                    case "Date - Ascending":
+                        transactionListViewAdapter = getPresenter().sortDateASC();
+                        break;
+                    case "Date - Descending":
+                        transactionListViewAdapter = getPresenter().sortDateDSC();
+                }
+                listViewTransaction.setAdapter(transactionListViewAdapter);
+                notifyMovieListDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
     }
 
     public TransactionPresenter getPresenter() {

@@ -6,6 +6,8 @@ import android.view.SurfaceControl;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -27,7 +29,7 @@ public class TransactionPresenter implements MainMVP.Presenter{
         interactor = new TransactionInteractor();
         account = new Account(500000, 1000000, 100000);
 
-        transactions = interactor.get();
+        transactions = interactor.getTransactions();
     }
 
     public Account getAccount() {
@@ -47,7 +49,7 @@ public class TransactionPresenter implements MainMVP.Presenter{
     }
 
     public void refreshTransactions(){
-        view.setTransactions(interactor.get());
+        view.setTransactions(interactor.getTransactions());
         view.notifyMovieListDataSetChanged();
     }
 
@@ -69,8 +71,8 @@ public class TransactionPresenter implements MainMVP.Presenter{
     }
 
     public TransactionListViewAdapter filterAll(){
-        return new TransactionListViewAdapter(context.getApplicationContext(),
-                R.layout.list_element_transaction, TransactionModel.transactions);
+        transactions = interactor.getTransactions();
+        return createAdapter();
     }
 
     public TransactionListViewAdapter filterIndividualincome(){
@@ -94,13 +96,70 @@ public class TransactionPresenter implements MainMVP.Presenter{
     }
 
     public TransactionListViewAdapter filter(TransactionType type){
-        List<Transaction> transactions = new ArrayList<>();
-        for(Transaction t : TransactionModel.transactions)
+        transactions = new ArrayList<>();
+        for(Transaction t : interactor.getTransactions())
             if(t.getType().equals(type))
                 transactions.add(t);
 
+        return createAdapter();
+    }
+
+    public TransactionListViewAdapter sortTitleASC(){
+        Collections.sort(transactions, new Comparator<Transaction>(){
+            public int compare(Transaction t1, Transaction t2) {
+                return t1.getTitle().compareTo(t2.getTitle());
+            }
+        });
+        return createAdapter();
+    }
+
+    public TransactionListViewAdapter sortTitleDSC(){
+        Collections.sort(transactions, new Comparator<Transaction>(){
+            public int compare(Transaction t1, Transaction t2) {
+                return t2.getTitle().compareTo(t1.getTitle());
+            }
+        });
+        return createAdapter();
+    }
+
+    public TransactionListViewAdapter sortPriceASC(){
+        Collections.sort(transactions, new Comparator<Transaction>(){
+            public int compare(Transaction t1, Transaction t2) {
+                return t1.getAmount() < t2.getAmount() ? 1 : -1;
+            }
+        });
+        return createAdapter();
+    }
+
+    public TransactionListViewAdapter sortPriceDSC(){
+        Collections.sort(transactions, new Comparator<Transaction>(){
+            public int compare(Transaction t1, Transaction t2) {
+                return t1.getAmount() < t2.getAmount() ? -1 : 1;
+            }
+        });
+        return createAdapter();
+    }
+
+    public TransactionListViewAdapter sortDateASC(){
+        Collections.sort(transactions, new Comparator<Transaction>(){
+            public int compare(Transaction t1, Transaction t2) {
+                return t1.getDate().compareTo(t2.getDate());
+            }
+        });
+        return createAdapter();
+    }
+
+    public TransactionListViewAdapter sortDateDSC(){
+        Collections.sort(transactions, new Comparator<Transaction>(){
+            public int compare(Transaction t1, Transaction t2) {
+                return t2.getDate().compareTo(t1.getDate());
+            }
+        });
+        return createAdapter();
+    }
+
+    private TransactionListViewAdapter createAdapter() {
         return new TransactionListViewAdapter(context.getApplicationContext(),
                 R.layout.list_element_transaction, transactions);
-
     }
 }
