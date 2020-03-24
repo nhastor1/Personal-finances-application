@@ -3,4 +3,5 @@
     <string name="add_transaction">Add transaction</string>
     <string name="global_amount">Global amount: %1$f</string>
     <string name="limit">Limit: %1$f</string>
+    <string name="double_to_string">%1$f</string>
 </resources>

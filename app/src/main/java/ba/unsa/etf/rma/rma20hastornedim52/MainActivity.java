@@ -9,9 +9,13 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements MainMVP.View {
 
     private TransactionPresenter mPresenter;
+    private TransactionListViewAdapter transactionListViewAdapter;
 
     private TextView textViewGloablAmount;
     private TextView textViewLimit;
@@ -27,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mPresenter = new TransactionPresenter(this);
 
         textViewGloablAmount = (TextView) findViewById(R.id.textViewGloablAmount);
         textViewLimit = (TextView) findViewById(R.id.textViewLimit);
@@ -39,8 +42,8 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
         buttonRight = (Button) findViewById(R.id.buttonRight);
         buttonAddTransaction = (Button) findViewById(R.id.buttonAddTransaction);
 
-        textViewGloablAmount.setText(getString(R.string.global_amount, mPresenter.getAccount().getBudget()));
-        textViewLimit.setText(getString(R.string.limit, mPresenter.getAccount().getTotalLimit()));
+        textViewGloablAmount.setText(getString(R.string.global_amount, getPresenter().getAccount().getBudget()));
+        textViewLimit.setText(getString(R.string.limit, getPresenter().getAccount().getTotalLimit()));
 
         // Setting spinerSortBy
         ArrayAdapter<String> spinnerSortByAdapter = new ArrayAdapter<String>(this,
@@ -50,7 +53,28 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
         spinnerSortByAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSortBy.setAdapter(spinnerSortByAdapter);
 
+        // Setting listViewTransaction
+        transactionListViewAdapter = new TransactionListViewAdapter(getApplicationContext(), R.layout.list_element_transaction, new ArrayList<Transaction>());
+        listViewTransaction.setAdapter(transactionListViewAdapter);
+        getPresenter().refreshTransactions();
 
 
+    }
+
+    public TransactionPresenter getPresenter() {
+        if (mPresenter == null) {
+            mPresenter = new TransactionPresenter(this,this);
+        }
+        return mPresenter;
+    }
+
+    @Override
+    public void setTransactions(List<Transaction> transactions){
+        transactionListViewAdapter.setTransaction(transactions);
+    }
+
+    @Override
+    public void notifyMovieListDataSetChanged(){
+        transactionListViewAdapter.notifyDataSetChanged();
     }
 }
