@@ -4,4 +4,10 @@
     <string name="global_amount">Global amount: %1$f</string>
     <string name="limit">Limit: %1$f</string>
     <string name="double_to_string">%1$f</string>
+    <string name="individualincome">Individual income</string>
+    <string name="individualpayment">Individual payment</string>
+    <string name="regularincome">Regular income</string>
+    <string name="regularpayment">Regular payment</string>
+    <string name="purchase">Purchase</string>
+    <string name="all">All</string>
 </resources>

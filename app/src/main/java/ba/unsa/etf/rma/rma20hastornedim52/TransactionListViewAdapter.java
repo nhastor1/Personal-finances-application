@@ -31,7 +31,7 @@ public class TransactionListViewAdapter extends ArrayAdapter<Transaction> {
         LinearLayout newView;
         if (convertView == null) {
             newView = new LinearLayout(getContext());
-            String inflater = Context.LAYOUT_INFLATER_SERVICE;
+            String inflater = Context.LAYOUT_INFLATER_SERVICE   ;
             LayoutInflater li;
             li = (LayoutInflater) getContext().getSystemService(inflater);
             li.inflate(resource, newView, true);
@@ -46,7 +46,7 @@ public class TransactionListViewAdapter extends ArrayAdapter<Transaction> {
 
         TextView title = (TextView) newView.findViewById(R.id.textViewTransactionType);
         TextView amount = (TextView) newView.findViewById(R.id.textViewTransavtionAmount);
-        ImageView icon = (ImageView) newView.findViewById(R.id.icon);
+        ImageView icon = (ImageView) newView.findViewById(R.id.iconListViewTransaction);
 
         title.setText(transaction.getTitle());
         amount.setText(context.getResources().getString(R.string.double_to_string, transaction.getAmount()));

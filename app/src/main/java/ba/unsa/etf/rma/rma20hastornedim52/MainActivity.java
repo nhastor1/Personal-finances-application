@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
 
     private TransactionPresenter mPresenter;
     private TransactionListViewAdapter transactionListViewAdapter;
+    private FilterSpinnerAdapter transactionSpinnerAdapter;
 
     private TextView textViewGloablAmount;
     private TextView textViewLimit;
@@ -54,9 +55,26 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
         spinnerSortBy.setAdapter(spinnerSortByAdapter);
 
         // Setting listViewTransaction
-        transactionListViewAdapter = new TransactionListViewAdapter(getApplicationContext(), R.layout.list_element_transaction, new ArrayList<Transaction>());
+        transactionListViewAdapter = new TransactionListViewAdapter(getApplicationContext(),
+                R.layout.list_element_transaction, new ArrayList<Transaction>());
         listViewTransaction.setAdapter(transactionListViewAdapter);
         getPresenter().refreshTransactions();
+
+        // Setting spinnerFilter
+        List<String> types = new ArrayList<String>(){
+            {
+                add("ALL");
+                add("INDIVIDUALPAYMENT");
+                add("REGULARPAYMENT");
+                add("INDIVIDUALINCOME");
+                add("REGULARINCOME");
+                add("PURCHASE");
+            }
+        };
+        transactionSpinnerAdapter = new FilterSpinnerAdapter(getApplicationContext(),
+                R.layout.spinner_filter_element, types);
+        transactionSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerFilter.setAdapter(transactionSpinnerAdapter);
 
 
     }
