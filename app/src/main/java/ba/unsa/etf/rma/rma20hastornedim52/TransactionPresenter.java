@@ -2,8 +2,6 @@ package ba.unsa.etf.rma.rma20hastornedim52;
 
 import android.content.Context;
 import android.text.format.DateFormat;
-import android.view.SurfaceControl;
-import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,13 +51,13 @@ public class TransactionPresenter implements MainMVP.Presenter{
         view.notifyMovieListDataSetChanged();
     }
 
-    public String getMonth(int i){
+    public String getMonthFromName(int i){
         if(i>12 || i<1)
             throw new IllegalArgumentException("Wrong number of month");
         return months[i];
     }
 
-    public String getMonth(Date date){
+    public String getMonthName(Date date){
         CharSequence s  = DateFormat.format("MM", date.getTime());
         int monthNumber = Integer.parseInt((String) s);
         return months[monthNumber];
@@ -158,8 +156,40 @@ public class TransactionPresenter implements MainMVP.Presenter{
         return createAdapter();
     }
 
+    public TransactionListViewAdapter filterDate(String mm, int year){
+        int month = getMonthFromName(mm);
+
+        List<Transaction> trans = new ArrayList<>(transactions);
+
+        for(Transaction t : trans){
+            int m = getMonthFromName(getMonthName(t.getDate()));
+            int y = getYear(t.getDate());
+
+            if(t.getType().equals(TransactionType.REGULARINCOME) || t.getType().equals(TransactionType.REGULARPAYMENT)){
+                int mEnd = getMonthFromName(getMonthName(t.getEndDate()));
+                int yEnd = getYear(t.getEndDate());
+                if( (year > yEnd || year < y) || (month > mEnd || month < m) )
+                    transactions.remove(t);
+            }
+            else{
+                if(m!=month || y!=year)
+                    transactions.remove(t);
+            }
+        }
+
+        return createAdapter();
+    }
+
     private TransactionListViewAdapter createAdapter() {
         return new TransactionListViewAdapter(context.getApplicationContext(),
                 R.layout.list_element_transaction, transactions);
+    }
+
+    private int getMonthFromName(String month){
+        for(int i=1; i<=12; i++)
+            if(months[i].equals(month))
+                return i;
+
+        return 0;
     }
 }

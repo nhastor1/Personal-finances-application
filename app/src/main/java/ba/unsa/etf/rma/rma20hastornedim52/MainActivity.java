@@ -118,27 +118,7 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItem = parent.getItemAtPosition(position).toString();
-                switch (selectedItem) {
-                    case "INDIVIDUALINCOME":
-                        transactionListViewAdapter = getPresenter().filterIndividualincome();
-                        break;
-                    case "REGULARINCOME":
-                        transactionListViewAdapter = getPresenter().filterRegularincome();
-                        break;
-                    case "INDIVIDUALPAYMENT":
-                        transactionListViewAdapter = getPresenter().filterIndividualpayment();
-                        break;
-                    case "REGULARPAYMENT":
-                        transactionListViewAdapter = getPresenter().filterRegularpayment();
-                        break;
-                    case "PURCHASE":
-                        transactionListViewAdapter = getPresenter().filterPurchase();
-                        break;
-                    default:
-                        transactionListViewAdapter = getPresenter().filterAll();
-                }
-                sort(spinnerSortBy.getSelectedItem().toString());
-                notifyMovieListDataSetChanged();
+                filter(selectedItem);
             }
 
             @Override
@@ -162,6 +142,8 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
             }
         });
 
+        filterDate();
+
     }
 
     public TransactionPresenter getPresenter() {
@@ -182,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
     }
 
     private void setDate(){
-        textViewMonth.setText(getString(R.string.month_year, getPresenter().getMonth(date), getPresenter().getYear(date)));
+        textViewMonth.setText(getString(R.string.month_year, getPresenter().getMonthName(date), getPresenter().getYear(date)));
     }
 
     private void sort(String selectedItem){
@@ -206,6 +188,39 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
                 transactionListViewAdapter = getPresenter().sortDateDSC();
         }
         listViewTransaction.setAdapter(transactionListViewAdapter);
+        notifyMovieListDataSetChanged();
+    }
+
+    private void filter(String selectedItem){
+        switch (selectedItem) {
+            case "INDIVIDUALINCOME":
+                transactionListViewAdapter = getPresenter().filterIndividualincome();
+                break;
+            case "REGULARINCOME":
+                transactionListViewAdapter = getPresenter().filterRegularincome();
+                break;
+            case "INDIVIDUALPAYMENT":
+                transactionListViewAdapter = getPresenter().filterIndividualpayment();
+                break;
+            case "REGULARPAYMENT":
+                transactionListViewAdapter = getPresenter().filterRegularpayment();
+                break;
+            case "PURCHASE":
+                transactionListViewAdapter = getPresenter().filterPurchase();
+                break;
+            default:
+                transactionListViewAdapter = getPresenter().filterAll();
+        }
+        sort(spinnerSortBy.getSelectedItem().toString());
+        notifyMovieListDataSetChanged();
+    }
+
+    private void filterDate(){
+        filter(spinnerFilter.getSelectedItem().toString());
+
+        String[] monthAndYear = textViewMonth.getText().toString().split(", ");
+        transactionListViewAdapter = getPresenter().filterDate(monthAndYear[0], Integer.parseInt(monthAndYear[1]));
+        listViewTransaction.setAdapter(transactionSpinnerAdapter);
         notifyMovieListDataSetChanged();
     }
 }
