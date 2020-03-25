@@ -17,7 +17,7 @@ public class TransactionPresenter implements MainMVP.Presenter{
     private List<Transaction> transactions;
 
     private String[] months = {
-            "", "January","February","March","April","May","June","July",
+            "January","February","March","April","May","June","July",
             "August","September","October","November","December"
     };
 
@@ -52,14 +52,14 @@ public class TransactionPresenter implements MainMVP.Presenter{
     }
 
     public String getMonthFromName(int i){
-        if(i>12 || i<1)
+        if(i>=12 || i<0)
             throw new IllegalArgumentException("Wrong number of month");
         return months[i];
     }
 
     public String getMonthName(Date date){
         CharSequence s  = DateFormat.format("MM", date.getTime());
-        int monthNumber = Integer.parseInt((String) s);
+        int monthNumber = Integer.parseInt((String) s)-1;
         return months[monthNumber];
     }
 
@@ -156,26 +156,28 @@ public class TransactionPresenter implements MainMVP.Presenter{
         return createAdapter();
     }
 
-    public TransactionListViewAdapter filterDate(String mm, int year){
+    public TransactionListViewAdapter filterDate(String mm, int year) {
         int month = getMonthFromName(mm);
 
-        List<Transaction> trans = new ArrayList<>(transactions);
+        List<Transaction> newTrans = new ArrayList<>();
 
-        for(Transaction t : trans){
-            int m = getMonthFromName(getMonthName(t.getDate()));
-            int y = getYear(t.getDate());
+        for(int i=0; i<transactions.size(); i++){
+            int m = getMonthNumber(transactions.get(i).getDate());
+            int y = getYear(transactions.get(i).getDate());
 
-            if(t.getType().equals(TransactionType.REGULARINCOME) || t.getType().equals(TransactionType.REGULARPAYMENT)){
-                int mEnd = getMonthFromName(getMonthName(t.getEndDate()));
-                int yEnd = getYear(t.getEndDate());
-                if( (year > yEnd || year < y) || (month > mEnd || month < m) )
-                    transactions.remove(t);
+            if(transactions.get(i).getType().equals(TransactionType.REGULARINCOME) || transactions.get(i).getType().equals(TransactionType.REGULARPAYMENT)){
+                int mEnd = getMonthNumber(transactions.get(i).getEndDate());
+                int yEnd = getYear(transactions.get(i).getEndDate());
+                if(!(year > yEnd || year < y || (year==y && month < m) || (year==yEnd && month > mEnd)) )
+                    newTrans.add(transactions.get(i));
             }
             else{
-                if(m!=month || y!=year)
-                    transactions.remove(t);
+                if(!(m!=month || y!=year))
+                    newTrans.add(transactions.get(i));
             }
         }
+
+        transactions = newTrans;
 
         return createAdapter();
     }
@@ -186,10 +188,15 @@ public class TransactionPresenter implements MainMVP.Presenter{
     }
 
     private int getMonthFromName(String month){
-        for(int i=1; i<=12; i++)
+        for(int i=0; i<=11; i++)
             if(months[i].equals(month))
                 return i;
 
-        return 0;
+        return -1;
+    }
+
+    private int getMonthNumber(Date date){
+        CharSequence s  = DateFormat.format("MM", date.getTime());
+        return Integer.parseInt((String) s)-1;
     }
 }

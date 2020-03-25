@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -98,6 +97,8 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
                 cal.add(Calendar.MONTH, 1);
                 date = cal.getTime();
                 setDate();
+
+                filterDate();
             }
         });
 
@@ -110,6 +111,8 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
                 cal.add(Calendar.MONTH, -1);
                 date = cal.getTime();
                 setDate();
+
+                filterDate();
             }
         });
 
@@ -117,8 +120,7 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
         spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedItem = parent.getItemAtPosition(position).toString();
-                filter(selectedItem);
+                filterDate();
             }
 
             @Override
@@ -212,7 +214,6 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
                 transactionListViewAdapter = getPresenter().filterAll();
         }
         sort(spinnerSortBy.getSelectedItem().toString());
-        notifyMovieListDataSetChanged();
     }
 
     private void filterDate(){
@@ -220,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
 
         String[] monthAndYear = textViewMonth.getText().toString().split(", ");
         transactionListViewAdapter = getPresenter().filterDate(monthAndYear[0], Integer.parseInt(monthAndYear[1]));
-        listViewTransaction.setAdapter(transactionSpinnerAdapter);
+        listViewTransaction.setAdapter(transactionListViewAdapter);
         notifyMovieListDataSetChanged();
     }
 }

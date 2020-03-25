@@ -1,5 +1,8 @@
 package ba.unsa.etf.rma.rma20hastornedim52;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -89,5 +92,10 @@ public class Transaction {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        return super.equals(obj) && ((Transaction) obj).getDate().getTime()==date.getTime();
     }
 }
