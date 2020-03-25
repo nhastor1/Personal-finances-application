@@ -6,4 +6,8 @@ public class TransactionInteractor implements MainMVP.Interactor {
     public List<Transaction> getTransactions(){
         return TransactionModel.transactions;
     }
+
+    public Account getAccount(){
+        return TransactionModel.account;
+    }
 }

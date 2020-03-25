@@ -160,6 +160,12 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        filterDate();
+    }
+
     public TransactionPresenter getPresenter() {
         if (mPresenter == null) {
             mPresenter = new TransactionPresenter(this,this);

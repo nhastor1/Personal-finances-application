@@ -4,6 +4,7 @@
     <string name="global_amount">Global amount: %1$.2f</string>
     <string name="limit">Limit: \t %1$.2f</string>
     <string name="double_to_string">%1$.2f</string>
+    <string name="int_to_string">%1$d</string>
     <string name="individualincome">Individual income</string>
     <string name="individualpayment">Individual payment</string>
     <string name="regularincome">Regular income</string>
@@ -21,4 +22,9 @@
     <string name="end_date">Transaction end date:</string>
     <string name="save">Save</string>
     <string name="delete">Delete</string>
+    <string name="no_date">No end date</string>
+    <string name="dialog_message">Are you sure you want to delete transaction?</string>
+    <string name="dialog_title">Allert Dialog box</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

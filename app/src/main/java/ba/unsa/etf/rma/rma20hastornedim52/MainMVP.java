@@ -5,6 +5,7 @@ import java.util.List;
 public interface MainMVP {
     public interface Interactor{
         public List<Transaction> getTransactions();
+        public Account getAccount();
     }
 
     public interface Presenter{

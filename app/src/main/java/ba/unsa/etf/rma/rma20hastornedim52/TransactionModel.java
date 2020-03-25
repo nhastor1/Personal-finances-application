@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 public class TransactionModel {
+    public static Account account = new Account(500000, 1000000, 100000);
+
     public static List<Transaction> transactions = new ArrayList<Transaction>(){
         {
             Calendar calendar = Calendar.getInstance();
