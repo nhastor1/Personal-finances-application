@@ -3,6 +3,7 @@ package ba.unsa.etf.rma.rma20hastornedim52;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -145,6 +146,17 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
         });
 
         filterDate();
+
+        listViewTransaction.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent transactionEditIntent = new Intent(MainActivity.this,
+                            TransactionEditActivity.class);
+                    Transaction transaction = transactionListViewAdapter.getTransaction(position);
+                    transactionEditIntent.putExtra("title", transaction.getTitle());
+                    MainActivity.this.startActivity(transactionEditIntent);
+            }
+        });
 
     }
 
