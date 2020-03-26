@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -249,9 +250,17 @@ public class TransactionEditActivity extends AppCompatActivity {
             }
         });
 
-//        spinnerTransactionType.
+        spinnerTransactionType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                spinnerTransactionType.setBackgroundColor(getResources().getColor(R.color.colorChangeData));
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
     }
 
     private void saveChanges() {
@@ -274,6 +283,13 @@ public class TransactionEditActivity extends AppCompatActivity {
             transaction.setTransactionInterval(0);
             transaction.setEndDate(null);
         }
+        editTextTitle.setBackgroundColor(getResources().getColor(R.color.no_color));
+        editTextAmount.setBackgroundColor(getResources().getColor(R.color.no_color));
+        editTextDescription.setBackgroundColor(getResources().getColor(R.color.no_color));
+        editTextDate.setBackgroundColor(getResources().getColor(R.color.no_color));
+        editTextTransactionInterval.setBackgroundColor(getResources().getColor(R.color.no_color));
+        spinnerTransactionType.setBackgroundColor(getResources().getColor(R.color.no_color));
+
     }
 
     private Transaction getTransaction(int id){
