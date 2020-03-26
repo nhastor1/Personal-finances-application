@@ -28,4 +28,19 @@ public enum TransactionType {
             }
         };
     }
+
+    public static TransactionType getType(String s){
+        switch (s){
+            case "INDIVIDUALPAYMENT":
+                return TransactionType.INDIVIDUALPAYMENT;
+            case "REGULARPAYMENT":
+                return TransactionType.REGULARPAYMENT;
+            case "INDIVIDUALINCOME":
+                return TransactionType.INDIVIDUALINCOME;
+            case "REGULARINCOME":
+                return TransactionType.REGULARINCOME;
+            default:
+                return TransactionType.PURCHASE;
+        }
+    }
 }

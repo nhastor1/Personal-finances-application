@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +18,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -72,6 +75,9 @@ public class TransactionEditActivity extends AppCompatActivity {
 
         if(!(transaction.getType().equals(TransactionType.REGULARPAYMENT) || transaction.getType().equals(TransactionType.REGULARINCOME)))
             textViewEndDateEdit2.setText(getString(R.string.no_date));
+        else{
+            textViewEndDateEdit2.setText(DateFormat.format("dd.MM.yyyy", transaction.getEndDate().getTime()));
+        }
 
         spinnerTransactionType = (Spinner) findViewById(R.id.spinnerTransactionType);
 
@@ -105,27 +111,26 @@ public class TransactionEditActivity extends AppCompatActivity {
             }
         });
 
-        // Setting buttonDelete
+        // Setting buttonSave
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage(R.string.dialog_message).setTitle(R.string.dialog_title);
+                    saveChanges();
 
-                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        TransactionModel.transactions.set(id, transaction);
-
-                        finish();
-                    }
-                });
-                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
-                    }
-                });
-
-                builder.create().show();
+//                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//                builder.setMessage(R.string.dialog_message).setTitle(R.string.dialog_title);
+//                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        TransactionModel.transactions.set(id, transaction);
+//                    }
+//                });
+//                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        // User cancelled the dialog
+//                    }
+//                });
+//
+//                builder.create().show();
             }
         });
 
@@ -159,6 +164,116 @@ public class TransactionEditActivity extends AppCompatActivity {
                 break;
         }
 
+
+        // On text change listeners
+
+        editTextTitle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                editTextTitle.setBackgroundColor(getResources().getColor(R.color.colorChangeData));
+//                editTextTitle.getBackground().setColorFilter(R.color.colorAccent);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        editTextAmount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                editTextAmount.setBackgroundColor(getResources().getColor(R.color.colorChangeData));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        editTextDescription.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                editTextDescription.setBackgroundColor(getResources().getColor(R.color.colorChangeData));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        editTextDate.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                editTextDate.setBackgroundColor(getResources().getColor(R.color.colorChangeData));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        editTextTransactionInterval.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                editTextTransactionInterval.setBackgroundColor(getResources().getColor(R.color.colorChangeData));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+//        spinnerTransactionType.
+
+
+    }
+
+    private void saveChanges() {
+        transaction.setTitle(editTextTitle.getText().toString());
+        transaction.setType(TransactionType.getType(spinnerTransactionType.getSelectedItem().toString()));
+        transaction.setAmount(Double.parseDouble(editTextAmount.getText().toString()));
+        transaction.setItemDescription(editTextDescription.getText().toString());
+
+        String[] date = editTextDate.getText().toString().split("\\.", 3);
+        Calendar cal = Calendar.getInstance();
+        cal.set(Integer.parseInt(date[2]), Integer.parseInt(date[1])-1, Integer.parseInt(date[0]));
+        transaction.setDate(cal.getTime());
+
+        if(transaction.getType()==TransactionType.REGULARINCOME || transaction.getType()==TransactionType.REGULARPAYMENT){
+            transaction.setTransactionInterval(Integer.parseInt(editTextTransactionInterval.getText().toString()));
+            cal.add(Calendar.DAY_OF_MONTH, transaction.getTransactionInterval());
+            transaction.setEndDate(cal.getTime());
+        }
+        else{
+            transaction.setTransactionInterval(0);
+            transaction.setEndDate(null);
+        }
     }
 
     private Transaction getTransaction(int id){
