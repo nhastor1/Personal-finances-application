@@ -1,9 +1,7 @@
 package ba.unsa.etf.rma.rma20hastornedim52;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
@@ -21,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Objects;
 
 public class TransactionEditActivity extends AppCompatActivity {
 
@@ -71,8 +68,7 @@ public class TransactionEditActivity extends AppCompatActivity {
         editTextDescription.setText(transaction.getItemDescription());
         editTextTransactionInterval.setText(getString(R.string.int_to_string, transaction.getTransactionInterval()));
 
-        CharSequence s  = DateFormat.format("dd.MM.yyyy", transaction.getDate().getTime());
-        editTextDate.setText(s);
+        editTextDate.setText(DateFormat.format("dd.MM.yyyy", transaction.getDate().getTime()));
 
         if(!(transaction.getType().equals(TransactionType.REGULARPAYMENT) || transaction.getType().equals(TransactionType.REGULARINCOME)))
             textViewEndDateEdit2.setText(getString(R.string.no_date));
@@ -264,6 +260,12 @@ public class TransactionEditActivity extends AppCompatActivity {
     }
 
     private void saveChanges() {
+        try {
+            validate();
+        } catch (Exception e) {
+            return;
+        }
+
         transaction.setTitle(editTextTitle.getText().toString());
         transaction.setType(TransactionType.getType(spinnerTransactionType.getSelectedItem().toString()));
         transaction.setAmount(Double.parseDouble(editTextAmount.getText().toString()));
@@ -278,10 +280,13 @@ public class TransactionEditActivity extends AppCompatActivity {
             transaction.setTransactionInterval(Integer.parseInt(editTextTransactionInterval.getText().toString()));
             cal.add(Calendar.DAY_OF_MONTH, transaction.getTransactionInterval());
             transaction.setEndDate(cal.getTime());
+            textViewEndDateEdit2.setText(DateFormat.format("dd.MM.yyyy", transaction.getEndDate().getTime()));
         }
         else{
             transaction.setTransactionInterval(0);
+            editTextTransactionInterval.setText("0");
             transaction.setEndDate(null);
+            textViewEndDateEdit2.setText(R.string.no_date);
         }
         editTextTitle.setBackgroundColor(getResources().getColor(R.color.no_color));
         editTextAmount.setBackgroundColor(getResources().getColor(R.color.no_color));
@@ -289,7 +294,25 @@ public class TransactionEditActivity extends AppCompatActivity {
         editTextDate.setBackgroundColor(getResources().getColor(R.color.no_color));
         editTextTransactionInterval.setBackgroundColor(getResources().getColor(R.color.no_color));
         spinnerTransactionType.setBackgroundColor(getResources().getColor(R.color.no_color));
+    }
 
+    private void validate() {
+        try {
+            Transaction.validTitle(editTextTitle.getText().toString());
+            Transaction.validDate(editTextDate.getText().toString());
+        } catch (Exception e) {
+            AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+            alertDialog.setTitle(R.string.incorrect_data);
+            alertDialog.setMessage(e.getMessage());
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+            throw new IllegalArgumentException();
+        }
     }
 
     private Transaction getTransaction(int id){

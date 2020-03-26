@@ -1,5 +1,8 @@
 package ba.unsa.etf.rma.rma20hastornedim52;
 
+import android.icu.text.SimpleDateFormat;
+import android.text.format.DateFormat;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -17,9 +20,9 @@ public class Transaction {
 
     public Transaction(Date date, double amount, String title, TransactionType type, String itemDescription, int transactionInterval) {
         this.date = date;
-        this.amount = amount;
-        setTitle(title);
         this.type = type;
+        setAmount(amount);
+        setTitle(title);
 
         if(!(type.equals(TransactionType.INDIVIDUALINCOME) || type.equals(TransactionType.REGULARINCOME)))
             this.itemDescription = itemDescription;
@@ -49,6 +52,12 @@ public class Transaction {
     }
 
     public void setAmount(double amount) {
+        if(type.equals(TransactionType.REGULARINCOME) || type.equals(TransactionType.INDIVIDUALINCOME))
+            if(amount<0)
+                amount = -amount;
+        else if(amount>0)
+            amount -= 0;
+
         this.amount = amount;
     }
 
@@ -57,8 +66,7 @@ public class Transaction {
     }
 
     public void setTitle(String title) {
-        if(title.length()<=3 || title.length()>=15)
-            throw new IllegalArgumentException("Transaction title is not regular");
+        validTitle(title);
         this.title = title;
     }
 
@@ -92,6 +100,39 @@ public class Transaction {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public void setEndDate(){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DAY_OF_MONTH, transactionInterval);
+        endDate.setTime(cal.getTimeInMillis());
+    }
+
+    public static void validTitle(String title){
+        if(title.length()<=3 || title.length()>=15)
+            throw new IllegalArgumentException("Transaction title is not regular");
+    }
+
+    public static void validDate(String date){
+        date = date.trim();
+        String[] d = date.split("\\.");
+        int day = Integer.parseInt(d[0]);
+        int month = Integer.parseInt(d[1]);
+        int year = Integer.parseInt(d[2]);
+
+        if(year < 1 || day < 1 || month < 1 || month > 12 || day > numbOfDays(month, year))
+            throw new IllegalArgumentException("Incorrect date");
+    }
+
+    private static int numbOfDays(int month, int year) {
+        if(month == 4 || month == 6 || month == 9 || month  == 11)
+            return 30;
+        if(month != 2)
+            return 31;
+        if(year % 4 == 0 && year % 100 != 0 || year % 400 == 0)
+            return 29;
+        return 28;
     }
 
     @Override
