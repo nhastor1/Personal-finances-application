@@ -39,7 +39,7 @@ public class TransactionPresenter implements MainMVP.Presenter{
     }
 
     public List<Transaction> getTransactions() {
-        return transactions;
+        return interactor.getTransactions();
     }
 
     public void setTransactions(List<Transaction> transactions) {

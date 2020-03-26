@@ -15,8 +15,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 public class TransactionEditActivity extends AppCompatActivity {
 
+    private int id;
     private Transaction transaction;
 
     private TextView textViewEndDateEdit2;
@@ -37,7 +42,8 @@ public class TransactionEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_transaction);
 
-        transaction = getTransaction(getIntent().getStringExtra("title"));
+        id = Integer.parseInt(getIntent().getStringExtra("id"));
+        transaction = getTransaction(id);
 
         ( (TextView) findViewById(R.id.textViewEditOrAdd) ).setText(R.string.edit_transaction);
         ( (TextView) findViewById(R.id.textViewTitleEdit) ).setText(R.string.title);
@@ -99,15 +105,64 @@ public class TransactionEditActivity extends AppCompatActivity {
             }
         });
 
+        // Setting buttonDelete
+        buttonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage(R.string.dialog_message).setTitle(R.string.dialog_title);
+
+                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        TransactionModel.transactions.set(id, transaction);
+
+                        finish();
+                    }
+                });
+                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+
+                builder.create().show();
+            }
+        });
+
+        // Setting spinnerFilter
+        List<String> types = new ArrayList<String>(){
+            {
+                add("INDIVIDUALPAYMENT");
+                add("REGULARPAYMENT");
+                add("INDIVIDUALINCOME");
+                add("REGULARINCOME");
+                add("PURCHASE");
+            }
+        };
+        FilterSpinnerAdapter transactionTypeAdapter = new FilterSpinnerAdapter(getApplicationContext(),
+                R.layout.spinner_filter_element, types);
+        transactionTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerTransactionType.setAdapter(transactionTypeAdapter);
+
+        switch (transaction.getType()) {
+            case INDIVIDUALINCOME:
+                spinnerTransactionType.setSelection(2);
+                break;
+            case REGULARINCOME:
+                spinnerTransactionType.setSelection(3);
+                break;
+            case REGULARPAYMENT:
+                spinnerTransactionType.setSelection(1);
+                break;
+            default:
+                spinnerTransactionType.setSelection(4);
+                break;
+        }
 
     }
 
-    private Transaction getTransaction(String title){
-        for(Transaction t : TransactionModel.transactions)
-            if(t.getTitle().equals(title))
-                return t;
-
-        return null;
+    private Transaction getTransaction(int id){
+        return TransactionModel.transactions.get(id);
     }
 
     private AppCompatActivity getActivity(){

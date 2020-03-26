@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements MainMVP.View {
                     Intent transactionEditIntent = new Intent(MainActivity.this,
                             TransactionEditActivity.class);
                     Transaction transaction = transactionListViewAdapter.getTransaction(position);
-                    transactionEditIntent.putExtra("title", transaction.getTitle());
+                    transactionEditIntent.putExtra("id", mPresenter.getTransactions().indexOf(transaction) + "");
                     MainActivity.this.startActivity(transactionEditIntent);
             }
         });
