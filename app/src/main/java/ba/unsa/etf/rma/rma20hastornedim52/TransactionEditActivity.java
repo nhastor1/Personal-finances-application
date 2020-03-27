@@ -148,18 +148,20 @@ public class TransactionEditActivity extends AppCompatActivity {
         spinnerTransactionType.setAdapter(transactionTypeAdapter);
 
         switch (transaction.getType()) {
+            case INDIVIDUALPAYMENT:
+                spinnerTransactionType.setSelection(0);
+                break;
+            case REGULARPAYMENT:
+                spinnerTransactionType.setSelection(1);
+                break;
             case INDIVIDUALINCOME:
                 spinnerTransactionType.setSelection(2);
                 break;
             case REGULARINCOME:
                 spinnerTransactionType.setSelection(3);
                 break;
-            case REGULARPAYMENT:
-                spinnerTransactionType.setSelection(1);
-                break;
             default:
                 spinnerTransactionType.setSelection(4);
-                break;
         }
 
 
