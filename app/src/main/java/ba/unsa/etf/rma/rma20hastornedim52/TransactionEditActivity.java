@@ -300,7 +300,41 @@ public class TransactionEditActivity extends AppCompatActivity {
         try {
             Transaction.validTitle(editTextTitle.getText().toString());
             Transaction.validDate(editTextDate.getText().toString());
-        } catch (Exception e) {
+            Integer.parseInt(editTextTransactionInterval.getText().toString());
+            double amount = Double.parseDouble(editTextAmount.getText().toString());
+            amount -= transaction.getAmount();
+
+            double monthAmount = getMonthAmount();
+            monthAmount += amount;
+            double totalAmount = getTotalAmount();
+            totalAmount += amount;
+
+            if(monthAmount > TransactionModel.account.getMonthLimit() &&
+                totalAmount > TransactionModel.account.getTotalLimit()){
+                alertDialog("Your transaction exceeds your total and monthly budget");
+            }
+            else if(monthAmount > TransactionModel.account.getMonthLimit()){
+                alertDialog("Your transaction exceeds your monthly budget");
+            }
+            else if(totalAmount > TransactionModel.account.getTotalLimit()){
+                alertDialog("Your transaction exceeds your total budget");
+            }
+
+        }
+        // This catch is probably useless
+        catch (NumberFormatException e){
+            AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+            alertDialog.setTitle(R.string.incorrect_data);
+            alertDialog.setMessage("You need to enter real number in amount and integer in transaction interval");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+            throw new IllegalArgumentException();
+        }catch (IllegalArgumentException e) {
             AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
             alertDialog.setTitle(R.string.incorrect_data);
             alertDialog.setMessage(e.getMessage());
@@ -315,11 +349,57 @@ public class TransactionEditActivity extends AppCompatActivity {
         }
     }
 
+    private double getTotalAmount() {
+        List<Transaction> trans = TransactionModel.transactions;
+        double total = 0;
+
+        for(Transaction t : trans)
+            total += t.getAmount();
+
+        return total;
+    }
+
+    private double getMonthAmount() {
+        List<Transaction> trans = TransactionModel.transactions;
+        double total = 0;
+
+        int month = Transaction.getMonth(transaction.getDate());
+        int year = Transaction.getYear(transaction.getDate());
+
+        for(Transaction t : trans)
+            if(Transaction.getMonth(transaction.getDate()) == month &&
+                    Transaction.getYear(transaction.getDate()) == year)
+                total += t.getAmount();
+
+        return total;
+    }
+
     private Transaction getTransaction(int id){
         return TransactionModel.transactions.get(id);
     }
 
     private AppCompatActivity getActivity(){
         return this;
+    }
+
+    private boolean alertDialog(String message){
+        final boolean[] yes = {true};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(message).setTitle(R.string.dialog_message);
+
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //
+            }
+        });
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                yes[0] = false;
+            }
+        });
+
+        builder.create().show();
+
+        return yes[0];
     }
 }

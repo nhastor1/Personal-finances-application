@@ -125,7 +125,7 @@ public class Transaction {
             throw new IllegalArgumentException("Incorrect date");
     }
 
-    private static int numbOfDays(int month, int year) {
+    public static int numbOfDays(int month, int year) {
         if(month == 4 || month == 6 || month == 9 || month  == 11)
             return 30;
         if(month != 2)
@@ -133,6 +133,16 @@ public class Transaction {
         if(year % 4 == 0 && year % 100 != 0 || year % 400 == 0)
             return 29;
         return 28;
+    }
+
+    public static int getYear(Date date){
+        CharSequence s  = DateFormat.format("yyyy", date.getTime());
+        return Integer.parseInt((String) s);
+    }
+
+    public static int getMonth(Date date){
+        CharSequence s  = DateFormat.format("MM", date.getTime());
+        return Integer.parseInt((String) s);
     }
 
     @Override
