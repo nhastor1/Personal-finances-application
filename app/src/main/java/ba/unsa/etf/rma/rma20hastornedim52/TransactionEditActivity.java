@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class TransactionEditActivity extends AppCompatActivity {
@@ -38,15 +39,26 @@ public class TransactionEditActivity extends AppCompatActivity {
     private Button buttonSave;
     private Button buttonDelete;
 
+    private String activity;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_transaction);
 
         id = Integer.parseInt(getIntent().getStringExtra("id"));
-        transaction = getTransaction(id);
+        activity = getIntent().getStringExtra("type_of_action");
 
-        ( (TextView) findViewById(R.id.textViewEditOrAdd) ).setText(R.string.edit_transaction);
+
+        if(activity.equals("edit")) {
+            ((TextView) findViewById(R.id.textViewEditOrAdd)).setText(R.string.edit_transaction);
+            transaction = getTransaction(id);
+        }
+        else{
+            ( (TextView) findViewById(R.id.textViewEditOrAdd) ).setText(R.string.add_transaction);
+            transaction = new Transaction(new Date(), 0, "Transaction", TransactionType.INDIVIDUALINCOME,
+                    "", 0);
+        }
         ( (TextView) findViewById(R.id.textViewTitleEdit) ).setText(R.string.title);
         ( (TextView) findViewById(R.id.textViewAmountEdit) ).setText(R.string.amount);
         ( (TextView) findViewById(R.id.textViewTypeEdit) ).setText(R.string.type);
@@ -84,50 +96,39 @@ public class TransactionEditActivity extends AppCompatActivity {
         buttonSave.setText(R.string.save);
         buttonDelete.setText(R.string.delete);
 
-        // Setting buttonDelete
-        buttonDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage(R.string.dialog_message).setTitle(R.string.dialog_title);
+        if(activity.equals("edit")) {
+            // Setting buttonDelete
+            buttonDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage(R.string.dialog_message).setTitle(R.string.dialog_title);
 
-                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        TransactionModel.transactions.remove(transaction);
+                    builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            TransactionModel.transactions.remove(transaction);
 
-                        finish();
-                    }
-                });
-                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
-                    }
-                });
+                            finish();
+                        }
+                    });
+                    builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                        }
+                    });
 
-                builder.create().show();
-            }
-        });
+                    builder.create().show();
+                }
+            });
+        }else {
+            buttonDelete.setEnabled(false);
+        }
 
         // Setting buttonSave
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                     saveChanges();
-
-//                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//                builder.setMessage(R.string.dialog_message).setTitle(R.string.dialog_title);
-//                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        TransactionModel.transactions.set(id, transaction);
-//                    }
-//                });
-//                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        // User cancelled the dialog
-//                    }
-//                });
-//
-//                builder.create().show();
             }
         });
 
@@ -294,6 +295,11 @@ public class TransactionEditActivity extends AppCompatActivity {
         editTextDate.setBackgroundColor(getResources().getColor(R.color.no_color));
         editTextTransactionInterval.setBackgroundColor(getResources().getColor(R.color.no_color));
         spinnerTransactionType.setBackgroundColor(getResources().getColor(R.color.no_color));
+
+        if(activity.equals("add")){
+            TransactionModel.transactions.add(transaction);
+            finish();
+        }
     }
 
     private void validate() {
