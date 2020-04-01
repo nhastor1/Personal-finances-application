@@ -325,7 +325,7 @@ public class TransactionEditActivity extends AppCompatActivity {
     private void validate() {
         try {
             Transaction.validTitle(editTextTitle.getText().toString());
-            Transaction.validDate(editTextDate.getText().toString());
+            DataChecker.validDate(editTextDate.getText().toString());
             Integer.parseInt(editTextTransactionInterval.getText().toString());
             double amount = Double.parseDouble(editTextAmount.getText().toString());
             amount -= transaction.getAmount();
@@ -389,12 +389,12 @@ public class TransactionEditActivity extends AppCompatActivity {
         List<Transaction> trans = TransactionModel.transactions;
         double total = 0;
 
-        int month = Transaction.getMonth(transaction.getDate());
-        int year = Transaction.getYear(transaction.getDate());
+        int month = DataChecker.getMonth(transaction.getDate());
+        int year = DataChecker.getYear(transaction.getDate());
 
         for(Transaction t : trans)
-            if(Transaction.getMonth(transaction.getDate()) == month &&
-                    Transaction.getYear(transaction.getDate()) == year)
+            if(DataChecker.getMonth(transaction.getDate()) == month &&
+                    DataChecker.getYear(transaction.getDate()) == year)
                 total += t.getAmount();
 
         return total;
