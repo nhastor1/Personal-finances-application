@@ -25,10 +25,11 @@ import ba.unsa.etf.rma.rma20hastornedim52.DataChecker;
 import ba.unsa.etf.rma.rma20hastornedim52.Adapter.FilterSpinnerAdapter;
 import ba.unsa.etf.rma.rma20hastornedim52.R;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
-import ba.unsa.etf.rma.rma20hastornedim52.TransactionModel;
 import ba.unsa.etf.rma.rma20hastornedim52.TransactionType;
 
-public class TransactionEditActivity extends AppCompatActivity {
+public class TransactionEditActivity extends AppCompatActivity implements TransactionEditMVP.View {
+
+    private TransactionEditMVP.Presenter presenter;
 
     private int id;
     private Transaction transaction;
@@ -48,6 +49,13 @@ public class TransactionEditActivity extends AppCompatActivity {
 
     private String activity;
 
+    public TransactionEditMVP.Presenter getPresenter() {
+        if (presenter == null) {
+            presenter = new TransactionEditPresenter(this,this);
+        }
+        return presenter;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +67,7 @@ public class TransactionEditActivity extends AppCompatActivity {
 
         if(activity.equals("edit")) {
             ((TextView) findViewById(R.id.textViewEditOrAdd)).setText(R.string.edit_transaction);
-            transaction = getTransaction(id);
+            transaction = getPresenter().getTransaction(id);
         }
         else{
             ( (TextView) findViewById(R.id.textViewEditOrAdd) ).setText(R.string.add_transaction);
@@ -113,7 +121,7 @@ public class TransactionEditActivity extends AppCompatActivity {
 
                     builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            TransactionModel.transactions.remove(transaction);
+                            getPresenter().removeTransaction(transaction);
 
                             finish();
                         }
@@ -324,7 +332,7 @@ public class TransactionEditActivity extends AppCompatActivity {
         spinnerTransactionType.setBackgroundColor(getResources().getColor(R.color.no_color));
 
         if(activity.equals("add")){
-            TransactionModel.transactions.add(transaction);
+            getPresenter().addTransaction(transaction);
             finish();
         }
     }
@@ -337,19 +345,19 @@ public class TransactionEditActivity extends AppCompatActivity {
             double amount = Double.parseDouble(editTextAmount.getText().toString());
             amount -= transaction.getAmount();
 
-            double monthAmount = getMonthAmount();
+            double monthAmount = getPresenter().getMonthAmount(transaction.getDate());
             monthAmount += amount;
-            double totalAmount = getTotalAmount();
+            double totalAmount = getPresenter().getTotalAmount();
             totalAmount += amount;
 
-            if(monthAmount > TransactionModel.account.getMonthLimit() &&
-                totalAmount > TransactionModel.account.getTotalLimit()){
+            if(monthAmount > getPresenter().getAccount().getMonthLimit() &&
+                totalAmount > getPresenter().getAccount().getTotalLimit()){
                 alertDialog("Your transaction exceeds your total and monthly budget");
             }
-            else if(monthAmount > TransactionModel.account.getMonthLimit()){
+            else if(monthAmount > getPresenter().getAccount().getMonthLimit()){
                 alertDialog("Your transaction exceeds your monthly budget");
             }
-            else if(totalAmount > TransactionModel.account.getTotalLimit()){
+            else if(totalAmount > getPresenter().getAccount().getTotalLimit()){
                 alertDialog("Your transaction exceeds your total budget");
             }
 
@@ -380,35 +388,6 @@ public class TransactionEditActivity extends AppCompatActivity {
             alertDialog.show();
             throw new IllegalArgumentException();
         }
-    }
-
-    private double getTotalAmount() {
-        List<Transaction> trans = TransactionModel.transactions;
-        double total = 0;
-
-        for(Transaction t : trans)
-            total += t.getAmount();
-
-        return total;
-    }
-
-    private double getMonthAmount() {
-        List<Transaction> trans = TransactionModel.transactions;
-        double total = 0;
-
-        int month = DataChecker.getMonth(transaction.getDate());
-        int year = DataChecker.getYear(transaction.getDate());
-
-        for(Transaction t : trans)
-            if(DataChecker.getMonth(transaction.getDate()) == month &&
-                    DataChecker.getYear(transaction.getDate()) == year)
-                total += t.getAmount();
-
-        return total;
-    }
-
-    private Transaction getTransaction(int id){
-        return TransactionModel.transactions.get(id);
     }
 
     private AppCompatActivity getActivity(){
