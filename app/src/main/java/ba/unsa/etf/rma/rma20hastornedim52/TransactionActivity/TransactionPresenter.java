@@ -1,4 +1,4 @@
-package ba.unsa.etf.rma.rma20hastornedim52;
+package ba.unsa.etf.rma.rma20hastornedim52.TransactionActivity;
 
 import android.content.Context;
 import android.text.format.DateFormat;
@@ -8,6 +8,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+
+import ba.unsa.etf.rma.rma20hastornedim52.Account;
+import ba.unsa.etf.rma.rma20hastornedim52.R;
+import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
+import ba.unsa.etf.rma.rma20hastornedim52.Adapter.TransactionListViewAdapter;
+import ba.unsa.etf.rma.rma20hastornedim52.TransactionType;
 
 public class TransactionPresenter implements MainMVP.Presenter{
     private Context context;

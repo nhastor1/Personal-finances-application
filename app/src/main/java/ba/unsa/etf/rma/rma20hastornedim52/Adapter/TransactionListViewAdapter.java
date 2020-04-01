@@ -1,4 +1,4 @@
-package ba.unsa.etf.rma.rma20hastornedim52;
+package ba.unsa.etf.rma.rma20hastornedim52.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,6 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.List;
+
+import ba.unsa.etf.rma.rma20hastornedim52.R;
+import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
 
 public class TransactionListViewAdapter extends ArrayAdapter<Transaction> {
 

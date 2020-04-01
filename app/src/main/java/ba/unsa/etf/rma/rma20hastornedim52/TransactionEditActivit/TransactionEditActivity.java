@@ -1,4 +1,4 @@
-package ba.unsa.etf.rma.rma20hastornedim52;
+package ba.unsa.etf.rma.rma20hastornedim52.TransactionEditActivit;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -20,6 +20,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import ba.unsa.etf.rma.rma20hastornedim52.DataChecker;
+import ba.unsa.etf.rma.rma20hastornedim52.Adapter.FilterSpinnerAdapter;
+import ba.unsa.etf.rma.rma20hastornedim52.R;
+import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
+import ba.unsa.etf.rma.rma20hastornedim52.TransactionModel;
+import ba.unsa.etf.rma.rma20hastornedim52.TransactionType;
 
 public class TransactionEditActivity extends AppCompatActivity {
 

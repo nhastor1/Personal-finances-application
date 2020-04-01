@@ -1,6 +1,9 @@
-package ba.unsa.etf.rma.rma20hastornedim52;
+package ba.unsa.etf.rma.rma20hastornedim52.TransactionActivity;
 
 import java.util.List;
+
+import ba.unsa.etf.rma.rma20hastornedim52.Account;
+import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
 
 public interface MainMVP {
     public interface Interactor{
