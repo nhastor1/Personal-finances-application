@@ -175,8 +175,10 @@ public class TransactionEditActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                editTextTitle.setBackgroundColor(getResources().getColor(R.color.colorChangeData));
-//                editTextTitle.getBackground().setColorFilter(R.color.colorAccent);
+                if(editTextTitle.getText().toString().equals(transaction.getTitle()))
+                    editTextTitle.setBackgroundColor(getResources().getColor(R.color.no_color));
+                else
+                    editTextTitle.setBackgroundColor(getResources().getColor(R.color.colorChangeData));
             }
 
             @Override
@@ -192,7 +194,10 @@ public class TransactionEditActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                editTextAmount.setBackgroundColor(getResources().getColor(R.color.colorChangeData));
+                if(editTextAmount.getText().toString().equals(getString(R.string.double_to_string, transaction.getAmount())))
+                    editTextAmount.setBackgroundColor(getResources().getColor(R.color.no_color));
+                else
+                    editTextAmount.setBackgroundColor(getResources().getColor(R.color.colorChangeData));
             }
 
             @Override
@@ -208,7 +213,11 @@ public class TransactionEditActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                editTextDescription.setBackgroundColor(getResources().getColor(R.color.colorChangeData));
+                if(editTextDescription.getText().toString().equals(transaction.getItemDescription()) ||
+                        (editTextDescription.getText().toString().equals("") && transaction.getItemDescription()==null))
+                    editTextDescription.setBackgroundColor(getResources().getColor(R.color.no_color));
+                else
+                    editTextDescription.setBackgroundColor(getResources().getColor(R.color.colorChangeData));
             }
 
             @Override
@@ -224,7 +233,10 @@ public class TransactionEditActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                editTextDate.setBackgroundColor(getResources().getColor(R.color.colorChangeData));
+                if(editTextDate.getText().toString().equals((String) DateFormat.format("dd.MM.yyyy", transaction.getDate().getTime())))
+                    editTextDate.setBackgroundColor(getResources().getColor(R.color.no_color));
+                else
+                    editTextDate.setBackgroundColor(getResources().getColor(R.color.colorChangeData));
             }
 
             @Override
@@ -240,7 +252,10 @@ public class TransactionEditActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                editTextTransactionInterval.setBackgroundColor(getResources().getColor(R.color.colorChangeData));
+                if(editTextTransactionInterval.getText().toString().equals(Integer.toString(transaction.getTransactionInterval())))
+                    editTextTransactionInterval.setBackgroundColor(getResources().getColor(R.color.no_color));
+                else
+                    editTextTransactionInterval.setBackgroundColor(getResources().getColor(R.color.colorChangeData));
             }
 
             @Override
@@ -252,7 +267,10 @@ public class TransactionEditActivity extends AppCompatActivity {
         spinnerTransactionType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                spinnerTransactionType.setBackgroundColor(getResources().getColor(R.color.colorChangeData));
+                if(spinnerTransactionType.getSelectedItem().toString().equals(transaction.getType().toString()))
+                    spinnerTransactionType.setBackgroundColor(getResources().getColor(R.color.no_color));
+                else
+                    spinnerTransactionType.setBackgroundColor(getResources().getColor(R.color.colorChangeData));
             }
 
             @Override
