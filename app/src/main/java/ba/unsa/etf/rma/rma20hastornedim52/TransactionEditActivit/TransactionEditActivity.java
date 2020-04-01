@@ -117,7 +117,7 @@ public class TransactionEditActivity extends AppCompatActivity implements Transa
                 @Override
                 public void onClick(View v) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setMessage(R.string.dialog_message).setTitle(R.string.dialog_title);
+                    builder.setMessage(R.string.dialog_message_delete).setTitle(R.string.dialog_title);
 
                     builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
@@ -343,6 +343,14 @@ public class TransactionEditActivity extends AppCompatActivity implements Transa
             DataChecker.validDate(editTextDate.getText().toString());
             Integer.parseInt(editTextTransactionInterval.getText().toString());
             double amount = Double.parseDouble(editTextAmount.getText().toString());
+            if(spinnerTransactionType.getSelectedItem().toString().equals(TransactionType.INDIVIDUALINCOME.toString()) ||
+                    spinnerTransactionType.getSelectedItem().toString().equals(TransactionType.REGULARINCOME.toString())){
+                if(amount<0)
+                    amount = -amount;
+            }
+            else if(amount>0)
+                amount = -amount;
+
             amount -= transaction.getAmount();
 
             double monthAmount = getPresenter().getMonthAmount(transaction.getDate());
@@ -350,14 +358,14 @@ public class TransactionEditActivity extends AppCompatActivity implements Transa
             double totalAmount = getPresenter().getTotalAmount();
             totalAmount += amount;
 
-            if(monthAmount > getPresenter().getAccount().getMonthLimit() &&
-                totalAmount > getPresenter().getAccount().getTotalLimit()){
+            if(monthAmount < -getPresenter().getAccount().getMonthLimit() &&
+                totalAmount < -getPresenter().getAccount().getTotalLimit()){
                 alertDialog("Your transaction exceeds your total and monthly budget");
             }
-            else if(monthAmount > getPresenter().getAccount().getMonthLimit()){
+            else if(monthAmount < -getPresenter().getAccount().getMonthLimit()){
                 alertDialog("Your transaction exceeds your monthly budget");
             }
-            else if(totalAmount > getPresenter().getAccount().getTotalLimit()){
+            else if(totalAmount < -getPresenter().getAccount().getTotalLimit()){
                 alertDialog("Your transaction exceeds your total budget");
             }
 
@@ -397,7 +405,7 @@ public class TransactionEditActivity extends AppCompatActivity implements Transa
     private boolean alertDialog(String message){
         final boolean[] yes = {true};
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(message).setTitle(R.string.dialog_message);
+        builder.setMessage(message).setTitle(R.string.dialog_message_save);
 
         builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
