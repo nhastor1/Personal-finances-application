@@ -24,6 +24,7 @@ import ba.unsa.etf.rma.rma20hastornedim52.Adapter.TransactionListViewAdapter;
 import ba.unsa.etf.rma.rma20hastornedim52.R;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
 import ba.unsa.etf.rma.rma20hastornedim52.TransactionEditActivit.TransactionEditActivity;
+import ba.unsa.etf.rma.rma20hastornedim52.TransactionType;
 
 public class TransactionListFragment extends Fragment implements MainMVP.View {
 
@@ -156,26 +157,28 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
 
         filterDate();
 
-        listViewTransaction.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent transactionEditIntent = new Intent(getActivity(),
-                        TransactionEditActivity.class);
-                Transaction transaction = transactionListViewAdapter.getTransaction(position);
-                transactionEditIntent.putExtra("id", mPresenter.getTransactions().indexOf(transaction) + "");
-                transactionEditIntent.putExtra("type_of_action", "edit");
-                getActivity().startActivity(transactionEditIntent);
-            }
-        });
+//        listViewTransaction.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent transactionEditIntent = new Intent(getActivity(),
+//                        TransactionEditActivity.class);
+//                Transaction transaction = transactionListViewAdapter.getTransaction(position);
+//                transactionEditIntent.putExtra("id", mPresenter.getTransactions().indexOf(transaction) + "");
+//                transactionEditIntent.putExtra("type_of_action", "edit");
+//                getActivity().startActivity(transactionEditIntent);
+//            }
+//        });
 
         buttonAddTransaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent transactionEditIntent = new Intent(getActivity(),
-                        TransactionEditActivity.class);;
-                transactionEditIntent.putExtra("id", "-1");
-                transactionEditIntent.putExtra("type_of_action", "add");
-                getActivity().startActivity(transactionEditIntent);
+//                Intent transactionEditIntent = new Intent(getActivity(),
+//                        TransactionEditActivity.class);;
+//                transactionEditIntent.putExtra("id", "-1");
+//                transactionEditIntent.putExtra("type_of_action", "add");
+//                getActivity().startActivity(transactionEditIntent);
+
+                oic.onItemClicked(null);
             }
         });
 
@@ -290,6 +293,4 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
                     oic.onItemClicked(transaction);
                 }
             };
-
-
 }

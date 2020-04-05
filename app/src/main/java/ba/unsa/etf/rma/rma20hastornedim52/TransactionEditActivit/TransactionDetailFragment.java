@@ -70,20 +70,19 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
 
         if (getArguments() != null && getArguments().containsKey("transaction")) {
             getPresenter().setTransaction((Transaction) getArguments().getParcelable("transaction"));
-            //transaction = getPresenter().getTransaction();
+            transaction = getPresenter().getTransaction();
 
-            transaction = TransactionModel.transactions.get(0);
-
-            activity = "add";
-
+            if(transaction==null)
+                activity = "add";
+            else
+                activity = "edit";
 
             if (activity.equals("edit")) {
                 ((TextView) view.findViewById(R.id.textViewEditOrAdd)).setText(R.string.edit_transaction);
-//            transaction = getPresenter().getTransaction(id);
             } else {
                 ((TextView) view.findViewById(R.id.textViewEditOrAdd)).setText(R.string.add_transaction);
-//            transaction = new Transaction(new Date(), 0, "Transaction", TransactionType.INDIVIDUALINCOME,
-//                    "", 0);
+                transaction = new Transaction(new Date(), 0, "Transaction", TransactionType.INDIVIDUALINCOME,
+                        "", 0);
             }
             ((TextView) view.findViewById(R.id.textViewTitleEdit)).setText(R.string.title);
             ((TextView) view.findViewById(R.id.textViewAmountEdit)).setText(R.string.amount);
