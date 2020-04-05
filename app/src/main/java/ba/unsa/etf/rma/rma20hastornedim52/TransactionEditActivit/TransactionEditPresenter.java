@@ -14,11 +14,21 @@ public class TransactionEditPresenter implements TransactionEditMVP.Presenter {
     private Context context;
     private TransactionEditMVP.View view;
     private TransactionEditMVP.Interactor interactor;
+    private Transaction transaction;
 
-    public TransactionEditPresenter(TransactionEditMVP.View view, Context context) {
+    public TransactionEditPresenter(TransactionEditMVP.View view, Context context, Transaction transaction) {
         this.context = context;
         this.view = view;
+        this.transaction = transaction;
         interactor = new TransactionEditInteractor();
+    }
+
+    public Transaction getTransaction() {
+        return transaction;
+    }
+
+    public void setTransaction(Transaction transaction) {
+        this.transaction = transaction;
     }
 
     @Override

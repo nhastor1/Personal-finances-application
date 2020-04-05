@@ -19,6 +19,8 @@ public interface TransactionEditMVP {
         public void addTransaction(Transaction transaction);
         public void removeTransaction(Transaction transaction);
         public Account getAccount();
+        public Transaction getTransaction();
+        public void setTransaction(Transaction transaction);
     }
 
     public interface  View{

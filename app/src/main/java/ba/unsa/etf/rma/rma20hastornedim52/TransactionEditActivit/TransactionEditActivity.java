@@ -51,7 +51,7 @@ public class TransactionEditActivity extends AppCompatActivity implements Transa
 
     public TransactionEditMVP.Presenter getPresenter() {
         if (presenter == null) {
-            presenter = new TransactionEditPresenter(this,this);
+            presenter = new TransactionEditPresenter(this,this, transaction);
         }
         return presenter;
     }

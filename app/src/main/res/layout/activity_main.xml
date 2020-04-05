@@ -1,124 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<LinearLayout
     android:layout_height="match_parent"
-    android:background="#8217FA"
-    tools:context=".TransactionActivity.MainActivity" >
-
-    <TextView
-        android:id="@+id/textViewGloablAmount"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal">
+    <ScrollView
         android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="30dp"
-        android:text="Gloabl amount: xxxxxx"
-        android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textViewLimit"
-        android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="30dp"
-        android:text="Limit: xxxxx"
-        android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewGloablAmount" />
-
-    <Spinner
-        android:id="@+id/spinnerFilter"
-        android:layout_width="310dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="40dp"
-        android:background="@android:color/holo_green_light"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLimit" />
-
-    <TextView
-        android:id="@+id/textViewMonth"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="110dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="110dp"
-        android:background="@android:color/holo_green_light"
-        android:gravity="center"
-        android:text="Month"
-        android:textColor="@android:color/black"
-        android:textAlignment="center"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerFilter" />
-
-    <Button
-        android:id="@+id/buttonRight"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="30dp"
-        android:background="@drawable/right_arrow"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewMonth"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerFilter" />
-
-    <Button
-        android:id="@+id/buttonLeft"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/left_arrow"
-        app:layout_constraintEnd_toStartOf="@+id/textViewMonth"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerFilter" />
-
-    <Spinner
-        android:id="@+id/spinnerSortBy"
-        android:layout_width="310dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="40dp"
-        android:background="@android:color/holo_green_light"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewMonth" />
-
-    <ListView
-        android:id="@+id/listViewTransaction"
-        android:layout_width="310dp"
-        android:layout_height="280dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="40dp"
-        android:background="@android:color/holo_green_light"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerSortBy" />
-
-    <Button
-        android:id="@+id/buttonAddTransaction"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="100dp"
-        android:text="@string/add_transaction"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listViewTransaction" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:id="@+id/transaction_list_frame"
+        android:layout_weight="1">
+    </ScrollView>
+</LinearLayout>

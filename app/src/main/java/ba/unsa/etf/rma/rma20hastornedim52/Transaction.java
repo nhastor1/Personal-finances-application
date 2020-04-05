@@ -1,6 +1,8 @@
 package ba.unsa.etf.rma.rma20hastornedim52;
 
 import android.icu.text.SimpleDateFormat;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.format.DateFormat;
 
 import androidx.annotation.NonNull;
@@ -9,7 +11,7 @@ import androidx.annotation.Nullable;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Transaction {
+public class Transaction implements Parcelable, Parcelable.Creator<Transaction> {
     private Date date;
     private double amount;
     private String title;
@@ -38,6 +40,25 @@ public class Transaction {
             endDate = c.getTime();
         }
     }
+
+    protected Transaction(Parcel in) {
+        amount = in.readDouble();
+        title = in.readString();
+        itemDescription = in.readString();
+        transactionInterval = in.readInt();
+    }
+
+    public static final Creator<Transaction> CREATOR = new Creator<Transaction>() {
+        @Override
+        public Transaction createFromParcel(Parcel in) {
+            return new Transaction(in);
+        }
+
+        @Override
+        public Transaction[] newArray(int size) {
+            return new Transaction[size];
+        }
+    };
 
     public Date getDate() {
         return date;
@@ -117,5 +138,28 @@ public class Transaction {
     @Override
     public boolean equals(@Nullable Object obj) {
         return super.equals(obj) && ((Transaction) obj).getDate().getTime()==date.getTime();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeDouble(amount);
+        dest.writeString(title);
+        dest.writeString(itemDescription);
+        dest.writeInt(transactionInterval);
+    }
+
+    @Override
+    public Transaction createFromParcel(Parcel source) {
+        return null;
+    }
+
+    @Override
+    public Transaction[] newArray(int size) {
+        return new Transaction[0];
     }
 }
