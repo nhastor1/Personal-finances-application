@@ -103,6 +103,14 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
             editTextDate = (EditText) view.findViewById(R.id.editTextDate);
             editTextTransactionInterval = (EditText) view.findViewById(R.id.editTextTransactionInterval);
 
+            spinnerTransactionType = (Spinner) view.findViewById(R.id.spinnerTransactionType);
+
+            buttonSave = (Button) view.findViewById(R.id.buttonSave);
+            buttonDelete = (Button) view.findViewById(R.id.buttonDelete);
+
+            buttonSave.setText(R.string.save);
+            buttonDelete.setText(R.string.delete);
+
             editTextTitle.setText(transaction.getTitle());
             editTextAmount.setText(getString(R.string.double_to_string, transaction.getAmount()));
             editTextDescription.setText(transaction.getItemDescription());
@@ -115,14 +123,6 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
             else {
                 textViewEndDateEdit2.setText(DateFormat.format("dd.MM.yyyy", transaction.getEndDate().getTime()));
             }
-
-            spinnerTransactionType = (Spinner) view.findViewById(R.id.spinnerTransactionType);
-
-            buttonSave = (Button) view.findViewById(R.id.buttonSave);
-            buttonDelete = (Button) view.findViewById(R.id.buttonDelete);
-
-            buttonSave.setText(R.string.save);
-            buttonDelete.setText(R.string.delete);
 
             if (activity.equals("edit")) {
                 // Setting buttonDelete
@@ -436,14 +436,36 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
         return yes[0];
     }
 
+    private void fillFieldsAgain(){
+        activity = "add";
+
+        ((TextView) view.findViewById(R.id.textViewEditOrAdd)).setText(R.string.add_transaction);
+        transaction = new Transaction(new Date(), 0, "Transaction", TransactionType.INDIVIDUALINCOME,
+                "", 0);
+
+        editTextTitle.setText(transaction.getTitle());
+        editTextAmount.setText(getString(R.string.double_to_string, transaction.getAmount()));
+        editTextDescription.setText(transaction.getItemDescription());
+        editTextTransactionInterval.setText(getString(R.string.int_to_string, transaction.getTransactionInterval()));
+
+        editTextDate.setText(DateFormat.format("dd.MM.yyyy", transaction.getDate().getTime()));
+
+        if (!(transaction.getType().equals(TransactionType.REGULARPAYMENT) || transaction.getType().equals(TransactionType.REGULARINCOME)))
+            textViewEndDateEdit2.setText(getString(R.string.no_date));
+        else {
+            textViewEndDateEdit2.setText(DateFormat.format("dd.MM.yyyy", transaction.getEndDate().getTime()));
+        }
+
+        buttonDelete.setEnabled(false);
+    }
+
     private void finish(){
-        System.out.println("TWOPANELMODE\n\n\n " + twoPanelMode);
-        if(twoPanelMode)
+        if(twoPanelMode){
             ((MainMVP.RefreshListFragment) getActivity()).refreshList();
+            fillFieldsAgain();
+        }
         else{
             getActivity().getSupportFragmentManager().popBackStack();
         }
-        System.out.println("------------------------------------------------------------------------------------------------------------");
-
     }
 }
