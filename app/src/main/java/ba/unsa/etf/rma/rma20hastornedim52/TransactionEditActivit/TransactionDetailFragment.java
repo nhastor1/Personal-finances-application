@@ -352,6 +352,8 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
             getPresenter().addTransaction(transaction);
             finish();
         }
+        else
+            ((MainMVP.RefreshListFragment) getActivity()).refreshList();
     }
 
     private void validate() {

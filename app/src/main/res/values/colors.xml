@@ -5,4 +5,6 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="colorChangeData">#AEFDB1</color>
     <color name="no_color">#00FFFFFF</color>
+    <color name="selected">#045308</color>
+    <color name="holo_green_light"></color>
 </resources>
