@@ -272,12 +272,11 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
                     if(selectedItemPosition == position){
-                        System.out.println("JEBEM TI SVEEEEEEEEEEEEEE  " + selectedItemPosition + "----------" + position);
                         listViewTransaction.getChildAt(position).setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
                         selectedItemPosition = -1;
+                        buttonAddTransaction.callOnClick();
                     }
                     else{
-                        System.out.println("KOJIKURACCCCCCCCCCCCCCCCCC");
                         if(selectedItemPosition!=-1)
                             listViewTransaction.getChildAt(selectedItemPosition).setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
                         selectedItemPosition = position;
