@@ -26,16 +26,17 @@ import ba.unsa.etf.rma.rma20hastornedim52.Adapter.FilterSpinnerAdapter;
 import ba.unsa.etf.rma.rma20hastornedim52.DataChecker;
 import ba.unsa.etf.rma.rma20hastornedim52.R;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
+import ba.unsa.etf.rma.rma20hastornedim52.TransactionActivity.MainActivity;
+import ba.unsa.etf.rma.rma20hastornedim52.TransactionActivity.MainMVP;
 import ba.unsa.etf.rma.rma20hastornedim52.TransactionModel;
 import ba.unsa.etf.rma.rma20hastornedim52.TransactionType;
 
 public class TransactionDetailFragment extends Fragment implements TransactionEditMVP.View {
 
     View view;
-
     private TransactionEditMVP.Presenter presenter;
+    private boolean twoPanelMode;
 
-    private int id;
     private Transaction transaction;
 
     private TextView textViewEndDateEdit2;
@@ -71,11 +72,13 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
         if (getArguments() != null && getArguments().containsKey("transaction")) {
             getPresenter().setTransaction((Transaction) getArguments().getParcelable("transaction"));
             transaction = getPresenter().getTransaction();
+            twoPanelMode = getArguments().getBoolean("twoPanelMode");
 
             if(transaction==null)
                 activity = "add";
-            else
+            else {
                 activity = "edit";
+            }
 
             if (activity.equals("edit")) {
                 ((TextView) view.findViewById(R.id.textViewEditOrAdd)).setText(R.string.edit_transaction);
@@ -434,6 +437,13 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
     }
 
     private void finish(){
+        System.out.println("TWOPANELMODE\n\n\n " + twoPanelMode);
+        if(twoPanelMode)
+            ((MainMVP.RefreshListFragment) getActivity()).refreshList();
+        else{
+            getActivity().getSupportFragmentManager().popBackStack();
+        }
+        System.out.println("------------------------------------------------------------------------------------------------------------");
 
     }
 }

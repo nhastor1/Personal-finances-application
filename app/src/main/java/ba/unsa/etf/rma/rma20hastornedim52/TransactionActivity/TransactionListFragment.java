@@ -1,6 +1,5 @@
 package ba.unsa.etf.rma.rma20hastornedim52.TransactionActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +22,6 @@ import ba.unsa.etf.rma.rma20hastornedim52.Adapter.FilterSpinnerAdapter;
 import ba.unsa.etf.rma.rma20hastornedim52.Adapter.TransactionListViewAdapter;
 import ba.unsa.etf.rma.rma20hastornedim52.R;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
-import ba.unsa.etf.rma.rma20hastornedim52.TransactionEditActivit.TransactionEditActivity;
-import ba.unsa.etf.rma.rma20hastornedim52.TransactionType;
 
 public class TransactionListFragment extends Fragment implements MainMVP.View {
 
@@ -157,27 +154,9 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
 
         filterDate();
 
-//        listViewTransaction.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent transactionEditIntent = new Intent(getActivity(),
-//                        TransactionEditActivity.class);
-//                Transaction transaction = transactionListViewAdapter.getTransaction(position);
-//                transactionEditIntent.putExtra("id", mPresenter.getTransactions().indexOf(transaction) + "");
-//                transactionEditIntent.putExtra("type_of_action", "edit");
-//                getActivity().startActivity(transactionEditIntent);
-//            }
-//        });
-
         buttonAddTransaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent transactionEditIntent = new Intent(getActivity(),
-//                        TransactionEditActivity.class);;
-//                transactionEditIntent.putExtra("id", "-1");
-//                transactionEditIntent.putExtra("type_of_action", "add");
-//                getActivity().startActivity(transactionEditIntent);
-
                 oic.onItemClicked(null);
             }
         });
@@ -203,6 +182,7 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
         filterDate();
     }
 
+    @Override
     public TransactionPresenter getPresenter() {
         if (mPresenter == null) {
             mPresenter = new TransactionPresenter(this,getActivity().getApplicationContext());
@@ -216,7 +196,7 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
     }
 
     @Override
-    public void notifyMovieListDataSetChanged(){
+    public void notifyTransactionListDataSetChanged(){
         transactionListViewAdapter.notifyDataSetChanged();
     }
 
@@ -245,7 +225,7 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
                 transactionListViewAdapter = getPresenter().sortDateDSC();
         }
         listViewTransaction.setAdapter(transactionListViewAdapter);
-        notifyMovieListDataSetChanged();
+        notifyTransactionListDataSetChanged();
     }
 
     private void filter(String selectedItem){
@@ -277,7 +257,7 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
         String[] monthAndYear = textViewMonth.getText().toString().split(", ");
         transactionListViewAdapter = getPresenter().filterDate(monthAndYear[0], Integer.parseInt(monthAndYear[1]));
         listViewTransaction.setAdapter(transactionListViewAdapter);
-        notifyMovieListDataSetChanged();
+        notifyTransactionListDataSetChanged();
     }
 
     public interface OnItemClick {

@@ -54,7 +54,7 @@ public class TransactionPresenter implements MainMVP.Presenter{
 
     public void refreshTransactions(){
         view.setTransactions(interactor.getTransactions());
-        view.notifyMovieListDataSetChanged();
+        view.notifyTransactionListDataSetChanged();
     }
 
     public String getMonthFromName(int i){

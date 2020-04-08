@@ -16,7 +16,12 @@ public interface MainMVP {
     }
 
     public interface  View{
+        public TransactionPresenter getPresenter();
         public void setTransactions(List<Transaction> transactions);
-        public void notifyMovieListDataSetChanged();
+        public void notifyTransactionListDataSetChanged();
+    }
+
+    public interface RefreshListFragment{
+        void refreshList();
     }
 }
