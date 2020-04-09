@@ -23,5 +23,6 @@ public interface MainMVP {
 
     public interface RefreshListFragment{
         void refreshList();
+        boolean isTwoPaneMode();
     }
 }

@@ -188,6 +188,21 @@ public class TransactionPresenter implements MainMVP.Presenter{
         return createAdapter();
     }
 
+    public double getGloabalAmount(){
+        double amount = account.getBudget();
+        List<Transaction> transactions = interactor.getTransactions();
+        for(Transaction t : transactions){
+            if(t.getType().equals(TransactionType.REGULARPAYMENT) || t.getType().equals(TransactionType.REGULARINCOME)){
+                amount += t.getAmount() * t.getTransactionInterval();
+            }
+            else{
+                amount += t.getAmount();
+            }
+        }
+
+        return amount;
+    }
+
     private TransactionListViewAdapter createAdapter() {
         return new TransactionListViewAdapter(context.getApplicationContext(),
                 R.layout.list_element_transaction, transactions);

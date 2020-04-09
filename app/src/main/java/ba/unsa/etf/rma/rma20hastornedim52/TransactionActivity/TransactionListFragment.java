@@ -61,7 +61,7 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
         buttonRight = (Button) view.findViewById(R.id.buttonRight);
         buttonAddTransaction = (Button) view.findViewById(R.id.buttonAddTransaction);
 
-        textViewGloablAmount.setText(getString(R.string.global_amount, getPresenter().getAccount().getBudget()));
+        textViewGloablAmount.setText(getString(R.string.global_amount, getPresenter().getGloabalAmount()));
         textViewLimit.setText(getString(R.string.limit, getPresenter().getAccount().getTotalLimit()));
 
         // Setting spinerSortBy
@@ -200,6 +200,7 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
     @Override
     public void notifyTransactionListDataSetChanged(){
         transactionListViewAdapter.notifyDataSetChanged();
+        textViewGloablAmount.setText(getString(R.string.global_amount, getPresenter().getGloabalAmount()));
     }
 
     private void setDate(){
@@ -271,6 +272,12 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
+
+                    if(!((MainMVP.RefreshListFragment) getActivity()).isTwoPaneMode()){
+                        Transaction transaction = transactionListViewAdapter.getTransaction(position);
+                        oic.onItemClicked(transaction);
+                        return;
+                    }
                     if(selectedItemPosition == position){
                         listViewTransaction.getChildAt(position).setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
                         selectedItemPosition = -1;

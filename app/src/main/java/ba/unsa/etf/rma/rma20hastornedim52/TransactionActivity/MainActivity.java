@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity
             if (detailFragment == null) {
                 detailFragment = new TransactionDetailFragment();
                 Bundle arguments = new Bundle();
-                arguments.putBoolean("twoPanelMode", twoPaneMode);
                 arguments.putParcelable("transaction", null);
                 detailFragment.setArguments(arguments);
                 fragmentManager.beginTransaction().
@@ -68,7 +67,6 @@ public class MainActivity extends AppCompatActivity
     public void onItemClicked(Transaction transaction) {
         Bundle arguments = new Bundle();
         arguments.putParcelable("transaction", transaction);
-        arguments.putBoolean("twoPanelMode", twoPaneMode);
         detailFragment = new TransactionDetailFragment();
         detailFragment.setArguments(arguments);
         if (twoPaneMode){
@@ -86,7 +84,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if(!twoPaneMode && detailFragment!=null)
+            getSupportFragmentManager().popBackStack();
+        else
+            super.onBackPressed();
     }
 
     @Override
@@ -95,5 +96,10 @@ public class MainActivity extends AppCompatActivity
         ft.detach(listFragment);
         ft.attach(listFragment);
         ft.commit();
+    }
+
+    @Override
+    public boolean isTwoPaneMode() {
+        return twoPaneMode;
     }
 }
