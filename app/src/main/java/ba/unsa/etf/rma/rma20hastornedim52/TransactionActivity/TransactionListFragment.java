@@ -178,27 +178,31 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
         listViewTransaction.setOnItemClickListener(listItemClickListener);
 
         if(!((MainMVP.RefreshListFragment) getActivity()).isTwoPaneMode()) {
-            view.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
-                @Override
-                public void onSwipeLeft() {
-                    Fragment fragment = new BudgetFragment();
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.transaction_list_frame, fragment).addToBackStack(null)
-                            .commit();
-                }
-
-                @Override
-                public void onSwipeRight() {
-                    Fragment fragment = new GraphsFragment();
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.transaction_list_frame, fragment).addToBackStack(null)
-                            .commit();
-                }
-            });
+            view.setOnTouchListener(onSwipeTouchListener);
+            listViewTransaction.setOnTouchListener(onSwipeTouchListener);
         }
+
 
         return view;
     }
+
+    private View.OnTouchListener onSwipeTouchListener =  new OnSwipeTouchListener(getContext()) {
+        @Override
+        public void onSwipeLeft() {
+            Fragment fragment = new BudgetFragment();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.transaction_list_frame, fragment).addToBackStack(null)
+                    .commit();
+        }
+
+        @Override
+        public void onSwipeRight() {
+            Fragment fragment = new GraphsFragment();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.transaction_list_frame, fragment).addToBackStack(null)
+                    .commit();
+        }
+    };
 
     @Override
     public void onResume() {

@@ -5,8 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,7 +38,7 @@ public class GraphsFragment extends Fragment {
     private BarChart chartIncome;
     private BarChart chartAll;
 
-
+    private AdapterView.OnItemSelectedListener SpinnerOnItemSelectedListener;
 
     @Nullable
     @Override
@@ -73,9 +75,26 @@ public class GraphsFragment extends Fragment {
         //spinerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinerAdapter);
 
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                ((TextView) parent.getChildAt(0)).setTextColor(getResources().getColor(android.R.color.white));
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
         chartPayment = (BarChart) view.findViewById(R.id.chartPayment);
         chartIncome = (BarChart) view.findViewById(R.id.chartIncome);
         chartAll = (BarChart) view.findViewById(R.id.chartAll);
+
+        chartPayment.getDescription().setEnabled(false);
+        chartIncome.getDescription().setEnabled(false);
+        chartAll.getDescription().setEnabled(false);
+
+        chartPayment.setBackgroundColor(getResources().getColor(android.R.color.holo_red_light));
+        chartIncome.setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
+        chartAll.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
 
         BarDataSet barDataSet = new BarDataSet(dataValues1(), "chartAll");
 
