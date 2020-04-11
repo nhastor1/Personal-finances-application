@@ -22,6 +22,7 @@ import ba.unsa.etf.rma.rma20hastornedim52.Adapter.FilterSpinnerAdapter;
 import ba.unsa.etf.rma.rma20hastornedim52.Adapter.TransactionListViewAdapter;
 import ba.unsa.etf.rma.rma20hastornedim52.Budget.BudgetFragment;
 import ba.unsa.etf.rma.rma20hastornedim52.Graphs.GraphsFragment;
+import ba.unsa.etf.rma.rma20hastornedim52.OnSwipeTouchListener;
 import ba.unsa.etf.rma.rma20hastornedim52.R;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
 

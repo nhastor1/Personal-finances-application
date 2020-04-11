@@ -14,9 +14,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import ba.unsa.etf.rma.rma20hastornedim52.Graphs.GraphsFragment;
 import ba.unsa.etf.rma.rma20hastornedim52.R;
-import ba.unsa.etf.rma.rma20hastornedim52.TransactionActivity.MainMVP;
-import ba.unsa.etf.rma.rma20hastornedim52.TransactionActivity.OnSwipeTouchListener;
+import ba.unsa.etf.rma.rma20hastornedim52.OnSwipeTouchListener;
 
 public class BudgetFragment extends Fragment implements BudgetMVP.View {
 
@@ -78,13 +78,21 @@ public class BudgetFragment extends Fragment implements BudgetMVP.View {
             public void onSwipeRight() {
                 finish();
             }
+
+            @Override
+            public void onSwipeLeft() {
+                finish();
+                Fragment fragment = new GraphsFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.transaction_list_frame, fragment).addToBackStack(null)
+                        .commit();
+            }
         });
 
         return view;
     }
 
     private void finish() {
-        System.out.println("22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222");
         getActivity().getSupportFragmentManager().popBackStack();
     }
 }

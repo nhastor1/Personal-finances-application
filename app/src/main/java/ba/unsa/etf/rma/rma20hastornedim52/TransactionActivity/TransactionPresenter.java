@@ -36,69 +36,69 @@ public class TransactionPresenter implements MainMVP.Presenter{
         transactions = interactor.getTransactions();
     }
 
+    @Override
     public Account getAccount() {
         return account;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
-    public List<Transaction> getTransactions() {
-        return interactor.getTransactions();
-    }
-
-    public void setTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
-    }
-
+    @Override
     public void refreshTransactions(){
         view.setTransactions(interactor.getTransactions());
         view.notifyTransactionListDataSetChanged();
     }
 
+    @Override
     public String getMonthFromName(int i){
         if(i>=12 || i<0)
             throw new IllegalArgumentException("Wrong number of month");
         return months[i];
     }
 
+    @Override
     public String getMonthName(Date date){
         CharSequence s  = DateFormat.format("MM", date.getTime());
         int monthNumber = Integer.parseInt((String) s)-1;
         return months[monthNumber];
     }
 
+    @Override
     public int getYear(Date date){
         CharSequence s  = DateFormat.format("yyyy", date.getTime());
         return Integer.parseInt((String) s);
     }
 
+    @Override
     public TransactionListViewAdapter filterAll(){
         transactions = interactor.getTransactions();
         return createAdapter();
     }
 
+    @Override
     public TransactionListViewAdapter filterIndividualincome(){
         return filter(TransactionType.INDIVIDUALINCOME);
     }
 
+    @Override
     public TransactionListViewAdapter filterRegularpayment(){
         return filter(TransactionType.REGULARPAYMENT);
     }
 
+    @Override
     public TransactionListViewAdapter filterRegularincome(){
         return filter(TransactionType.REGULARINCOME);
     }
 
+    @Override
     public TransactionListViewAdapter filterIndividualpayment(){
         return filter(TransactionType.INDIVIDUALPAYMENT);
     }
 
+    @Override
     public TransactionListViewAdapter filterPurchase(){
         return filter(TransactionType.PURCHASE);
     }
 
+    @Override
     public TransactionListViewAdapter filter(TransactionType type){
         transactions = new ArrayList<>();
         for(Transaction t : interactor.getTransactions())
@@ -108,6 +108,7 @@ public class TransactionPresenter implements MainMVP.Presenter{
         return createAdapter();
     }
 
+    @Override
     public TransactionListViewAdapter sortTitleASC(){
         Collections.sort(transactions, new Comparator<Transaction>(){
             public int compare(Transaction t1, Transaction t2) {
@@ -117,6 +118,7 @@ public class TransactionPresenter implements MainMVP.Presenter{
         return createAdapter();
     }
 
+    @Override
     public TransactionListViewAdapter sortTitleDSC(){
         Collections.sort(transactions, new Comparator<Transaction>(){
             public int compare(Transaction t1, Transaction t2) {
@@ -126,6 +128,7 @@ public class TransactionPresenter implements MainMVP.Presenter{
         return createAdapter();
     }
 
+    @Override
     public TransactionListViewAdapter sortPriceASC(){
         Collections.sort(transactions, new Comparator<Transaction>(){
             public int compare(Transaction t1, Transaction t2) {
@@ -135,6 +138,7 @@ public class TransactionPresenter implements MainMVP.Presenter{
         return createAdapter();
     }
 
+    @Override
     public TransactionListViewAdapter sortPriceDSC(){
         Collections.sort(transactions, new Comparator<Transaction>(){
             public int compare(Transaction t1, Transaction t2) {
@@ -144,6 +148,7 @@ public class TransactionPresenter implements MainMVP.Presenter{
         return createAdapter();
     }
 
+    @Override
     public TransactionListViewAdapter sortDateASC(){
         Collections.sort(transactions, new Comparator<Transaction>(){
             public int compare(Transaction t1, Transaction t2) {
@@ -153,6 +158,7 @@ public class TransactionPresenter implements MainMVP.Presenter{
         return createAdapter();
     }
 
+    @Override
     public TransactionListViewAdapter sortDateDSC(){
         Collections.sort(transactions, new Comparator<Transaction>(){
             public int compare(Transaction t1, Transaction t2) {
@@ -162,6 +168,7 @@ public class TransactionPresenter implements MainMVP.Presenter{
         return createAdapter();
     }
 
+    @Override
     public TransactionListViewAdapter filterDate(String mm, int year) {
         int month = getMonthFromName(mm);
 
@@ -188,6 +195,7 @@ public class TransactionPresenter implements MainMVP.Presenter{
         return createAdapter();
     }
 
+    @Override
     public double getGloabalAmount(){
         double amount = account.getBudget();
         List<Transaction> transactions = interactor.getTransactions();

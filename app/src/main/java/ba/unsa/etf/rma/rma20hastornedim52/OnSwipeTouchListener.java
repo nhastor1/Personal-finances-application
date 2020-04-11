@@ -1,4 +1,4 @@
-package ba.unsa.etf.rma.rma20hastornedim52.TransactionActivity;
+package ba.unsa.etf.rma.rma20hastornedim52;
 
 import android.content.Context;
 import android.view.GestureDetector;
