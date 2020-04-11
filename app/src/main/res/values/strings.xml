@@ -34,4 +34,5 @@
     <string name="total_limit">Yearly limit</string>
     <string name="budget_total_amount">Total amount of your budget</string>
     <string name="save_changes">Save changes</string>
+    <string name="spinner_graph">Show graph by:</string>
 </resources>
