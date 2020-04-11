@@ -10,6 +10,7 @@ public interface TransactionEditMVP {
     public interface Interactor{
         public List<Transaction> getTransactions();
         public Account getAccount();
+        public void removeTransaction(Transaction transaction);
     }
 
     public interface Presenter{

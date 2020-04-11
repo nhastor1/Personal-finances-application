@@ -18,4 +18,9 @@ public class TransactionEditInteractor implements TransactionEditMVP.Interactor 
     public Account getAccount() {
         return TransactionModel.account;
     }
+
+    @Override
+    public void removeTransaction(Transaction transaction){
+        TransactionModel.transactions.remove(transaction);
+    }
 }

@@ -21,6 +21,7 @@ import java.util.List;
 import ba.unsa.etf.rma.rma20hastornedim52.Adapter.FilterSpinnerAdapter;
 import ba.unsa.etf.rma.rma20hastornedim52.Adapter.TransactionListViewAdapter;
 import ba.unsa.etf.rma.rma20hastornedim52.Budget.BudgetFragment;
+import ba.unsa.etf.rma.rma20hastornedim52.Graphs.GraphsFragment;
 import ba.unsa.etf.rma.rma20hastornedim52.R;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
 
@@ -180,6 +181,14 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
                 @Override
                 public void onSwipeLeft() {
                     Fragment fragment = new BudgetFragment();
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.transaction_list_frame, fragment).addToBackStack(null)
+                            .commit();
+                }
+
+                @Override
+                public void onSwipeRight() {
+                    Fragment fragment = new GraphsFragment();
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .replace(R.id.transaction_list_frame, fragment).addToBackStack(null)
                             .commit();

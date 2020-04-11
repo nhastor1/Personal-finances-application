@@ -70,7 +70,7 @@ public class TransactionEditPresenter implements TransactionEditMVP.Presenter {
 
     @Override
     public void removeTransaction(Transaction transaction) {
-        interactor.getTransactions().remove(transaction);
+        interactor.removeTransaction(transaction);
     }
 
     @Override
