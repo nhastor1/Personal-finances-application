@@ -22,14 +22,14 @@ import com.github.mikephil.charting.data.BarEntry;
 import java.util.ArrayList;
 import java.util.List;
 
-import ba.unsa.etf.rma.rma20hastornedim52.Adapter.FilterSpinnerAdapter;
 import ba.unsa.etf.rma.rma20hastornedim52.Budget.BudgetFragment;
 import ba.unsa.etf.rma.rma20hastornedim52.OnSwipeTouchListener;
 import ba.unsa.etf.rma.rma20hastornedim52.R;
 
-public class GraphsFragment extends Fragment {
+public class GraphsFragment extends Fragment implements GraphsMVP.View{
 
     private View view;
+    private GraphsMVP.Presenter presenter;
 
     private Spinner spinner;
     private ArrayAdapter<String> spinerAdapter;
@@ -72,8 +72,8 @@ public class GraphsFragment extends Fragment {
             }
         };
         spinerAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, chartInterval);
-        //spinerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinerAdapter);
+        spinner.setSelection(2);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -96,22 +96,42 @@ public class GraphsFragment extends Fragment {
         chartIncome.setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
         chartAll.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
 
-        BarDataSet barDataSet = new BarDataSet(dataValues1(), "chartAll");
-
-        BarData barData = new BarData();
-        barData.addDataSet(barDataSet);
-
-        chartPayment.setData(barData);
-        chartPayment.invalidate();
-
-        chartIncome.setData(barData);
-        chartIncome.invalidate();
-
-        chartAll.setData(barData);
-        chartAll.invalidate();
+        spinner.setOnItemSelectedListener(spinnerOnItemSelectedListener);
 
         return view;
     }
+
+    @Override
+    public GraphsMVP.Presenter getPresenter() {
+        if(presenter==null)
+            presenter = new GraphsPresenter(this, getContext());
+        return presenter;
+    }
+
+    private AdapterView.OnItemSelectedListener spinnerOnItemSelectedListener = new AdapterView.OnItemSelectedListener(){
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if(position == 0){
+                setChartPaymentDays();
+                setChartIncomeDays();
+                setChartAllDays();
+            }
+            else if(position==1){
+                setChartPaymentWeeks();
+                setChartIncomeWeeks();
+                setChartAllWeeks();
+            }
+            else{
+                setChartPaymentMonths();
+                setChartIncomeMonths();
+                setChartAllMonths();
+            }
+        }
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
 
     private ArrayList<BarEntry> dataValues1(){
         ArrayList<BarEntry> dataValues = new ArrayList<>();
@@ -126,4 +146,88 @@ public class GraphsFragment extends Fragment {
     private void finish() {
         getActivity().getSupportFragmentManager().popBackStack();
     }
+
+    private void setChartPaymentDays(){
+        ArrayList<BarEntry> dataValues = new ArrayList<>();
+        double days[] = getPresenter().getDayPayments();
+        for(int i=0; i<days.length; i++)
+            dataValues.add(new BarEntry(i+1, (float) -days[i]));
+        BarDataSet barDataSet = new BarDataSet(dataValues, "Payments by days");
+        BarData barData = new BarData();
+        barData.addDataSet(barDataSet);
+        chartPayment.setData(barData);
+        chartPayment.invalidate();
+    }
+
+    private void setChartIncomeDays() {
+        ArrayList<BarEntry> dataValues = new ArrayList<>();
+        double days[] = getPresenter().getDayIncome();
+        for(int i=0; i<days.length; i++)
+            dataValues.add(new BarEntry(i+1, (float) days[i]));
+        BarDataSet barDataSet = new BarDataSet(dataValues, "Income by days");
+        BarData barData = new BarData();
+        barData.addDataSet(barDataSet);
+        chartIncome.setData(barData);
+        chartIncome.invalidate();
+    }
+
+    private void setChartAllDays() {
+        ArrayList<BarEntry> dataValues = new ArrayList<>();
+        double days[] = getPresenter().getDayAll();
+        for(int i=0; i<days.length; i++)
+            dataValues.add(new BarEntry(i+1, (float) days[i]));
+        BarDataSet barDataSet = new BarDataSet(dataValues, "All transactions by days");
+        BarData barData = new BarData();
+        barData.addDataSet(barDataSet);
+        chartAll.setData(barData);
+        chartAll.invalidate();
+    }
+
+    private void setChartPaymentWeeks() {
+    }
+
+    private void setChartIncomeWeeks() {
+
+    }
+
+    private void setChartAllWeeks() {
+
+    }
+
+    private void setChartPaymentMonths() {
+        ArrayList<BarEntry> dataValues = new ArrayList<>();
+        double days[] = getPresenter().getMonthsPayments();
+        for(int i=0; i<days.length; i++)
+            dataValues.add(new BarEntry(i+1, (float) -days[i]));
+        BarDataSet barDataSet = new BarDataSet(dataValues, "Payments by months");
+        BarData barData = new BarData();
+        barData.addDataSet(barDataSet);
+        chartPayment.setData(barData);
+        chartPayment.invalidate();
+    }
+
+    private void setChartIncomeMonths() {
+        ArrayList<BarEntry> dataValues = new ArrayList<>();
+        double days[] = getPresenter().getMonthsIncome();
+        for(int i=0; i<days.length; i++)
+            dataValues.add(new BarEntry(i+1, (float) days[i]));
+        BarDataSet barDataSet = new BarDataSet(dataValues, "Income by months");
+        BarData barData = new BarData();
+        barData.addDataSet(barDataSet);
+        chartIncome.setData(barData);
+        chartIncome.invalidate();
+    }
+
+    private void setChartAllMonths() {
+        ArrayList<BarEntry> dataValues = new ArrayList<>();
+        double days[] = getPresenter().getMonthsAll();
+        for(int i=0; i<days.length; i++)
+            dataValues.add(new BarEntry(i+1, (float) days[i]));
+        BarDataSet barDataSet = new BarDataSet(dataValues, "All transactions by months");
+        BarData barData = new BarData();
+        barData.addDataSet(barDataSet);
+        chartAll.setData(barData);
+        chartAll.invalidate();
+    }
+
 }

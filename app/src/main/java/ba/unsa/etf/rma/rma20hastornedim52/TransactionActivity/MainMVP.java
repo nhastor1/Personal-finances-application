@@ -43,7 +43,7 @@ public interface MainMVP {
         public void notifyTransactionListDataSetChanged();
     }
 
-    public interface RefreshListFragment{
+    public interface ActivityFuncions{
         void refreshList();
         boolean isTwoPaneMode();
     }

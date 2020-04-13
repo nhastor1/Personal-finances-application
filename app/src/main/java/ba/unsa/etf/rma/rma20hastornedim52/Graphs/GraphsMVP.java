@@ -1,7 +1,10 @@
 package ba.unsa.etf.rma.rma20hastornedim52.Graphs;
 
 
+import java.util.List;
+
 import ba.unsa.etf.rma.rma20hastornedim52.Account;
+import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
 
 public interface GraphsMVP {
     public interface View{
@@ -9,11 +12,20 @@ public interface GraphsMVP {
     }
 
     public interface Presenter{
-        Account getAccount();
-        void updateAccount(double monthLimit, double yearLimtit);
+        double[] getDayPayments();
+
+        double[] getDayIncome();
+
+        double[] getDayAll();
+
+        double[] getMonthsPayments();
+
+        double[] getMonthsIncome();
+
+        double[] getMonthsAll();
     }
 
     public interface Interactor{
-        Account getAccount();
+        List<Transaction> getTransactions();
     }
 }

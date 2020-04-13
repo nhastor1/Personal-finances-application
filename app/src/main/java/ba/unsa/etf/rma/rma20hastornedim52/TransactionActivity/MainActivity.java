@@ -6,18 +6,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ListView;
-
-import java.util.List;
 
 import ba.unsa.etf.rma.rma20hastornedim52.R;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
 import ba.unsa.etf.rma.rma20hastornedim52.TransactionEditActivit.TransactionDetailFragment;
 
 public class MainActivity extends AppCompatActivity
-    implements TransactionListFragment.OnItemClick, MainMVP.RefreshListFragment{
+    implements TransactionListFragment.OnItemClick, MainMVP.ActivityFuncions {
 
     private boolean twoPaneMode = false;
 

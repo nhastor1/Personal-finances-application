@@ -177,7 +177,7 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
 
         listViewTransaction.setOnItemClickListener(listItemClickListener);
 
-        if(!((MainMVP.RefreshListFragment) getActivity()).isTwoPaneMode()) {
+        if(!((MainMVP.ActivityFuncions) getActivity()).isTwoPaneMode()) {
             view.setOnTouchListener(onSwipeTouchListener);
             listViewTransaction.setOnTouchListener(onSwipeTouchListener);
         }
@@ -299,7 +299,7 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
 
-                    if(!((MainMVP.RefreshListFragment) getActivity()).isTwoPaneMode()){
+                    if(!((MainMVP.ActivityFuncions) getActivity()).isTwoPaneMode()){
                         Transaction transaction = transactionListViewAdapter.getTransaction(position);
                         oic.onItemClicked(transaction);
                         return;

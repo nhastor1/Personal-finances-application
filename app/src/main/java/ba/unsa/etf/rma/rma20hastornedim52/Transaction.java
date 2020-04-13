@@ -130,6 +130,37 @@ public class Transaction implements Parcelable, Parcelable.Creator<Transaction> 
         endDate.setTime(cal.getTimeInMillis());
     }
 
+//    public double getTotalAmount(){
+//        int interval = 1;
+//        if(type.equals(TransactionType.REGULARPAYMENT) || type.equals(TransactionType.REGULARINCOME))
+//            interval += endDate - date;
+//        return amount * interval;
+//    }
+
+    public boolean isInMonth(int month, int year){
+        int y = DataChecker.getYear(getDate());
+        int m = DataChecker.getMonth(getDate());
+
+        return y == year && m == month;
+    }
+
+    public boolean isInYear(int year) {
+        return DataChecker.getYear(getDate()) == year;
+    }
+
+    public boolean isBetween(int month, int year){
+        int y1 = DataChecker.getYear(getDate());
+        int m1 = DataChecker.getMonth(getDate());
+        int m2 = DataChecker.getMonth(getEndDate());
+        int y2 = DataChecker.getYear(getEndDate());
+
+        if((year > y1 && year < y2) ||
+                ((year == y1 || year == y2) && month >= m1 && month <= m2))
+            return true;
+
+        return false;
+    }
+
     public static void validTitle(String title){
         if(title.length()<=3 || title.length()>=15)
             throw new IllegalArgumentException("Transaction title is not regular");
@@ -162,4 +193,5 @@ public class Transaction implements Parcelable, Parcelable.Creator<Transaction> 
     public Transaction[] newArray(int size) {
         return new Transaction[0];
     }
+
 }

@@ -348,8 +348,8 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
             getPresenter().addTransaction(transaction);
             finish();
         }
-        else if(((MainMVP.RefreshListFragment) getActivity()).isTwoPaneMode())
-            ((MainMVP.RefreshListFragment) getActivity()).refreshList();
+        else if(((MainMVP.ActivityFuncions) getActivity()).isTwoPaneMode())
+            ((MainMVP.ActivityFuncions) getActivity()).refreshList();
     }
 
     private void validate() {
@@ -458,8 +458,8 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
     }
 
     private void finish(){
-        if(((MainMVP.RefreshListFragment) getActivity()).isTwoPaneMode()){
-            ((MainMVP.RefreshListFragment) getActivity()).refreshList();
+        if(((MainMVP.ActivityFuncions) getActivity()).isTwoPaneMode()){
+            ((MainMVP.ActivityFuncions) getActivity()).refreshList();
             fillFieldsAgain();
         }
         else{
