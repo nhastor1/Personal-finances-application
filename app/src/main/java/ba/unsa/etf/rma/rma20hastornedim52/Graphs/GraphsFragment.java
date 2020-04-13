@@ -75,15 +75,6 @@ public class GraphsFragment extends Fragment implements GraphsMVP.View{
         spinner.setAdapter(spinerAdapter);
         spinner.setSelection(2);
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                ((TextView) parent.getChildAt(0)).setTextColor(getResources().getColor(android.R.color.white));
-            }
-
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
         chartPayment = (BarChart) view.findViewById(R.id.chartPayment);
         chartIncome = (BarChart) view.findViewById(R.id.chartIncome);
         chartAll = (BarChart) view.findViewById(R.id.chartAll);
@@ -111,6 +102,7 @@ public class GraphsFragment extends Fragment implements GraphsMVP.View{
     private AdapterView.OnItemSelectedListener spinnerOnItemSelectedListener = new AdapterView.OnItemSelectedListener(){
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            ((TextView) parent.getChildAt(0)).setTextColor(getResources().getColor(android.R.color.white));
             if(position == 0){
                 setChartPaymentDays();
                 setChartIncomeDays();
@@ -184,14 +176,39 @@ public class GraphsFragment extends Fragment implements GraphsMVP.View{
     }
 
     private void setChartPaymentWeeks() {
+        ArrayList<BarEntry> dataValues = new ArrayList<>();
+        double days[] = getPresenter().getWeeksPayments();
+        for(int i=0; i<days.length; i++)
+            dataValues.add(new BarEntry(i+1, (float) -days[i]));
+        BarDataSet barDataSet = new BarDataSet(dataValues, "Payments by weeks of month");
+        BarData barData = new BarData();
+        barData.addDataSet(barDataSet);
+        chartPayment.setData(barData);
+        chartPayment.invalidate();
     }
 
     private void setChartIncomeWeeks() {
-
+        ArrayList<BarEntry> dataValues = new ArrayList<>();
+        double days[] = getPresenter().getWeeksIncome();
+        for(int i=0; i<days.length; i++)
+            dataValues.add(new BarEntry(i+1, (float) days[i]));
+        BarDataSet barDataSet = new BarDataSet(dataValues, "Income by weeks of month");
+        BarData barData = new BarData();
+        barData.addDataSet(barDataSet);
+        chartIncome.setData(barData);
+        chartIncome.invalidate();
     }
 
     private void setChartAllWeeks() {
-
+        ArrayList<BarEntry> dataValues = new ArrayList<>();
+        double days[] = getPresenter().getWeeksAll();
+        for(int i=0; i<days.length; i++)
+            dataValues.add(new BarEntry(i+1, (float) days[i]));
+        BarDataSet barDataSet = new BarDataSet(dataValues, "All transactions by weeks of month");
+        BarData barData = new BarData();
+        barData.addDataSet(barDataSet);
+        chartAll.setData(barData);
+        chartAll.invalidate();
     }
 
     private void setChartPaymentMonths() {

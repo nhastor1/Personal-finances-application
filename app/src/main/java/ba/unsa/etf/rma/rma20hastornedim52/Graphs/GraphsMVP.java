@@ -23,6 +23,12 @@ public interface GraphsMVP {
         double[] getMonthsIncome();
 
         double[] getMonthsAll();
+
+        double[] getWeeksPayments();
+
+        double[] getWeeksIncome();
+
+        double[] getWeeksAll();
     }
 
     public interface Interactor{

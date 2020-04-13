@@ -77,4 +77,16 @@ public class DataChecker {
     public static boolean isBefore(Date time, Date endDate) {
         return time.getTime() < endDate.getTime();
     }
+
+    public static Calendar getFirstDayOfMonth(int month, int year) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(year, month-1, 1);
+        return cal;
+    }
+
+    public static Calendar getLastDayOfMonth(int month, int year) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(year, month-1, numbOfDays(month, year));
+        return cal;
+    }
 }
