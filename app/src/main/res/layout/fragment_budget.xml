@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#8217FA">
 
     <TextView
         android:id="@+id/textViewBudgetTitle"
@@ -14,7 +15,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp"
         android:gravity="center"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:textSize="20sp"
         android:text="@string/budget"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,6 +30,7 @@
         android:layout_marginTop="100dp"
         android:layout_marginEnd="50dp"
         android:text="@string/month_limit"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/textViewBudgetTitle" />
@@ -40,6 +42,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="50dp"
+        android:textColor="@android:color/white"
         android:ems="10"
         android:inputType="numberDecimal"
         tools:layout_editor_absoluteX="99dp"
@@ -56,6 +59,7 @@
         android:layout_marginTop="100dp"
         android:layout_marginEnd="50dp"
         android:text="@string/total_limit"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/textViewMonthLimit" />
@@ -67,6 +71,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="50dp"
+        android:textColor="@android:color/white"
         android:ems="10"
         android:inputType="numberDecimal"
         tools:layout_editor_absoluteX="99dp"
@@ -83,6 +88,7 @@
         android:layout_marginTop="70dp"
         android:layout_marginEnd="30dp"
         android:text="@string/budget_total_amount"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/editTextYearLimit" />
@@ -95,7 +101,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="30dp"
         android:gravity="center"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -113,5 +119,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTotalAmount" />
 
-
+    <TextView
+        android:id="@+id/textViewNothing"
+        android:layout_width="350dp"
+        android:layout_height="62dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonSaveBudget" />
 </androidx.constraintlayout.widget.ConstraintLayout>

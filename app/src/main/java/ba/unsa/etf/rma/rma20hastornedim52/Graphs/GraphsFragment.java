@@ -45,21 +45,7 @@ public class GraphsFragment extends Fragment implements GraphsMVP.View{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_graphs, container, false);
 
-        view.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
-            @Override
-            public void onSwipeRight() {
-                finish();
-                Fragment fragment = new BudgetFragment();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.transaction_list_frame, fragment).addToBackStack(null)
-                        .commit();
-            }
-
-            @Override
-            public void onSwipeLeft() {
-                finish();
-            }
-        });
+        view.setOnTouchListener(onSwipeListener);
 
         // Setting spinnerChartInterval
         spinner = (Spinner) view.findViewById(R.id.spinnerChartInterval);
@@ -78,6 +64,10 @@ public class GraphsFragment extends Fragment implements GraphsMVP.View{
         chartPayment = (BarChart) view.findViewById(R.id.chartPayment);
         chartIncome = (BarChart) view.findViewById(R.id.chartIncome);
         chartAll = (BarChart) view.findViewById(R.id.chartAll);
+
+        chartPayment.setOnTouchListener(onSwipeListener);
+        chartIncome.setOnTouchListener(onSwipeListener);
+        chartAll.setOnTouchListener(onSwipeListener);
 
         chartPayment.getDescription().setEnabled(false);
         chartIncome.getDescription().setEnabled(false);
@@ -122,6 +112,22 @@ public class GraphsFragment extends Fragment implements GraphsMVP.View{
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
 
+        }
+    };
+
+    private OnSwipeTouchListener onSwipeListener = new OnSwipeTouchListener(getContext()) {
+        @Override
+        public void onSwipeRight() {
+            finish();
+            Fragment fragment = new BudgetFragment();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.transaction_list_frame, fragment).addToBackStack(null)
+                    .commit();
+        }
+
+        @Override
+        public void onSwipeLeft() {
+            finish();
         }
     };
 
