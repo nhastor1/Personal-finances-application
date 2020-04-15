@@ -172,7 +172,7 @@ public class TransactionPresenter implements MainMVP.Presenter{
 
     @Override
     public TransactionListViewAdapter filterDate(String mm, int year) {
-        int month = getMonthFromName(mm);
+        int month = getMonthFromName(mm)-1;
 
         List<Transaction> newTrans = new ArrayList<>();
 

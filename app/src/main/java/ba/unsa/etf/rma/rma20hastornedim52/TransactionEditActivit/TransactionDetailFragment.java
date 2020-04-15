@@ -320,7 +320,7 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
         if(transaction.getType()==TransactionType.REGULARINCOME || transaction.getType()==TransactionType.REGULARPAYMENT){
             transaction.setTransactionInterval(Integer.parseInt(editTextTransactionInterval.getText().toString()));
 
-            date = editTextDate.getText().toString().split("\\.", 3);
+            date = editTextEndDateEdit.getText().toString().split("\\.", 3);
             cal.set(Integer.parseInt(date[2]), Integer.parseInt(date[1])-1, Integer.parseInt(date[0]));
             transaction.setEndDate(cal.getTime());
         }

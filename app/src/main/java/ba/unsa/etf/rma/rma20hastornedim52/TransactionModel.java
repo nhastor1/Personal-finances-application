@@ -38,16 +38,16 @@ public class TransactionModel {
             add(new Transaction(calendar.getTime(), -20, "Transaction 8", TransactionType.INDIVIDUALPAYMENT, "Knjiga"));
 
             calendar.set(2020, 3, 5);
-            add(new Transaction(calendar.getTime(), -10000, "Transaction 9", TransactionType.PURCHASE, "NK Azot"));
+            add(new Transaction(calendar.getTime(), -1000, "Transaction 9", TransactionType.PURCHASE, "NK Azot"));
 
             calendar.set(2020, 1, 22);
-            add(new Transaction(calendar.getTime(), -50000, "Transaction 10", TransactionType.PURCHASE, "BH Telecom"));
+            add(new Transaction(calendar.getTime(), -5000, "Transaction 10", TransactionType.PURCHASE, "BH Telecom"));
 
             calendar.set(2020, 2, 11);
-            add(new Transaction(calendar.getTime(), -40000, "Transaction 11", TransactionType.PURCHASE, "Prevent"));
+            add(new Transaction(calendar.getTime(), -4000, "Transaction 11", TransactionType.PURCHASE, "Prevent"));
 
             calendar.set(2020, 0, 30);
-            add(new Transaction(calendar.getTime(), -20000, "Transaction 12", TransactionType.PURCHASE, "Pobjeda"));
+            add(new Transaction(calendar.getTime(), -2000, "Transaction 12", TransactionType.PURCHASE, "Pobjeda"));
 
             calendar.set(2020, 3, 17);
             endcal.set(2020, 9, 15);
