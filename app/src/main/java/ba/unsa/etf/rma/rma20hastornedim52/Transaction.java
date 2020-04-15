@@ -139,13 +139,6 @@ public class Transaction implements Parcelable, Parcelable.Creator<Transaction> 
         endDate.setTime(cal.getTimeInMillis());
     }
 
-//    public double getTotalAmount(){
-//        int interval = 1;
-//        if(type.equals(TransactionType.REGULARPAYMENT) || type.equals(TransactionType.REGULARINCOME))
-//            interval += endDate - date;
-//        return amount * interval;
-//    }
-
     public boolean isInMonth(int month, int year){
         int y = DataChecker.getYear(getDate());
         int m = DataChecker.getMonth(getDate());

@@ -3,6 +3,7 @@ package ba.unsa.etf.rma.rma20hastornedim52.TransactionActivity;
 import android.content.Context;
 import android.text.format.DateFormat;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -48,11 +49,12 @@ public class TransactionPresenter implements MainMVP.Presenter{
     }
 
     @Override
-    public String getMonthFromName(int i){
+    public String getMonthName(int i){
         if(i>=12 || i<0)
             throw new IllegalArgumentException("Wrong number of month");
         return months[i];
     }
+
 
     @Override
     public String getMonthName(Date date){
@@ -211,17 +213,18 @@ public class TransactionPresenter implements MainMVP.Presenter{
         return amount;
     }
 
+    @Override
+    public int getMonthFromName(String month){
+        for(int i=0; i<=11; i++)
+            if(months[i].equals(month))
+                return i+1;
+
+        return -1;
+    }
+
     private TransactionListViewAdapter createAdapter() {
         return new TransactionListViewAdapter(context.getApplicationContext(),
                 R.layout.list_element_transaction, transactions);
-    }
-
-    private int getMonthFromName(String month){
-        for(int i=0; i<=11; i++)
-            if(months[i].equals(month))
-                return i;
-
-        return -1;
     }
 
     private int getMonthNumber(Date date){

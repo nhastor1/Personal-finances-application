@@ -25,6 +25,7 @@ import java.util.List;
 import ba.unsa.etf.rma.rma20hastornedim52.Budget.BudgetFragment;
 import ba.unsa.etf.rma.rma20hastornedim52.OnSwipeTouchListener;
 import ba.unsa.etf.rma.rma20hastornedim52.R;
+import ba.unsa.etf.rma.rma20hastornedim52.TransactionActivity.MainMVP;
 
 public class GraphsFragment extends Fragment implements GraphsMVP.View{
 
@@ -85,7 +86,8 @@ public class GraphsFragment extends Fragment implements GraphsMVP.View{
     @Override
     public GraphsMVP.Presenter getPresenter() {
         if(presenter==null)
-            presenter = new GraphsPresenter(this, getContext());
+            presenter = new GraphsPresenter(this, getContext(), ((MainMVP.ActivityFuncions) getActivity()).getCurrentMonth(),
+                    ((MainMVP.ActivityFuncions) getActivity()).getCurrentYear());
         return presenter;
     }
 

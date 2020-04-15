@@ -229,6 +229,18 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
         textViewGloablAmount.setText(getString(R.string.global_amount, getPresenter().getGloabalAmount()));
     }
 
+    @Override
+    public int getCurrentMonth(){
+        String[] monthAndYear = textViewMonth.getText().toString().split(", ");
+        return getPresenter().getMonthFromName(monthAndYear[0]);
+    }
+
+    @Override
+    public int getCurrentYear(){
+        String[] monthAndYear = textViewMonth.getText().toString().split(", ");
+        return Integer.parseInt(monthAndYear[1]);
+    }
+
     private void setDate(){
         textViewMonth.setText(getString(R.string.month_year, getPresenter().getMonthName(date), getPresenter().getYear(date)));
     }

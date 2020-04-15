@@ -17,7 +17,10 @@ public interface MainMVP {
     public interface Presenter{
         Account getAccount();
         void refreshTransactions();
-        String getMonthFromName(int i);
+        String getMonthName(int i);
+
+        int getMonthFromName(String month);
+
         String getMonthName(Date date);
         int getYear(Date date);
         TransactionListViewAdapter filterAll();
@@ -41,10 +44,18 @@ public interface MainMVP {
         public TransactionPresenter getPresenter();
         public void setTransactions(List<Transaction> transactions);
         public void notifyTransactionListDataSetChanged();
+
+        int getCurrentMonth();
+
+        int getCurrentYear();
     }
 
     public interface ActivityFuncions{
         void refreshList();
         boolean isTwoPaneMode();
+
+        int getCurrentMonth();
+
+        int getCurrentYear();
     }
 }

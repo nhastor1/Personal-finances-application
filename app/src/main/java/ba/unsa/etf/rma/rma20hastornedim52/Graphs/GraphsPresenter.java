@@ -1,17 +1,13 @@
 package ba.unsa.etf.rma.rma20hastornedim52.Graphs;
 
 import android.content.Context;
-import android.provider.ContactsContract;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import ba.unsa.etf.rma.rma20hastornedim52.DataChecker;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
+import ba.unsa.etf.rma.rma20hastornedim52.TransactionActivity.MainMVP;
 import ba.unsa.etf.rma.rma20hastornedim52.TransactionType;
 
 public class GraphsPresenter implements GraphsMVP.Presenter {
@@ -20,6 +16,8 @@ public class GraphsPresenter implements GraphsMVP.Presenter {
     private GraphsMVP.Interactor interactor;
     private GraphsMVP.View view;
     private List<Transaction> transactions;
+    private int month;
+    private int year;
 
     private double[] daysIncome;
     private double[] daysPayments;
@@ -29,11 +27,14 @@ public class GraphsPresenter implements GraphsMVP.Presenter {
     private double[] weeksPayments;
 
 
-    public GraphsPresenter(GraphsMVP.View view, Context context) {
+    public GraphsPresenter(GraphsMVP.View view, Context context, int month, int year) {
         this.context = context;
         this.interactor = new GraphsInteractor();
         this.view = view;
         transactions = interactor.getTransactions();
+
+        this.month = month;
+        this.year = year;
     }
 
     @Override
@@ -41,8 +42,6 @@ public class GraphsPresenter implements GraphsMVP.Presenter {
         if(daysPayments!=null)
             return daysPayments;
 
-        int month = DataChecker.getCurrentMonth();
-        int year = DataChecker.getCurrentYear();
         int n = DataChecker.numbOfDays(month, year);
         double[] days = new double[n];
 
@@ -70,8 +69,6 @@ public class GraphsPresenter implements GraphsMVP.Presenter {
         if(daysIncome!=null)
             return daysIncome;
 
-        int month = DataChecker.getCurrentMonth();
-        int year = DataChecker.getCurrentYear();
         int n = DataChecker.numbOfDays(month, year);
         double[] days = new double[n];
 
@@ -112,8 +109,6 @@ public class GraphsPresenter implements GraphsMVP.Presenter {
         if(monthsPayments!=null)
             return monthsPayments;
 
-        int month = DataChecker.getCurrentMonth();
-        int year = DataChecker.getCurrentYear();
         double[] months = new double[12];
 
 
@@ -140,8 +135,6 @@ public class GraphsPresenter implements GraphsMVP.Presenter {
         if(monthsIncome!=null)
             return monthsIncome;
 
-        int month = DataChecker.getCurrentMonth();
-        int year = DataChecker.getCurrentYear();
         double[] months = new double[12];
 
 
@@ -181,8 +174,8 @@ public class GraphsPresenter implements GraphsMVP.Presenter {
         if(weeksPayments != null)
             return weeksPayments;
 
-        Calendar cal1 = DataChecker.getFirstDayOfMonth(DataChecker.getCurrentMonth(), DataChecker.getCurrentYear());
-        Calendar cal2 = DataChecker.getLastDayOfMonth(DataChecker.getCurrentMonth(), DataChecker.getCurrentYear());
+        Calendar cal1 = DataChecker.getFirstDayOfMonth(month, year);
+        Calendar cal2 = DataChecker.getLastDayOfMonth(month, year);
         cal1.setFirstDayOfWeek(Calendar.MONDAY);
         cal2.setFirstDayOfWeek(Calendar.MONDAY);
         int w1 = cal1.get(Calendar.WEEK_OF_YEAR);
@@ -207,8 +200,8 @@ public class GraphsPresenter implements GraphsMVP.Presenter {
         if(weeksIncome != null)
             return weeksIncome;
 
-        Calendar cal1 = DataChecker.getFirstDayOfMonth(DataChecker.getCurrentMonth(), DataChecker.getCurrentYear());
-        Calendar cal2 = DataChecker.getLastDayOfMonth(DataChecker.getCurrentMonth(), DataChecker.getCurrentYear());
+        Calendar cal1 = DataChecker.getFirstDayOfMonth(month, year);
+        Calendar cal2 = DataChecker.getLastDayOfMonth(month, year);
         cal1.setFirstDayOfWeek(Calendar.MONDAY);
         cal2.setFirstDayOfWeek(Calendar.MONDAY);
         int w1 = cal1.get(Calendar.WEEK_OF_YEAR);

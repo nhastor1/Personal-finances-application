@@ -98,4 +98,15 @@ public class MainActivity extends AppCompatActivity
     public boolean isTwoPaneMode() {
         return twoPaneMode;
     }
+
+    @Override
+    public int getCurrentMonth(){
+        return listFragment.getCurrentMonth();
+    }
+
+    @Override
+    public int getCurrentYear(){
+        return listFragment.getCurrentYear();
+    }
+
 }
