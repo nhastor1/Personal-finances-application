@@ -9,23 +9,24 @@
     <TextView
         android:id="@+id/textViewEditOrAdd"
         android:layout_width="250dp"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="30dp"
-        android:textSize="20sp"
         android:gravity="center"
         android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:text="@string/edit_transaction"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TableLayout
         android:id="@+id/tableLayout"
-        android:layout_width="340dp"
-        android:layout_height="450dp"
+        android:layout_width="250dp"
+        android:layout_height="480dp"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,18 +40,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="5"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textViewTitleEdit"
-                    android:layout_width="80dp"
-                    android:layout_height="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
                     android:layout_weight="2"
-                    android:text="TextView" />
+                    android:text="@string/title" />
 
                 <EditText
                     android:id="@+id/editTextTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:ems="10"
@@ -67,18 +68,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="5"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textViewAmountEdit"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
                     android:layout_weight="2"
-                    android:text="TextView" />
+                    android:text="@string/amount" />
 
                 <EditText
                     android:id="@+id/editTextAmount"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:ems="10"
@@ -95,14 +96,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="5"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textViewTypeEdit"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
                     android:layout_weight="2"
-                    android:text="TextView" />
+                    android:text="@string/type" />
 
                 <Spinner
                     android:id="@+id/spinnerTransactionType"
@@ -119,26 +120,26 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="65dp"
                 android:layout_weight="5"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textViewDescriptionEdit"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
                     android:layout_weight="2"
-                    android:text="TextView" />
+                    android:text="@string/description" />
 
                 <EditText
                     android:id="@+id/editTextDescription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
                     android:layout_weight="3"
                     android:ems="10"
                     android:inputType="textMultiLine"
-                    android:text="Name"
-                    android:lines="4" />
+                    android:lines="3"
+                    android:text="Name" />
             </LinearLayout>
         </TableRow>
 
@@ -150,18 +151,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="5"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textViewDateEdit"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
                     android:layout_weight="2"
-                    android:text="TextView" />
+                    android:text="@string/date" />
 
                 <EditText
                     android:id="@+id/editTextDate"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:ems="10"
@@ -177,18 +178,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="5"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textViewTransactionIntervalEdit"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
                     android:layout_weight="2"
-                    android:text="TextView" />
+                    android:text="@string/transaction_interval" />
 
                 <EditText
                     android:id="@+id/editTextTransactionInterval"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:ems="10"
@@ -202,44 +203,55 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="match_parent"
                 android:layout_weight="5"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textViewEndDateEdit"
-                    android:layout_width="200dp"
-                    android:layout_height="40dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
                     android:layout_weight="2"
-                    android:text="TextView" />
+                    android:text="@string/end_date" />
+
+                <EditText
+                    android:id="@+id/editTextEndDateEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="date"
+                    android:layout_weight="3" />
+            </LinearLayout>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonSave"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/save" />
 
                 <TextView
-                    android:id="@+id/textViewEndDateEdit2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_weight="3"
-                    android:text="TextView" />
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/buttonDelete"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/delete" />
+
             </LinearLayout>
         </TableRow>
     </TableLayout>
 
-    <Button
-        android:id="@+id/buttonSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="480dp"
-        android:text="Button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/buttonDelete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="220dp"
-        android:layout_marginTop="480dp"
-        android:text="Button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

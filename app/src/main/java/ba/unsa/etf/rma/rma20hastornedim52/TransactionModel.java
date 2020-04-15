@@ -11,65 +11,75 @@ public class TransactionModel {
     public static List<Transaction> transactions = new ArrayList<Transaction>(){
         {
             Calendar calendar = Calendar.getInstance();
+            Calendar endcal = Calendar.getInstance();
+
             calendar.set(2020, 2, 23);
-            add(new Transaction(calendar.getTime(), 500, "Transaction 1", TransactionType.INDIVIDUALINCOME, null, 0));
+            add(new Transaction(calendar.getTime(), 500, "Transaction 1", TransactionType.INDIVIDUALINCOME, null));
 
             calendar.set(2020, 1, 13);
-            add(new Transaction(calendar.getTime(), 800, "Transaction 2", TransactionType.INDIVIDUALINCOME, null, 0));
+            add(new Transaction(calendar.getTime(), 800, "Transaction 2", TransactionType.INDIVIDUALINCOME, null));
 
             calendar.set(2020, 0, 29);
-            add(new Transaction(calendar.getTime(), 1500, "Transaction 3", TransactionType.INDIVIDUALINCOME, null, 0));
+            add(new Transaction(calendar.getTime(), 1500, "Transaction 3", TransactionType.INDIVIDUALINCOME, null));
 
             calendar.set(2020, 2, 5);
-            add(new Transaction(calendar.getTime(), 2500, "Transaction 4", TransactionType.INDIVIDUALINCOME, null, 0));
+            add(new Transaction(calendar.getTime(), 2500, "Transaction 4", TransactionType.INDIVIDUALINCOME, null));
 
             calendar.set(2020, 3, 2);
-            add(new Transaction(calendar.getTime(), -100, "Transaction 5", TransactionType.INDIVIDUALPAYMENT, "TV", 0));
+            add(new Transaction(calendar.getTime(), -100, "Transaction 5", TransactionType.INDIVIDUALPAYMENT, "TV"));
 
             calendar.set(2020, 2, 16);
-            add(new Transaction(calendar.getTime(), -500, "Transaction 6", TransactionType.INDIVIDUALPAYMENT, "Mobitel", 0));
+            add(new Transaction(calendar.getTime(), -500, "Transaction 6", TransactionType.INDIVIDUALPAYMENT, "Mobitel"));
 
             calendar.set(2020, 1, 23);
-            add(new Transaction(calendar.getTime(), -1200, "Transaction 7", TransactionType.INDIVIDUALPAYMENT, "Laptop", 0));
+            add(new Transaction(calendar.getTime(), -1200, "Transaction 7", TransactionType.INDIVIDUALPAYMENT, "Laptop"));
 
             calendar.set(2020, 0, 21);
-            add(new Transaction(calendar.getTime(), -20, "Transaction 8", TransactionType.INDIVIDUALPAYMENT, "Knjiga", 0));
+            add(new Transaction(calendar.getTime(), -20, "Transaction 8", TransactionType.INDIVIDUALPAYMENT, "Knjiga"));
 
             calendar.set(2020, 3, 5);
-            add(new Transaction(calendar.getTime(), -10000, "Transaction 9", TransactionType.PURCHASE, "NK Azot", 0));
+            add(new Transaction(calendar.getTime(), -10000, "Transaction 9", TransactionType.PURCHASE, "NK Azot"));
 
             calendar.set(2020, 1, 22);
-            add(new Transaction(calendar.getTime(), -50000, "Transaction 10", TransactionType.PURCHASE, "BH Telecom", 0));
+            add(new Transaction(calendar.getTime(), -50000, "Transaction 10", TransactionType.PURCHASE, "BH Telecom"));
 
             calendar.set(2020, 2, 11);
-            add(new Transaction(calendar.getTime(), -40000, "Transaction 11", TransactionType.PURCHASE, "Prevent", 0));
+            add(new Transaction(calendar.getTime(), -40000, "Transaction 11", TransactionType.PURCHASE, "Prevent"));
 
             calendar.set(2020, 0, 30);
-            add(new Transaction(calendar.getTime(), -20000, "Transaction 12", TransactionType.PURCHASE, "Pobjeda", 0));
+            add(new Transaction(calendar.getTime(), -20000, "Transaction 12", TransactionType.PURCHASE, "Pobjeda"));
 
             calendar.set(2020, 3, 17);
-            add(new Transaction(calendar.getTime(), 100, "Transaction 13", TransactionType.REGULARINCOME, null, 12));
+            endcal.set(2020, 9, 15);
+            add(new Transaction(calendar.getTime(), 100, "Transaction 13", TransactionType.REGULARINCOME, null, 12, endcal.getTime()));
 
             calendar.set(2020, 0, 16);
-            add(new Transaction(calendar.getTime(), 200, "Transaction 14", TransactionType.REGULARINCOME, null, 24));
+            endcal.set(2020, 10, 15);
+            add(new Transaction(calendar.getTime(), 200, "Transaction 14", TransactionType.REGULARINCOME, null, 24, endcal.getTime()));
 
             calendar.set(2020, 2, 13);
-            add(new Transaction(calendar.getTime(), 150, "Transaction 15", TransactionType.REGULARINCOME, null, 48));
+            endcal.set(2021, 3, 13);
+            add(new Transaction(calendar.getTime(), 150, "Transaction 15", TransactionType.REGULARINCOME, null, 48, endcal.getTime()));
 
             calendar.set(2020, 1, 29);
-            add(new Transaction(calendar.getTime(), 50, "Transaction 16", TransactionType.REGULARINCOME, null, 6));
+            endcal.set(2022, 1, 12);
+            add(new Transaction(calendar.getTime(), 50, "Transaction 16", TransactionType.REGULARINCOME, null, 6, endcal.getTime()));
 
             calendar.set(2020, 1, 1);
-            add(new Transaction(calendar.getTime(), -300, "Transaction 17", TransactionType.REGULARPAYMENT, "Kredit", 48));
+            endcal.set(2021, 4, 1);
+            add(new Transaction(calendar.getTime(), -300, "Transaction 17", TransactionType.REGULARPAYMENT, "Kredit", 48, endcal.getTime()));
 
             calendar.set(2020, 2, 5);
-            add(new Transaction(calendar.getTime(), -100, "Transaction 18", TransactionType.REGULARPAYMENT, "Automobil", 200));
+            endcal.set(2020, 6, 23);
+            add(new Transaction(calendar.getTime(), -100, "Transaction 18", TransactionType.REGULARPAYMENT, "Automobil", 30, endcal.getTime()));
 
             calendar.set(2020, 3, 28);
-            add(new Transaction(calendar.getTime(), -10, "Transaction 19", TransactionType.REGULARPAYMENT, "Režije", 10000));
+            endcal.set(2021, 3, 13);
+            add(new Transaction(calendar.getTime(), -10, "Transaction 19", TransactionType.REGULARPAYMENT, "Režije", 90, endcal.getTime()));
 
             calendar.set(2020, 1, 14);
-            add(new Transaction(calendar.getTime(), -20, "Transaction 20", TransactionType.REGULARPAYMENT, "Kirija", 500));
+            endcal.set(2026, 2, 5);
+            add(new Transaction(calendar.getTime(), -20, "Transaction 20", TransactionType.REGULARPAYMENT, "Kirija", 60, endcal.getTime()));
 
         }
     };

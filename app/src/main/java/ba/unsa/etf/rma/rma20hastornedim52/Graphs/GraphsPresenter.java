@@ -49,13 +49,13 @@ public class GraphsPresenter implements GraphsMVP.Presenter {
 
         for(Transaction t : transactions)
             if( t.isInMonth(month, year) && (t.getType().equals(TransactionType.INDIVIDUALPAYMENT) || t.getType().equals(TransactionType.PURCHASE)))
-                days[DataChecker.getDay(t.getDate())] += t.getAmount();
+                days[DataChecker.getDay(t.getDate())-1] += t.getAmount();
             else if(t.getType().equals(TransactionType.REGULARPAYMENT) && t.isBetween(month, year)){
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(t.getDate());
                 while(DataChecker.isBefore(cal.getTime(), t.getEndDate())){
                     if(DataChecker.isInMonthAndYear(cal.getTime(), month, year)){
-                        days[DataChecker.getDay(cal.getTime())] += t.getAmount();
+                        days[DataChecker.getDay(cal.getTime())-1] += t.getAmount();
                     }
                     cal.add(Calendar.DAY_OF_MONTH, t.getTransactionInterval());
                 }
@@ -78,13 +78,13 @@ public class GraphsPresenter implements GraphsMVP.Presenter {
 
         for(Transaction t : transactions)
             if( t.isInMonth(month, year) && t.getType().equals(TransactionType.INDIVIDUALINCOME))
-                days[DataChecker.getDay(t.getDate())] += t.getAmount();
+                days[DataChecker.getDay(t.getDate())-1] += t.getAmount();
             else if(t.getType().equals(TransactionType.REGULARINCOME) && t.isBetween(month, year)){
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(t.getDate());
                 while(DataChecker.isBefore(cal.getTime(), t.getEndDate())){
                     if(DataChecker.isInMonthAndYear(cal.getTime(), month, year)){
-                        days[DataChecker.getDay(cal.getTime())] += t.getAmount();
+                        days[DataChecker.getDay(cal.getTime())-1] += t.getAmount();
                     }
                     cal.add(Calendar.DAY_OF_MONTH, t.getTransactionInterval());
                 }

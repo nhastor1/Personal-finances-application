@@ -7,6 +7,9 @@ import java.util.Date;
 
 public class DataChecker {
     public static void validDate(String date){
+        if(date.equals(""))
+            throw new IllegalArgumentException("Incorrect date");
+
         date = date.trim();
         String[] d = date.split("\\.");
         int day = Integer.parseInt(d[0]);

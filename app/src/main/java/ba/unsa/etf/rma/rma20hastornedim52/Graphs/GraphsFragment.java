@@ -131,16 +131,6 @@ public class GraphsFragment extends Fragment implements GraphsMVP.View{
         }
     };
 
-    private ArrayList<BarEntry> dataValues1(){
-        ArrayList<BarEntry> dataValues = new ArrayList<>();
-        dataValues.add(new BarEntry(0, 1));
-        dataValues.add(new BarEntry(1, 2));
-        dataValues.add(new BarEntry(2, 5));
-        dataValues.add(new BarEntry(3, 1));
-        dataValues.add(new BarEntry(5, 7));
-        return dataValues;
-    }
-
     private void finish() {
         getActivity().getSupportFragmentManager().popBackStack();
     }

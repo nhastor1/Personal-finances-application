@@ -20,7 +20,22 @@ public class Transaction implements Parcelable, Parcelable.Creator<Transaction> 
     private int transactionInterval;
     private Date endDate;
 
-    public Transaction(Date date, double amount, String title, TransactionType type, String itemDescription, int transactionInterval) {
+    public Transaction(Date date, double amount, String title, TransactionType type, String itemDescription) {
+        this.date = date;
+        this.type = type;
+        setAmount(amount);
+        setTitle(title);
+
+        if(!(type.equals(TransactionType.INDIVIDUALINCOME) || type.equals(TransactionType.REGULARINCOME)))
+            this.itemDescription = itemDescription;
+
+        if(type.equals(TransactionType.REGULARINCOME) || type.equals(TransactionType.REGULARPAYMENT)) {
+            this.transactionInterval = 0;
+            endDate = null;
+        }
+    }
+
+    public Transaction(Date date, double amount, String title, TransactionType type, String itemDescription, int transactionInterval, Date endDate) {
         this.date = date;
         this.type = type;
         setAmount(amount);
@@ -31,13 +46,7 @@ public class Transaction implements Parcelable, Parcelable.Creator<Transaction> 
 
         if(type.equals(TransactionType.REGULARINCOME) || type.equals(TransactionType.REGULARPAYMENT)) {
             this.transactionInterval = transactionInterval;
-
-            // For endDate
-            Calendar calendar = Calendar.getInstance();
-            Calendar c = Calendar.getInstance();
-            c.setTime(date);
-            c.add(Calendar.DATE, transactionInterval);
-            endDate = c.getTime();
+            this.endDate = endDate;
         }
     }
 
