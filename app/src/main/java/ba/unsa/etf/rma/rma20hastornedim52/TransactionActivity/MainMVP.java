@@ -48,6 +48,8 @@ public interface MainMVP {
         int getCurrentMonth();
 
         int getCurrentYear();
+
+        void refresh();
     }
 
     public interface ActivityFuncions{

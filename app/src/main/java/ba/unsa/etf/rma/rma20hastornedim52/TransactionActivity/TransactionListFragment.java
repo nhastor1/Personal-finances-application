@@ -64,8 +64,7 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
         buttonRight = (Button) view.findViewById(R.id.buttonRight);
         buttonAddTransaction = (Button) view.findViewById(R.id.buttonAddTransaction);
 
-        textViewGloablAmount.setText(getString(R.string.global_amount, getPresenter().getGloabalAmount()));
-        textViewLimit.setText(getString(R.string.limit, getPresenter().getAccount().getTotalLimit()));
+
 
         // Setting spinerSortBy
         ArrayAdapter<String> spinnerSortByAdapter = new ArrayAdapter<String>(getActivity(),
@@ -79,7 +78,6 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
         transactionListViewAdapter = new TransactionListViewAdapter(getActivity().getApplicationContext(),
                 R.layout.list_element_transaction, new ArrayList<Transaction>());
         listViewTransaction.setAdapter(transactionListViewAdapter);
-        getPresenter().refreshTransactions();
 
         // Setting spinnerFilter
         List<String> types = new ArrayList<String>(){
@@ -208,6 +206,7 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
     public void onResume() {
         super.onResume();
         filterDate();
+        refresh();
     }
 
     @Override
@@ -239,6 +238,14 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
     public int getCurrentYear(){
         String[] monthAndYear = textViewMonth.getText().toString().split(", ");
         return Integer.parseInt(monthAndYear[1]);
+    }
+
+    @Override
+    public void refresh(){
+        textViewGloablAmount.setText(getString(R.string.global_amount, getPresenter().getGloabalAmount()));
+        textViewLimit.setText(getString(R.string.limit, getPresenter().getAccount().getTotalLimit()));
+
+        getPresenter().refreshTransactions();
     }
 
     private void setDate(){

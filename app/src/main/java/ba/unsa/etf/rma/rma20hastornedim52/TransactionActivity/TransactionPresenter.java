@@ -1,6 +1,7 @@
 package ba.unsa.etf.rma.rma20hastornedim52.TransactionActivity;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.text.format.DateFormat;
 
 import java.lang.reflect.Array;
@@ -16,7 +17,7 @@ import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
 import ba.unsa.etf.rma.rma20hastornedim52.Adapter.TransactionListViewAdapter;
 import ba.unsa.etf.rma.rma20hastornedim52.TransactionType;
 
-public class TransactionPresenter implements MainMVP.Presenter{
+public class TransactionPresenter implements MainMVP.Presenter, TransactionInteractor.OnAccountSearchDone{
     private Context context;
     private MainMVP.View view;
     private MainMVP.Interactor interactor;
@@ -31,14 +32,17 @@ public class TransactionPresenter implements MainMVP.Presenter{
     public TransactionPresenter(MainMVP.View view, Context context) {
         this.context = context;
         this.view = view;
-        interactor = new TransactionInteractor();
+        interactor = new TransactionInteractor((TransactionInteractor.OnAccountSearchDone) this);
 
-        account = interactor.getAccount();
         transactions = interactor.getTransactions();
+
+        ((AsyncTask<String, Integer, Void>) interactor).execute();
     }
 
     @Override
     public Account getAccount() {
+        if(account==null)
+            return new Account(0, 0, 0, 0);
         return account;
     }
 
@@ -199,7 +203,12 @@ public class TransactionPresenter implements MainMVP.Presenter{
 
     @Override
     public double getGloabalAmount(){
-        double amount = account.getBudget();
+        double amount = 0;
+        try {
+            amount = account.getBudget();
+        }catch (NullPointerException e){
+            //
+        }
         List<Transaction> transactions = interactor.getTransactions();
         for(Transaction t : transactions){
             if(t.getType().equals(TransactionType.REGULARPAYMENT) || t.getType().equals(TransactionType.REGULARINCOME)){
@@ -222,6 +231,12 @@ public class TransactionPresenter implements MainMVP.Presenter{
         return -1;
     }
 
+    @Override
+    public void onDone(Account account) {
+        this.account = account;
+        view.refresh();
+    }
+
     private TransactionListViewAdapter createAdapter() {
         return new TransactionListViewAdapter(context.getApplicationContext(),
                 R.layout.list_element_transaction, transactions);
@@ -231,4 +246,5 @@ public class TransactionPresenter implements MainMVP.Presenter{
         CharSequence s  = DateFormat.format("MM", date.getTime());
         return Integer.parseInt((String) s)-1;
     }
+
 }
