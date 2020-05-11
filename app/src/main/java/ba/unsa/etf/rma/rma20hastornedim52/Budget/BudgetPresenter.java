@@ -1,10 +1,11 @@
 package ba.unsa.etf.rma.rma20hastornedim52.Budget;
 
 import android.content.Context;
+import android.os.AsyncTask;
 
 import ba.unsa.etf.rma.rma20hastornedim52.Account;
 
-public class BudgetPresenter implements BudgetMVP.Presenter {
+public class BudgetPresenter implements BudgetMVP.Presenter, BudgetInteractor.OnAccountSearchDone {
 
     private Context context;
     private BudgetMVP.Interactor interactor;
@@ -13,9 +14,10 @@ public class BudgetPresenter implements BudgetMVP.Presenter {
 
     public BudgetPresenter(BudgetMVP.View view, Context context) {
         this.context = context;
-        this.interactor = new BudgetInteractor();
+        this.interactor = new BudgetInteractor((BudgetInteractor.OnAccountSearchDone) this);
         this.view = view;
-        account = interactor.getAccount();
+
+        ((AsyncTask<String, Integer, Void>) interactor).execute();
     }
 
     @Override
@@ -28,5 +30,11 @@ public class BudgetPresenter implements BudgetMVP.Presenter {
         account.setMonthLimit(monthLimit);
         account.setTotalLimit(yearLimtit);
         interactor.updateAccount(account);
+    }
+
+    @Override
+    public void onDone(Account account) {
+        this.account = account;
+        view.refresh();
     }
 }

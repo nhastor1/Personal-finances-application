@@ -6,6 +6,8 @@ public interface BudgetMVP {
     public interface View{
 
         Presenter getPresenter();
+
+        void refresh();
     }
 
     public interface Presenter{

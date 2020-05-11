@@ -39,14 +39,12 @@ public class BudgetFragment extends Fragment implements BudgetMVP.View {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_budget, container, false);
 
+        getPresenter();
+
         editTextMonthlimit = (EditText) view.findViewById(R.id.editTextMonthLimit);
         editTextYearLimit = (EditText) view.findViewById(R.id.editTextYearLimit);
         textViewTotalAmount = (TextView) view.findViewById(R.id.textViewTotalAmount);
         buttonSaveBudget = (Button) view.findViewById(R.id.buttonSaveBudget);
-
-        editTextMonthlimit.setText(getString(R.string.double_to_string, getPresenter().getAccount().getMonthLimit()));
-        editTextYearLimit.setText(getString(R.string.double_to_string, getPresenter().getAccount().getTotalLimit()));
-        textViewTotalAmount.setText(getString(R.string.double_to_string, getPresenter().getAccount().getBudget()));
 
         buttonSaveBudget.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +88,13 @@ public class BudgetFragment extends Fragment implements BudgetMVP.View {
         });
 
         return view;
+    }
+
+    @Override
+    public void refresh(){
+        editTextMonthlimit.setText(getString(R.string.double_to_string, getPresenter().getAccount().getMonthLimit()));
+        editTextYearLimit.setText(getString(R.string.double_to_string, getPresenter().getAccount().getTotalLimit()));
+        textViewTotalAmount.setText(getString(R.string.double_to_string, getPresenter().getAccount().getBudget()));
     }
 
     private void finish() {
