@@ -11,7 +11,6 @@ import ba.unsa.etf.rma.rma20hastornedim52.TransactionType;
 public interface MainMVP {
     public interface Interactor{
         public List<Transaction> getTransactions();
-        public Account getAccount();
     }
 
     public interface Presenter{
@@ -38,6 +37,8 @@ public interface MainMVP {
         TransactionListViewAdapter sortDateDSC();
         TransactionListViewAdapter filterDate(String mm, int year);
         double getGloabalAmount();
+
+        void onDone(Account account);
     }
 
     public interface  View{

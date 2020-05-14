@@ -16,70 +16,72 @@ import java.net.URL;
 import java.util.List;
 
 import ba.unsa.etf.rma.rma20hastornedim52.Account;
+import ba.unsa.etf.rma.rma20hastornedim52.Budget.BudgetInteractor;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
 import ba.unsa.etf.rma.rma20hastornedim52.TransactionModel;
 
-public class TransactionInteractor extends AsyncTask<String, Integer, Void> implements MainMVP.Interactor {
+public class TransactionInteractor implements MainMVP.Interactor, BudgetInteractor.OnAccountSearchDone {
 
     private final String LINK = "http://rma20-app-rmaws.apps.us-west-1.starter.openshift-online.com/";
     private final String KEY = "65483f4c-0f46-474f-bec7-de0cb02670d6";
 
-    private TransactionInteractor.OnAccountSearchDone caller;
+    private MainMVP.Presenter presenter;
     private Account account;
 
 
-    public TransactionInteractor(TransactionInteractor.OnAccountSearchDone p) {
-        caller = p;
+    public TransactionInteractor(MainMVP.Presenter p) {
+        presenter = p;
+        (new BudgetInteractor(this)).execute();
+    }
+
+    @Override
+    public void onDone(Account account) {
+        presenter.onDone(account);
     }
 
     public interface OnAccountSearchDone{
         void onDone(Account account);
     }
 
-    @Override
-    protected Void doInBackground(String... strings) {
-        // GetAccount
-        String url1 = LINK + "account/" + KEY;
-        try {
-            URL url = new URL(url1);
-            HttpURLConnection urlConnection = (HttpURLConnection)
-                    url.openConnection();
+//    @Override
+//    protected Void doInBackground(String... strings) {
+//        // GetAccount
+//        String url1 = LINK + "account/" + KEY;
+//        try {
+//            URL url = new URL(url1);
+//            HttpURLConnection urlConnection = (HttpURLConnection)
+//                    url.openConnection();
+//
+//            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+//            String result = convertStreamToString(in);
+//
+//            JSONObject jo = new JSONObject(result);
+//
+//            int id = jo.getInt("id");
+//            double budget = jo.getDouble("budget");
+//            double totalLimit = jo.getDouble("totalLimit");
+//            double monthLimit = jo.getDouble("monthLimit");
+//
+//            account = new Account(id, budget, totalLimit, monthLimit);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return null;
+//    }
 
-            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-            String result = convertStreamToString(in);
-
-            JSONObject jo = new JSONObject(result);
-
-            int id = jo.getInt("id");
-            double budget = jo.getDouble("budget");
-            double totalLimit = jo.getDouble("totalLimit");
-            double monthLimit = jo.getDouble("monthLimit");
-
-            account = new Account(id, budget, totalLimit, monthLimit);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    @Override
-    protected void onPostExecute(Void aVoid){
-        super.onPostExecute(aVoid);
-        caller.onDone(account);
-    }
+//    @Override
+//    protected void onPostExecute(Void aVoid){
+//        super.onPostExecute(aVoid);
+//        caller.onDone(account);
+//    }
 
     @Override
     public List<Transaction> getTransactions(){
         return TransactionModel.transactions;
-    }
-
-    @Override
-    public Account getAccount(){
-        return TransactionModel.account;
     }
 
     private String convertStreamToString(InputStream is) {

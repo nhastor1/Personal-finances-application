@@ -17,7 +17,7 @@ public class BudgetPresenter implements BudgetMVP.Presenter, BudgetInteractor.On
         this.interactor = new BudgetInteractor((BudgetInteractor.OnAccountSearchDone) this);
         this.view = view;
 
-        ((AsyncTask<String, Integer, Void>) interactor).execute();
+        (new BudgetInteractor(this)).execute();
     }
 
     @Override

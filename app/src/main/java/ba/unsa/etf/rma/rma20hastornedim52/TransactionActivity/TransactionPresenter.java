@@ -12,12 +12,13 @@ import java.util.Date;
 import java.util.List;
 
 import ba.unsa.etf.rma.rma20hastornedim52.Account;
+import ba.unsa.etf.rma.rma20hastornedim52.Budget.BudgetInteractor;
 import ba.unsa.etf.rma.rma20hastornedim52.R;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
 import ba.unsa.etf.rma.rma20hastornedim52.Adapter.TransactionListViewAdapter;
 import ba.unsa.etf.rma.rma20hastornedim52.TransactionType;
 
-public class TransactionPresenter implements MainMVP.Presenter, TransactionInteractor.OnAccountSearchDone{
+public class TransactionPresenter implements MainMVP.Presenter{
     private Context context;
     private MainMVP.View view;
     private MainMVP.Interactor interactor;
@@ -32,11 +33,9 @@ public class TransactionPresenter implements MainMVP.Presenter, TransactionInter
     public TransactionPresenter(MainMVP.View view, Context context) {
         this.context = context;
         this.view = view;
-        interactor = new TransactionInteractor((TransactionInteractor.OnAccountSearchDone) this);
+        interactor = new TransactionInteractor( this);
 
         transactions = interactor.getTransactions();
-
-        ((AsyncTask<String, Integer, Void>) interactor).execute();
     }
 
     @Override
