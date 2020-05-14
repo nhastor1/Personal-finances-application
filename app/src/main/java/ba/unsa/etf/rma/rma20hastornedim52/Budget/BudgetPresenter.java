@@ -27,9 +27,7 @@ public class BudgetPresenter implements BudgetMVP.Presenter, BudgetInteractor.On
 
     @Override
     public void updateAccount(double monthLimit, double yearLimtit){
-        account.setMonthLimit(monthLimit);
-        account.setTotalLimit(yearLimtit);
-        interactor.updateAccount(account);
+        (new BudgetInteractor(this)).execute("Update", Double.toString(monthLimit), Double.toString(yearLimtit));
     }
 
     @Override
