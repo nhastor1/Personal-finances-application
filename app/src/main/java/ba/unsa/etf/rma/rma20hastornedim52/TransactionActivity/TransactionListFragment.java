@@ -219,11 +219,13 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
 
     @Override
     public void setTransactions(List<Transaction> transactions){
+        transactionListViewAdapter.clear();
         transactionListViewAdapter.setTransaction(transactions);
     }
 
     @Override
     public void notifyTransactionListDataSetChanged(){
+        System.out.println("----------------------------------------3--------------------------------------");
         transactionListViewAdapter.notifyDataSetChanged();
         textViewGloablAmount.setText(getString(R.string.global_amount, getPresenter().getGloabalAmount()));
     }

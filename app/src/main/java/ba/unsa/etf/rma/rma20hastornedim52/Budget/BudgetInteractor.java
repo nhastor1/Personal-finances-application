@@ -15,6 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import ba.unsa.etf.rma.rma20hastornedim52.Account;
+import ba.unsa.etf.rma.rma20hastornedim52.JSONFunctions;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
 import ba.unsa.etf.rma.rma20hastornedim52.TransactionModel;
 
@@ -47,7 +48,7 @@ public class BudgetInteractor extends AsyncTask<String, Integer, Void> implement
                         url.openConnection();
 
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                String result = convertStreamToString(in);
+                String result = JSONFunctions.convertStreamToString(in);
 
                 JSONObject jo = new JSONObject(result);
 
@@ -79,7 +80,6 @@ public class BudgetInteractor extends AsyncTask<String, Integer, Void> implement
                 con.setDoOutput(true);
 
                 String jsonInputString = "{\"monthLimit\":" + strings[1] + ", \"totalLimit\":" + strings[2] + "}";
-                System.out.println(jsonInputString + "-----------------------------1----------------------");
 
                 try(OutputStream os = con.getOutputStream()) {
                     byte[] input = jsonInputString.getBytes("utf-8");
@@ -93,7 +93,7 @@ public class BudgetInteractor extends AsyncTask<String, Integer, Void> implement
                     while ((responseLine = br.readLine()) != null) {
                         response.append(responseLine.trim());
                     }
-                    System.out.println(response.toString() + "----------------------------2-------------------------");
+                    System.out.println(response.toString());
                 }
 
             } catch (IOException e) {
@@ -118,25 +118,5 @@ public class BudgetInteractor extends AsyncTask<String, Integer, Void> implement
     @Override
     public void updateAccount(Account account){
         TransactionModel.account = account;
-    }
-
-    private String convertStreamToString(InputStream is) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-        String line = null;
-        try {
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-        } catch (IOException e) {
-            //
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                //
-            }
-        }
-        return sb.toString();
     }
 }

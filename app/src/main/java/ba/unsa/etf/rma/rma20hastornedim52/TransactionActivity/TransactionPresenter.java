@@ -18,7 +18,7 @@ import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
 import ba.unsa.etf.rma.rma20hastornedim52.Adapter.TransactionListViewAdapter;
 import ba.unsa.etf.rma.rma20hastornedim52.TransactionType;
 
-public class TransactionPresenter implements MainMVP.Presenter{
+public class TransactionPresenter implements MainMVP.Presenter, TransactionInteractor.OnTransactionsSearchDone{
     private Context context;
     private MainMVP.View view;
     private MainMVP.Interactor interactor;
@@ -33,9 +33,9 @@ public class TransactionPresenter implements MainMVP.Presenter{
     public TransactionPresenter(MainMVP.View view, Context context) {
         this.context = context;
         this.view = view;
-        interactor = new TransactionInteractor( this);
+        interactor = new TransactionInteractor( (MainMVP.Presenter) this);
 
-        transactions = interactor.getTransactions();
+        (new TransactionInteractor((TransactionInteractor.OnTransactionsSearchDone) this)).execute();
     }
 
     @Override
@@ -49,6 +49,8 @@ public class TransactionPresenter implements MainMVP.Presenter{
     public void refreshTransactions(){
         view.setTransactions(interactor.getTransactions());
         view.notifyTransactionListDataSetChanged();
+
+        System.out.println("-------------------------------------2-------------------------------");
     }
 
     @Override
@@ -246,4 +248,11 @@ public class TransactionPresenter implements MainMVP.Presenter{
         return Integer.parseInt((String) s)-1;
     }
 
+    @Override
+    public void onDone(List<Transaction> transactions) {
+        System.out.println("--------------------------------1-------------------------------");
+        this.transactions = transactions;
+        interactor.setTransactions(transactions);
+        refreshTransactions();
+    }
 }

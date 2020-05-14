@@ -11,6 +11,7 @@ import ba.unsa.etf.rma.rma20hastornedim52.TransactionType;
 public interface MainMVP {
     public interface Interactor{
         public List<Transaction> getTransactions();
+        void setTransactions(List<Transaction> transactions);
     }
 
     public interface Presenter{

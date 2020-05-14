@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Transaction implements Parcelable, Parcelable.Creator<Transaction> {
+    private int id;
     private Date date;
     private double amount;
     private String title;
@@ -19,6 +20,8 @@ public class Transaction implements Parcelable, Parcelable.Creator<Transaction> 
     private String itemDescription;
     private int transactionInterval;
     private Date endDate;
+
+    public Transaction(){};
 
     public Transaction(Date date, double amount, String title, TransactionType type, String itemDescription) {
         this.date = date;
@@ -51,6 +54,7 @@ public class Transaction implements Parcelable, Parcelable.Creator<Transaction> 
     }
 
     protected Transaction(Parcel in) {
+        id = in.readInt();
         amount = in.readDouble();
         title = in.readString();
         itemDescription = in.readString();
@@ -68,6 +72,14 @@ public class Transaction implements Parcelable, Parcelable.Creator<Transaction> 
             return new Transaction[size];
         }
     };
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Date getDate() {
         return date;
@@ -164,7 +176,7 @@ public class Transaction implements Parcelable, Parcelable.Creator<Transaction> 
     }
 
     public static void validTitle(String title){
-        if(title.length()<=3 || title.length()>=15)
+        if(title.length()<=3 || title.length()>15)
             throw new IllegalArgumentException("Transaction title is not regular");
     }
 
@@ -180,6 +192,7 @@ public class Transaction implements Parcelable, Parcelable.Creator<Transaction> 
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeDouble(amount);
         dest.writeString(title);
         dest.writeString(itemDescription);

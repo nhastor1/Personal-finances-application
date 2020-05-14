@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import ba.unsa.etf.rma.rma20hastornedim52.R;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
 import ba.unsa.etf.rma.rma20hastornedim52.TransactionEditActivit.TransactionDetailFragment;
+import ba.unsa.etf.rma.rma20hastornedim52.TransactionType;
 
 public class MainActivity extends AppCompatActivity
     implements TransactionListFragment.OnItemClick, MainMVP.ActivityFuncions {
@@ -26,6 +27,8 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        TransactionType.getTransactionTypes();
 
         fragmentManager = getSupportFragmentManager();
         FrameLayout details = findViewById(R.id.edit_transaction_frame);
