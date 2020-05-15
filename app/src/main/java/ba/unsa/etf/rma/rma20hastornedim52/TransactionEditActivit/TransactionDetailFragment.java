@@ -350,6 +350,8 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
                 ((MainMVP.ActivityFuncions) getActivity()).refreshList();
             }
         }
+
+        ((MainMVP.ActivityFuncions) getActivity()).refreshTransactions();
     }
 
     private void validate() {

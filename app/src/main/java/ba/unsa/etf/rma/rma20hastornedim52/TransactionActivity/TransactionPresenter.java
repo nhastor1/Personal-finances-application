@@ -252,4 +252,10 @@ public class TransactionPresenter implements MainMVP.Presenter, TransactionInter
         interactor.setTransactions(new ArrayList<Transaction>(transactions));
         refreshTransactions();
     }
+
+    @Override
+    public void refreshList(){
+        (new TransactionInteractor((TransactionInteractor.OnTransactionsSearchDone) this)).execute();
+    }
+
 }

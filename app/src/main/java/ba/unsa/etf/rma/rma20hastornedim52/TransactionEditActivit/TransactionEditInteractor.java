@@ -96,7 +96,7 @@ public class TransactionEditInteractor extends AsyncTask<String, Integer, Void> 
             if(caller1!=null)
                 url1 += "/" + transaction.getId();
 
-            System.out.println(url1 + "-----------------------------------");
+            System.out.println(url1);
 
             try {
                 URL url = new URL(url1);

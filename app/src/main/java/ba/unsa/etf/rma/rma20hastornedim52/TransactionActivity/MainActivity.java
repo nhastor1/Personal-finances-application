@@ -98,6 +98,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void refreshTransactions(){
+        listFragment.getPresenter().refreshList();
+    }
+
+    @Override
     public boolean isTwoPaneMode() {
         return twoPaneMode;
     }

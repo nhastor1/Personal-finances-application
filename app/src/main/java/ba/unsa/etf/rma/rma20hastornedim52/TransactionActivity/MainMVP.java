@@ -40,6 +40,8 @@ public interface MainMVP {
         double getGloabalAmount();
 
         void onDone(Account account);
+
+        void refreshList();
     }
 
     public interface  View{
@@ -58,6 +60,9 @@ public interface MainMVP {
 
     public interface ActivityFuncions{
         void refreshList();
+
+        void refreshTransactions();
+
         boolean isTwoPaneMode();
 
         int getCurrentMonth();
