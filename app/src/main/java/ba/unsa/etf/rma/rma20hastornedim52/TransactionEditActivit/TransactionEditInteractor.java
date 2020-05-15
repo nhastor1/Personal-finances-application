@@ -80,7 +80,8 @@ public class TransactionEditInteractor extends AsyncTask<String, Integer, Void> 
                 // For post method
                 con.setRequestMethod("DELETE");
                 con.setRequestProperty("Content-Type", "application/json");
-                //con.setRequestProperty("Accept", "application/json");
+                con.setRequestProperty("Accept", "application/json");
+                con.setDoOutput(true);
                 System.out.println(con.getResponseCode());
 
             } catch (IOException e) {
