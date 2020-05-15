@@ -102,7 +102,10 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
 
             editTextTitle.setText(transaction.getTitle());
             editTextAmount.setText(getString(R.string.double_to_string, transaction.getAmount()));
-            editTextDescription.setText(transaction.getItemDescription());
+            if(transaction.getItemDescription()==null)
+                editTextDescription.setText("");
+            else
+                editTextDescription.setText(transaction.getItemDescription());
             editTextTransactionInterval.setText(getString(R.string.int_to_string, transaction.getTransactionInterval()));
 
             editTextDate.setText(DateFormat.format("dd.MM.yyyy", transaction.getDate().getTime()));

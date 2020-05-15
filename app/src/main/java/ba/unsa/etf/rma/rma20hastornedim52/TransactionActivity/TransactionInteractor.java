@@ -14,10 +14,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import ba.unsa.etf.rma.rma20hastornedim52.Account;
 import ba.unsa.etf.rma.rma20hastornedim52.Budget.BudgetInteractor;
+import ba.unsa.etf.rma.rma20hastornedim52.DataChecker;
 import ba.unsa.etf.rma.rma20hastornedim52.JSONFunctions;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
 import ba.unsa.etf.rma.rma20hastornedim52.TransactionModel;
@@ -92,28 +94,20 @@ public class TransactionInteractor extends AsyncTask<String, Integer, Void> impl
                     int accountId = jo.getInt("AccountId");
                     int transactionTypeId = jo.getInt("TransactionTypeId");
 
-                    System.out.println("-----------------------------8------------------------------------------");
 
                     Transaction t = new Transaction();
                     t.setId(id);
                     t.setType(TransactionType.getType(transactionTypeId));
-                    System.out.println("-----------------------------9------------------------------------------");
-                    t.setDate(null);
+                    t.setDate(DataChecker.getDateFromService(date));
                     t.setTitle(title);
                     t.setAmount(amount);
                     t.setItemDescription(itemDescription);
                     t.setTransactionInterval(transactionInterval);
                     t.setEndDate(null);
 
-                    System.out.println("-----------------------------7------------------------------------------");
                     transactions.add(t);
                 }
-
-                System.out.println("-----------------------------6------------------------------------------");
-
             }
-
-            System.out.println("-----------------------------5------------------------------------------");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -126,7 +120,6 @@ public class TransactionInteractor extends AsyncTask<String, Integer, Void> impl
 
     @Override
     protected void onPostExecute(Void aVoid){
-        System.out.println("-----------------------------4------------------------------------------");
         super.onPostExecute(aVoid);
         caller.onDone(transactions);
     }

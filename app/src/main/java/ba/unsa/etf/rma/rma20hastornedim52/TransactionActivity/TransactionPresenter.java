@@ -49,8 +49,6 @@ public class TransactionPresenter implements MainMVP.Presenter, TransactionInter
     public void refreshTransactions(){
         view.setTransactions(interactor.getTransactions());
         view.notifyTransactionListDataSetChanged();
-
-        System.out.println("-------------------------------------2-------------------------------");
     }
 
     @Override
@@ -250,7 +248,6 @@ public class TransactionPresenter implements MainMVP.Presenter, TransactionInter
 
     @Override
     public void onDone(List<Transaction> transactions) {
-        System.out.println("--------------------------------1-------------------------------");
         this.transactions = transactions;
         interactor.setTransactions(transactions);
         refreshTransactions();

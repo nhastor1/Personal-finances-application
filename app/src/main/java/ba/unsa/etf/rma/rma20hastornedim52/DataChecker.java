@@ -2,6 +2,8 @@ package ba.unsa.etf.rma.rma20hastornedim52;
 
 import android.text.format.DateFormat;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -91,5 +93,28 @@ public class DataChecker {
         Calendar cal = Calendar.getInstance();
         cal.set(year, month-1, numbOfDays(month, year));
         return cal;
+    }
+
+    public static Date getDate(int year, int month, int day){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month-1, day);
+        return calendar.getTime();
+    }
+
+    public static Date getDateFromService(String date){
+        //date = date.substring(0, 9);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        Date d = null;
+        try {
+            d = sdf.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return d;
+    }
+
+    public static String getStringDateForService(Date date){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        return sdf.format(date);
     }
 }
