@@ -18,6 +18,9 @@ public interface TransactionEditMVP {
         public double getMonthAmount(Date date);
         public Transaction getTransaction(int id);
         public void addTransaction(Transaction transaction);
+
+        void editTransaction(Transaction transaction);
+
         public void removeTransaction(Transaction transaction);
         public Account getAccount();
         public Transaction getTransaction();

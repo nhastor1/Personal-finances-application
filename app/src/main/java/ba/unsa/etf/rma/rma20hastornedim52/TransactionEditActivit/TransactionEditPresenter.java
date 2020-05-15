@@ -73,6 +73,11 @@ public class TransactionEditPresenter implements TransactionEditMVP.Presenter,
     }
 
     @Override
+    public void editTransaction(Transaction transaction) {
+        (new TransactionEditInteractor((TransactionEditInteractor.OnTransactionEditDone) this, transaction)).execute();
+    }
+
+    @Override
     public void removeTransaction(Transaction transaction) {
         (new TransactionEditInteractor((TransactionEditInteractor.OnTransactionRemoveDone) this, transaction)).execute();
     }

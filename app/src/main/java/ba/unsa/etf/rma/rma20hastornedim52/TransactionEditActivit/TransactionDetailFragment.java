@@ -344,8 +344,12 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
             getPresenter().addTransaction(transaction);
             finish();
         }
-        else if(((MainMVP.ActivityFuncions) getActivity()).isTwoPaneMode())
-            ((MainMVP.ActivityFuncions) getActivity()).refreshList();
+        else {
+            getPresenter().editTransaction(transaction);
+            if(((MainMVP.ActivityFuncions) getActivity()).isTwoPaneMode()) {
+                ((MainMVP.ActivityFuncions) getActivity()).refreshList();
+            }
+        }
     }
 
     private void validate() {
