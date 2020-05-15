@@ -52,6 +52,8 @@ public interface MainMVP {
         int getCurrentYear();
 
         void refresh();
+
+        void filterDate();
     }
 
     public interface ActivityFuncions{

@@ -126,7 +126,7 @@ public class TransactionInteractor extends AsyncTask<String, Integer, Void> impl
 
     @Override
     public List<Transaction> getTransactions(){
-        return transactions;
+        return new ArrayList<>(transactions);
     }
 
     @Override

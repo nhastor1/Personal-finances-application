@@ -300,7 +300,8 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
         sort(spinnerSortBy.getSelectedItem().toString());
     }
 
-    private void filterDate(){
+    @Override
+    public void filterDate(){
         filter(spinnerFilter.getSelectedItem().toString());
 
         String[] monthAndYear = textViewMonth.getText().toString().split(", ");
