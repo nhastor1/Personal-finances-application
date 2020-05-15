@@ -127,7 +127,7 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
                         builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 getPresenter().removeTransaction(transaction);
-
+                                ((MainMVP.ActivityFuncions) getActivity()).refreshTransactions();
                                 finish();
                             }
                         });
