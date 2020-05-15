@@ -63,6 +63,14 @@ public enum TransactionType {
         return map.get(transactionTypeId);
     }
 
+    public static int getId(TransactionType type){
+        for (Map.Entry<Integer, TransactionType> entry : map.entrySet()) {
+            if(entry.getValue().equals(type))
+                return entry.getKey();
+        }
+        return -1;
+    }
+
     public static void getTransactionTypes() {
         (new GetTransactionType()).execute();
     }

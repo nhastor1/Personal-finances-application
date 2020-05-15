@@ -1,6 +1,7 @@
 package ba.unsa.etf.rma.rma20hastornedim52.TransactionEditActivit;
 
 import android.content.Context;
+import android.view.SurfaceControl;
 
 import java.util.Date;
 import java.util.List;
@@ -8,8 +9,11 @@ import java.util.List;
 import ba.unsa.etf.rma.rma20hastornedim52.Account;
 import ba.unsa.etf.rma.rma20hastornedim52.DataChecker;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
+import ba.unsa.etf.rma.rma20hastornedim52.TransactionActivity.TransactionInteractor;
 
-public class TransactionEditPresenter implements TransactionEditMVP.Presenter {
+public class TransactionEditPresenter implements TransactionEditMVP.Presenter,
+    TransactionEditInteractor.OnTransactionAddDone, TransactionEditInteractor.OnTransactionRemoveDone,
+    TransactionEditInteractor.OnTransactionEditDone{
 
     private Context context;
     private TransactionEditMVP.View view;
@@ -20,7 +24,7 @@ public class TransactionEditPresenter implements TransactionEditMVP.Presenter {
         this.context = context;
         this.view = view;
         this.transaction = transaction;
-        interactor = new TransactionEditInteractor();
+        interactor = new TransactionEditInteractor( (TransactionEditMVP.Presenter) this, transaction);
     }
 
     public Transaction getTransaction() {
@@ -65,7 +69,7 @@ public class TransactionEditPresenter implements TransactionEditMVP.Presenter {
 
     @Override
     public void addTransaction(Transaction transaction) {
-        interactor.getTransactions().add(transaction);
+        (new TransactionEditInteractor((TransactionEditInteractor.OnTransactionAddDone) this, transaction)).execute();
     }
 
     @Override
@@ -76,5 +80,20 @@ public class TransactionEditPresenter implements TransactionEditMVP.Presenter {
     @Override
     public Account getAccount() {
         return interactor.getAccount();
+    }
+
+    @Override
+    public void onAddDone(Transaction transaction) {
+        // Add transaction in list
+    }
+
+    @Override
+    public void onEditDone(Transaction transaction) {
+        // Edit transaction in list
+    }
+
+    @Override
+    public void onRemoveDone(Transaction transaction) {
+        // Remove transaction from list
     }
 }

@@ -114,6 +114,8 @@ public class DataChecker {
     }
 
     public static String getStringDateForService(Date date){
+        if(date==null)
+            return null;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         return sdf.format(date);
     }
