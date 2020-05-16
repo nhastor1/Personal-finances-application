@@ -42,8 +42,9 @@ public class TransactionInteractor extends AsyncTask<String, Integer, Void> impl
         (new BudgetInteractor(this)).execute();
     }
 
-    public TransactionInteractor(OnTransactionsSearchDone p) {
-        caller = p;
+    public TransactionInteractor(OnTransactionsSearchDone caller, MainMVP.Presenter presenter) {
+        this.presenter = presenter;
+        this.caller = caller;
     }
 
     @Override
@@ -57,7 +58,7 @@ public class TransactionInteractor extends AsyncTask<String, Integer, Void> impl
 
     @Override
     protected Void doInBackground(String... strings) {
-        // GetAccount
+        // Get Transactions
         String url1 = LINK + "account/" + KEY + "/transactions?page=";
         try {
 
@@ -122,6 +123,7 @@ public class TransactionInteractor extends AsyncTask<String, Integer, Void> impl
     protected void onPostExecute(Void aVoid){
         super.onPostExecute(aVoid);
         caller.onDone(transactions);
+        (new BudgetInteractor((BudgetInteractor.OnAccountSearchDone) this)).execute();
     }
 
     @Override

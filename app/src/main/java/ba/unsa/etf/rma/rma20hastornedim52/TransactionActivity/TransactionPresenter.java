@@ -35,7 +35,7 @@ public class TransactionPresenter implements MainMVP.Presenter, TransactionInter
         this.view = view;
         interactor = new TransactionInteractor( (MainMVP.Presenter) this);
 
-        (new TransactionInteractor((TransactionInteractor.OnTransactionsSearchDone) this)).execute();
+        (new TransactionInteractor((TransactionInteractor.OnTransactionsSearchDone) this, (MainMVP.Presenter) this)).execute();
     }
 
     @Override
@@ -43,13 +43,6 @@ public class TransactionPresenter implements MainMVP.Presenter, TransactionInter
         if(account==null)
             return new Account(0, 0, 0, 0);
         return account;
-    }
-
-    @Override
-    public void refreshTransactions(){
-        //view.setTransactions(interactor.getTransactions());
-        view.filterDate();
-        view.notifyTransactionListDataSetChanged();
     }
 
     @Override
@@ -203,23 +196,24 @@ public class TransactionPresenter implements MainMVP.Presenter, TransactionInter
 
     @Override
     public double getGloabalAmount(){
-        double amount = 0;
-        try {
-            amount = account.getBudget();
-        }catch (NullPointerException e){
-            //
-        }
-        List<Transaction> transactions = interactor.getTransactions();
-        for(Transaction t : transactions){
-            if(t.getType().equals(TransactionType.REGULARPAYMENT) || t.getType().equals(TransactionType.REGULARINCOME)){
-                amount += t.getAmount() * t.getTransactionInterval();
-            }
-            else{
-                amount += t.getAmount();
-            }
-        }
-
-        return amount;
+//        double amount = 0;
+//        try {
+//            amount = account.getBudget();
+//        }catch (NullPointerException e){
+//            //
+//        }
+//        List<Transaction> transactions = interactor.getTransactions();
+//        for(Transaction t : transactions){
+//            if(t.getType().equals(TransactionType.REGULARPAYMENT) || t.getType().equals(TransactionType.REGULARINCOME)){
+//                amount += t.getAmount() * t.getTransactionInterval();
+//            }
+//            else{
+//                amount += t.getAmount();
+//            }
+//        }
+        if(account==null)
+            return 0;
+        return account.getBudget();
     }
 
     @Override
@@ -229,12 +223,6 @@ public class TransactionPresenter implements MainMVP.Presenter, TransactionInter
                 return i+1;
 
         return -1;
-    }
-
-    @Override
-    public void onDone(Account account) {
-        this.account = account;
-        view.refresh();
     }
 
     private TransactionListViewAdapter createAdapter() {
@@ -255,7 +243,19 @@ public class TransactionPresenter implements MainMVP.Presenter, TransactionInter
 
     @Override
     public void refreshList(){
-        (new TransactionInteractor((TransactionInteractor.OnTransactionsSearchDone) this)).execute();
+        (new TransactionInteractor((TransactionInteractor.OnTransactionsSearchDone) this, (MainMVP.Presenter) this)).execute();
     }
 
+    @Override
+    public void refreshTransactions(){
+        //view.setTransactions(interactor.getTransactions());
+        view.filterDate();
+        view.notifyTransactionListDataSetChanged();
+    }
+
+    @Override
+    public void onDone(Account account) {
+        this.account = account;
+        view.refresh();
+    }
 }
