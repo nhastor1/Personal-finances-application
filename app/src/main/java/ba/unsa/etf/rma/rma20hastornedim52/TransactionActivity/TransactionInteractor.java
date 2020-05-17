@@ -117,6 +117,8 @@ public class TransactionInteractor extends AsyncTask<String, Integer, Void> impl
             e.printStackTrace();
         }
 
+        TransactionModel.transactions = transactions;
+
         return null;
     }
 
