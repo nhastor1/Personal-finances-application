@@ -177,7 +177,7 @@ public class TransactionPresenter implements MainMVP.Presenter, TransactionInter
             int m = getMonthNumber(transactions.get(i).getDate());
             int y = getYear(transactions.get(i).getDate());
 
-            if(transactions.get(i).getType().equals(TransactionType.REGULARINCOME) || transactions.get(i).getType().equals(TransactionType.REGULARPAYMENT)){
+            if(TransactionType.isRegular(transactions.get(i).getType())){
                 int mEnd = getMonthNumber(transactions.get(i).getEndDate());
                 int yEnd = getYear(transactions.get(i).getEndDate());
                 if(!(year > yEnd || year < y || (year==y && month < m) || (year==yEnd && month > mEnd)) )

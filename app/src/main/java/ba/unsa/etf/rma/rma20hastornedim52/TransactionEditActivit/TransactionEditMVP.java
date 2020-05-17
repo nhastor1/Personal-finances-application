@@ -25,6 +25,8 @@ public interface TransactionEditMVP {
         public Account getAccount();
         public Transaction getTransaction();
         public void setTransaction(Transaction transaction);
+
+        void updatedBudget(double budgetChange);
     }
 
     public interface  View{

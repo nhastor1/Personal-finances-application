@@ -79,7 +79,11 @@ public class BudgetInteractor extends AsyncTask<String, Integer, Void> implement
                 con.setRequestProperty("Accept", "application/json");
                 con.setDoOutput(true);
 
-                String jsonInputString = "{\"monthLimit\":" + strings[1] + ", \"totalLimit\":" + strings[2] + "}";
+                String jsonInputString;
+                if(strings.length==3)
+                    jsonInputString = "{\"monthLimit\":" + strings[1] + ", \"totalLimit\":" + strings[2] + "}";
+                else
+                    jsonInputString = "{\"budget\":" + strings[1] + "}";
 
                 try(OutputStream os = con.getOutputStream()) {
                     byte[] input = jsonInputString.getBytes("utf-8");

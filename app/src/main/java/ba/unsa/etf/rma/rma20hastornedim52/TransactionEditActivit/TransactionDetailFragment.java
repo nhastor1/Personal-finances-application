@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -305,8 +306,9 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
     }
 
     private void saveChanges() {
+        double budgetChange = 0;
         try {
-            validate();
+            budgetChange = validate();
         } catch (Exception e) {
             return;
         }
@@ -315,6 +317,7 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
         transaction.setAmount(Double.parseDouble(editTextAmount.getText().toString()));
         transaction.setItemDescription(editTextDescription.getText().toString());
 
+        // Moze se izmjeniti
         String[] date = editTextDate.getText().toString().split("\\.", 3);
         Calendar cal = Calendar.getInstance();
         cal.set(Integer.parseInt(date[2]), Integer.parseInt(date[1])-1, Integer.parseInt(date[0]));
@@ -323,6 +326,7 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
         if(transaction.getType()==TransactionType.REGULARINCOME || transaction.getType()==TransactionType.REGULARPAYMENT){
             transaction.setTransactionInterval(Integer.parseInt(editTextTransactionInterval.getText().toString()));
 
+            // Moze se izmjeniti
             date = editTextEndDateEdit.getText().toString().split("\\.", 3);
             cal.set(Integer.parseInt(date[2]), Integer.parseInt(date[1])-1, Integer.parseInt(date[0]));
             transaction.setEndDate(cal.getTime());
@@ -351,31 +355,40 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
             }
         }
 
+        getPresenter().updatedBudget(budgetChange);
+
         ((MainMVP.ActivityFuncions) getActivity()).refreshTransactions();
     }
 
-    private void validate() {
+    private double validate() {
+        double amount;
         try {
             Transaction.validTitle(editTextTitle.getText().toString());
             DataChecker.validDate(editTextDate.getText().toString());
-            Integer.parseInt(editTextTransactionInterval.getText().toString());
-            if(spinnerTransactionType.getSelectedItem().toString().contains("REGULAR"))
+            int interval = Integer.parseInt(editTextTransactionInterval.getText().toString());
+            if(spinnerTransactionType.getSelectedItem().toString().contains("REGULAR")) {
                 DataChecker.validDate(editTextEndDateEdit.getText().toString());
-
-            double amount = Double.parseDouble(editTextAmount.getText().toString());
-            if(spinnerTransactionType.getSelectedItem().toString().equals(TransactionType.INDIVIDUALINCOME.toString()) ||
-                    spinnerTransactionType.getSelectedItem().toString().equals(TransactionType.REGULARINCOME.toString())){
-                if(amount<0) {
-                    amount = -amount;
-                    editTextAmount.setText(getResources().getString(R.string.double_to_string, amount));
-                }
+                if(interval<1)
+                    throw new IllegalArgumentException("Transaction interval must be grater than zero");
             }
-            else if(amount>0) {
+
+            amount = Double.parseDouble(editTextAmount.getText().toString());
+            if(amount < 0)
+                throw new NumberFormatException("Amount must be positive");
+            if(!(spinnerTransactionType.getSelectedItem().toString().equals(TransactionType.INDIVIDUALINCOME.toString()) ||
+                    spinnerTransactionType.getSelectedItem().toString().equals(TransactionType.REGULARINCOME.toString()))){
                 amount = -amount;
-                editTextAmount.setText(getResources().getString(R.string.double_to_string, amount));
             }
+            if(spinnerTransactionType.getSelectedItem().toString().contains("REGULAR")){
+                amount *= DataChecker.getIntervalsBetween(DataChecker.getDateFromString(editTextDate.getText().toString()),
+                        DataChecker.getDateFromString(editTextEndDateEdit.getText().toString()), interval);
+            }
+            if(TransactionType.isRegular(transaction.getType()))
+                amount -= transaction.getAmount() * DataChecker.getIntervalsBetween(transaction.getDate(),
+                        transaction.getEndDate(), transaction.getTransactionInterval());
+            else
+                amount -= transaction.getAmount();
 
-            amount -= transaction.getAmount();
 
             double monthAmount = getPresenter().getMonthAmount(transaction.getDate());
             monthAmount += amount;
@@ -420,6 +433,8 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
             alertDialog.show();
             throw new IllegalArgumentException();
         }
+
+        return amount;
     }
 
     private boolean alertDialog(String message){

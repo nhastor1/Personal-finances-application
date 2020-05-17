@@ -119,4 +119,25 @@ public class DataChecker {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         return sdf.format(date);
     }
+
+    public static int getIntervalsBetween(Date d1, Date d2, int interval){
+        Calendar cal = Calendar.getInstance();
+        Calendar calEnd = Calendar.getInstance();
+        cal.setTime(d1);
+        calEnd.setTime(d2);
+
+        int i=0;
+        while(isBefore(cal.getTime(), calEnd.getTime())){
+            i++;
+            cal.add(Calendar.DAY_OF_MONTH, interval);
+        }
+        return i;
+    }
+
+    public static Date getDateFromString(String d){
+        String[] date = d.split("\\.", 3);
+        Calendar cal = Calendar.getInstance();
+        cal.set(Integer.parseInt(date[2]), Integer.parseInt(date[1])-1, Integer.parseInt(date[0]));
+        return cal.getTime();
+    }
 }

@@ -104,7 +104,8 @@ public class TransactionInteractor extends AsyncTask<String, Integer, Void> impl
                     t.setAmount(amount);
                     t.setItemDescription(itemDescription);
                     t.setTransactionInterval(transactionInterval);
-                    t.setEndDate(null);
+                    if(endDate!=null && !endDate.equals(""))
+                        t.setEndDate(DataChecker.getDateFromService(endDate));
 
                     transactions.add(t);
                 }
