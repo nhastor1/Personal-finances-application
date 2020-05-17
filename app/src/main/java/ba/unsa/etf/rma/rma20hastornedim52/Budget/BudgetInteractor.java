@@ -58,6 +58,7 @@ public class BudgetInteractor extends AsyncTask<String, Integer, Void> implement
                 double monthLimit = jo.getDouble("monthLimit");
 
                 account = new Account(id, budget, totalLimit, monthLimit);
+                TransactionModel.account = account;
 
             } catch (IOException e) {
                 e.printStackTrace();

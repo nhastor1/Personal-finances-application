@@ -6,6 +6,7 @@ import android.text.format.DateFormat;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import ba.unsa.etf.rma.rma20hastornedim52.Account;
 import ba.unsa.etf.rma.rma20hastornedim52.Budget.BudgetInteractor;
+import ba.unsa.etf.rma.rma20hastornedim52.DataChecker;
 import ba.unsa.etf.rma.rma20hastornedim52.R;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
 import ba.unsa.etf.rma.rma20hastornedim52.Adapter.TransactionListViewAdapter;
@@ -178,10 +180,14 @@ public class TransactionPresenter implements MainMVP.Presenter, TransactionInter
             int y = getYear(transactions.get(i).getDate());
 
             if(TransactionType.isRegular(transactions.get(i).getType())){
-                int mEnd = getMonthNumber(transactions.get(i).getEndDate());
-                int yEnd = getYear(transactions.get(i).getEndDate());
-                if(!(year > yEnd || year < y || (year==y && month < m) || (year==yEnd && month > mEnd)) )
+                int times = DataChecker.getTimesInThisMonth(transactions.get(i), month+1, year);
+                for(int k=0; k<times; k++)
                     newTrans.add(transactions.get(i));
+
+//                int mEnd = getMonthNumber(transactions.get(i).getEndDate());
+//                int yEnd = getYear(transactions.get(i).getEndDate());
+//                if(!(year > yEnd || year < y || (year==y && month < m) || (year==yEnd && month > mEnd)) )
+//                    newTrans.add(transactions.get(i));
             }
             else{
                 if(!(m!=month || y!=year))

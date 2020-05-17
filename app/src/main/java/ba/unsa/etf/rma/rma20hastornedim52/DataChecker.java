@@ -140,4 +140,24 @@ public class DataChecker {
         cal.set(Integer.parseInt(date[2]), Integer.parseInt(date[1])-1, Integer.parseInt(date[0]));
         return cal.getTime();
     }
+
+    public static int getTimesInThisMonth(Transaction transaction, int month, int year) {
+        if(!TransactionType.isRegular(transaction.getType()))
+            return -1;
+
+        Calendar cal = Calendar.getInstance();
+        Calendar calEnd = Calendar.getInstance();
+        cal.setTime(transaction.getDate());
+        calEnd.setTime(transaction.getEndDate());
+        int times = 0;
+
+        while(isBefore(cal.getTime(), calEnd.getTime())){
+            if(isInMonthAndYear(cal.getTime(), month, year))
+                times++;
+
+            cal.add(Calendar.DAY_OF_MONTH, transaction.getTransactionInterval());
+        }
+
+        return times;
+    }
 }
