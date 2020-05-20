@@ -93,6 +93,15 @@ public class Transaction implements Parcelable, Parcelable.Creator<Transaction> 
         return amount;
     }
 
+    public double getTotalAmount(){
+        double total = getAmount();
+        if(TransactionType.isRegular(getType()))
+            total *= DataChecker.getIntervalsBetween(getDate(), getEndDate(), getTransactionInterval());
+        if(TransactionType.isIncome(getType()))
+            return total;
+        return -total;
+    }
+
     public void setAmount(double amount) {
         if(type.equals(TransactionType.REGULARINCOME) || type.equals(TransactionType.INDIVIDUALINCOME))
             if(amount<0)

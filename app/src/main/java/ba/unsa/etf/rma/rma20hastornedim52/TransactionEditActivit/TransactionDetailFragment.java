@@ -383,11 +383,7 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
                 amount *= DataChecker.getIntervalsBetween(DataChecker.getDateFromString(editTextDate.getText().toString()),
                         DataChecker.getDateFromString(editTextEndDateEdit.getText().toString()), interval);
             }
-            if(TransactionType.isRegular(transaction.getType()))
-                amount -= transaction.getAmount() * DataChecker.getIntervalsBetween(transaction.getDate(),
-                        transaction.getEndDate(), transaction.getTransactionInterval());
-            else
-                amount -= transaction.getAmount();
+            amount -= transaction.getTotalAmount();
 
 
             double monthAmount = getPresenter().getMonthAmount(transaction.getDate());

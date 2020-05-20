@@ -115,7 +115,7 @@ public class TransactionEditInteractor extends AsyncTask<String, Integer, Void> 
                         ", \"endDate\":\"" + DataChecker.getStringDateForService(transaction.getEndDate()) + "\", " +
                         "\"itemDescription\":\"" + transaction.getItemDescription() +
                         "\", \"transactionInterval\":" + transaction.getTransactionInterval() + ", " +
-                        "\"typeId\":" + TransactionType.getId(transaction.getType()) + "}";
+                        "\"TransactionTypeId\":" + TransactionType.getId(transaction.getType()) + "}";
 
                 try(OutputStream os = con.getOutputStream()) {
                     byte[] input = jsonInputString.getBytes("utf-8");
