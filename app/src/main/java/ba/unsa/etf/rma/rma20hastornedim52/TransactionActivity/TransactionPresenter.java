@@ -180,19 +180,11 @@ public class TransactionPresenter implements MainMVP.Presenter, TransactionInter
             int y = getYear(transactions.get(i).getDate());
 
             if(TransactionType.isRegular(transactions.get(i).getType())){
-                int times = DataChecker.getTimesInThisMonth(transactions.get(i), month+1, year);
-                for(int k=0; k<times; k++)
-                    newTrans.add(transactions.get(i));
+                int times = DataChecker.putManyTimesInThisMonth(transactions.get(i), month+1, year, newTrans);
+            }
+            else if(m==month && y==year)
+                newTrans.add(transactions.get(i));
 
-//                int mEnd = getMonthNumber(transactions.get(i).getEndDate());
-//                int yEnd = getYear(transactions.get(i).getEndDate());
-//                if(!(year > yEnd || year < y || (year==y && month < m) || (year==yEnd && month > mEnd)) )
-//                    newTrans.add(transactions.get(i));
-            }
-            else{
-                if(!(m!=month || y!=year))
-                    newTrans.add(transactions.get(i));
-            }
         }
 
         transactions = newTrans;
@@ -202,21 +194,6 @@ public class TransactionPresenter implements MainMVP.Presenter, TransactionInter
 
     @Override
     public double getGloabalAmount(){
-//        double amount = 0;
-//        try {
-//            amount = account.getBudget();
-//        }catch (NullPointerException e){
-//            //
-//        }
-//        List<Transaction> transactions = interactor.getTransactions();
-//        for(Transaction t : transactions){
-//            if(t.getType().equals(TransactionType.REGULARPAYMENT) || t.getType().equals(TransactionType.REGULARINCOME)){
-//                amount += t.getAmount() * t.getTransactionInterval();
-//            }
-//            else{
-//                amount += t.getAmount();
-//            }
-//        }
         if(account==null)
             return 0;
         return account.getBudget();

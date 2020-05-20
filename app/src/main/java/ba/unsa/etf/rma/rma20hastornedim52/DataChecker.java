@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class DataChecker {
     public static void validDate(String date){
@@ -141,7 +142,7 @@ public class DataChecker {
         return cal.getTime();
     }
 
-    public static int getTimesInThisMonth(Transaction transaction, int month, int year) {
+    public static int putManyTimesInThisMonth(Transaction transaction, int month, int year, List<Transaction> transactions) {
         if(!TransactionType.isRegular(transaction.getType()))
             return -1;
 
@@ -152,8 +153,16 @@ public class DataChecker {
         int times = 0;
 
         while(isBefore(cal.getTime(), calEnd.getTime())){
-            if(isInMonthAndYear(cal.getTime(), month, year))
+            if(isInMonthAndYear(cal.getTime(), month, year)) {
+                try {
+                    Transaction t = (Transaction) transaction.clone();
+                    t.setDate(cal.getTime());
+                    transactions.add(t);
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
                 times++;
+            }
 
             cal.add(Calendar.DAY_OF_MONTH, transaction.getTransactionInterval());
         }

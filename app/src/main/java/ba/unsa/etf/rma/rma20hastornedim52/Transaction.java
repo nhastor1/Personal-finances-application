@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Transaction implements Parcelable, Parcelable.Creator<Transaction> {
+public class Transaction implements Parcelable, Parcelable.Creator<Transaction>, Cloneable {
     private int id;
     private Date date;
     private double amount;
@@ -217,5 +217,15 @@ public class Transaction implements Parcelable, Parcelable.Creator<Transaction> 
     public Transaction[] newArray(int size) {
         return new Transaction[0];
     }
+
+    @NonNull
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        Transaction t = (Transaction) super.clone();
+        t.date = (Date) date.clone();
+        t.endDate = (Date) endDate.clone();
+        return t;
+    }
+
 
 }
