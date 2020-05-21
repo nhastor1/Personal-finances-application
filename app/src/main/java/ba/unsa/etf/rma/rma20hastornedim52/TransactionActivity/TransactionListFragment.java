@@ -98,7 +98,7 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
 
         // Setting textViewMonth
         setDate();
-
+//prsarpmsaomdapkdosapkdsaopkdsakdsapokdsaodkap
         // Setting buttonRight
         buttonRight.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,6 +109,7 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
                 date = cal.getTime();
                 setDate();
 
+                getPresenter().refreshList();
                 filterDate();
             }
         });
@@ -123,6 +124,7 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
                 date = cal.getTime();
                 setDate();
 
+                getPresenter().refreshList();
                 filterDate();
             }
         });
@@ -131,6 +133,7 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
         spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                getPresenter().refreshList();
                 filterDate();
             }
 
@@ -145,6 +148,7 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
         spinnerSortBy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                getPresenter().refreshList();
                 String selectedItem = parent.getItemAtPosition(position).toString();
                 sort(selectedItem);
             }
