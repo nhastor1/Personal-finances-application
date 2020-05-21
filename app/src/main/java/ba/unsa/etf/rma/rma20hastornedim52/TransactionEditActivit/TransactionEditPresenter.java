@@ -114,14 +114,14 @@ public class TransactionEditPresenter implements TransactionEditMVP.Presenter,
     @Override
     public void removeTransaction(Transaction transaction) {
         (new TransactionEditInteractor((TransactionEditInteractor.OnTransactionRemoveDone) this, transaction)).execute();
-        double budgetChange = transaction.getAmount();
-        if(TransactionType.isRegular(transaction.getType()))
-            budgetChange *= DataChecker.getIntervalsBetween(transaction.getDate(),
-            transaction.getEndDate(), transaction.getTransactionInterval());
-        if(TransactionType.isIncome(transaction.getType()))
-            budgetChange = -budgetChange;
+        double budgetChange;
 
-        updatedBudget(budgetChange);
+        if(transaction.getOrginalAmount()!=0)
+            budgetChange = transaction.getOrginalAmount();
+        else
+            budgetChange = transaction.getTotalAmount();
+
+        updatedBudget(-budgetChange);
     }
 
     @Override

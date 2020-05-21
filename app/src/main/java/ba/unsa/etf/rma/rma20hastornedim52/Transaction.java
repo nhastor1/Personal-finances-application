@@ -20,6 +20,7 @@ public class Transaction implements Parcelable, Parcelable.Creator<Transaction>,
     private String itemDescription;
     private int transactionInterval;
     private Date endDate;
+    private double orginalAmount;
 
     public Transaction(){};
 
@@ -59,6 +60,7 @@ public class Transaction implements Parcelable, Parcelable.Creator<Transaction>,
         title = in.readString();
         itemDescription = in.readString();
         transactionInterval = in.readInt();
+        orginalAmount = in.readDouble();
     }
 
     public static final Creator<Transaction> CREATOR = new Creator<Transaction>() {
@@ -206,6 +208,7 @@ public class Transaction implements Parcelable, Parcelable.Creator<Transaction>,
         dest.writeString(title);
         dest.writeString(itemDescription);
         dest.writeInt(transactionInterval);
+        dest.writeDouble(orginalAmount);
     }
 
     @Override
@@ -227,5 +230,11 @@ public class Transaction implements Parcelable, Parcelable.Creator<Transaction>,
         return t;
     }
 
+    public void setOrginalAmount(double total) {
+        this.orginalAmount = total;
+    }
 
+    public double getOrginalAmount() {
+        return orginalAmount;
+    }
 }

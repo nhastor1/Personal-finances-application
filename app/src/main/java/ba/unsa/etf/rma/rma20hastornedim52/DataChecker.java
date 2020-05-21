@@ -152,11 +152,14 @@ public class DataChecker {
         calEnd.setTime(transaction.getEndDate());
         int times = 0;
 
+        double total = transaction.getTotalAmount();
+
         while(isBefore(cal.getTime(), calEnd.getTime())){
             if(isInMonthAndYear(cal.getTime(), month, year)) {
                 try {
                     Transaction t = (Transaction) transaction.clone();
                     t.setDate(cal.getTime());
+                    t.setOrginalAmount(total);
                     transactions.add(t);
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
