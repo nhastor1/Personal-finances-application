@@ -5,9 +5,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
+import ba.unsa.etf.rma.rma20hastornedim52.ConnectivityBroadcastReceiver;
 import ba.unsa.etf.rma.rma20hastornedim52.R;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
 import ba.unsa.etf.rma.rma20hastornedim52.TransactionEditActivit.TransactionDetailFragment;
@@ -22,6 +24,9 @@ public class MainActivity extends AppCompatActivity
     TransactionListFragment listFragment;
     Fragment fragment;
     FragmentManager fragmentManager;
+
+    private ConnectivityBroadcastReceiver receiver = new ConnectivityBroadcastReceiver();
+    private IntentFilter filter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +84,20 @@ public class MainActivity extends AppCompatActivity
                     .addToBackStack(null)
                     .commit();
         }
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        registerReceiver(receiver, filter);
+    }
+
+    @Override
+    public void onPause() {
+
+        unregisterReceiver(receiver);
+        super.onPause();
     }
 
     @Override

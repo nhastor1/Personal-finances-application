@@ -252,8 +252,8 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
     @Override
     public void refresh(){
         try {
-        textViewGloablAmount.setText(getString(R.string.global_amount, getPresenter().getGloabalAmount()));
-        textViewLimit.setText(getString(R.string.limit, getPresenter().getAccount().getTotalLimit()));
+            textViewGloablAmount.setText(getString(R.string.global_amount, getPresenter().getGloabalAmount()));
+            textViewLimit.setText(getString(R.string.limit, getPresenter().getAccount().getTotalLimit()));
         }catch (IllegalStateException e){
             // If fragment is not attached do nothing
         }
