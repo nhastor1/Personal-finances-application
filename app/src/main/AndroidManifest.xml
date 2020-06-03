@@ -19,12 +19,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <receiver android:name=".ConnectivityBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
+        <provider
+            android:authorities="rma.provider.transactions"
+            android:name=".TransactionContentProvider">
+        </provider>
     </application>
 
 </manifest>
