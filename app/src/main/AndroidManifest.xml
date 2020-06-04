@@ -28,6 +28,10 @@
             android:authorities="rma.provider.transactions"
             android:name=".TransactionContentProvider">
         </provider>
+        <provider
+            android:authorities="rma.provider.accounts"
+            android:name=".AccountContentProvider">
+        </provider>
     </application>
 
 </manifest>
