@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 
 import ba.unsa.etf.rma.rma20hastornedim52.Adapter.FilterSpinnerAdapter;
+import ba.unsa.etf.rma.rma20hastornedim52.ConnectivityBroadcastReceiver;
 import ba.unsa.etf.rma.rma20hastornedim52.DataChecker;
 import ba.unsa.etf.rma.rma20hastornedim52.R;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
@@ -79,8 +80,16 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
 
             if (activity.equals("edit")) {
                 ((TextView) view.findViewById(R.id.textViewEditOrAdd)).setText(R.string.edit_transaction);
+                if(!ConnectivityBroadcastReceiver.isConnected)
+                    ((TextView) view.findViewById(R.id.textViewOflineMode)).setText(R.string.offline_editing);
+                else
+                    ((TextView) view.findViewById(R.id.textViewOflineMode)).setText("");
             } else {
                 ((TextView) view.findViewById(R.id.textViewEditOrAdd)).setText(R.string.add_transaction);
+                if(!ConnectivityBroadcastReceiver.isConnected)
+                    ((TextView) view.findViewById(R.id.textViewOflineMode)).setText(R.string.offline_adding);
+                else
+                    ((TextView) view.findViewById(R.id.textViewOflineMode)).setText("");
                 transaction = new Transaction(new Date(), 0, "Transaction", TransactionType.INDIVIDUALINCOME,
                         "");
             }

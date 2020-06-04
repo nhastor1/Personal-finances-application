@@ -98,7 +98,7 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
 
         // Setting textViewMonth
         setDate();
-//prsarpmsaomdapkdosapkdsaopkdsakdsapokdsaodkap
+
         // Setting buttonRight
         buttonRight.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,7 +223,7 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
 
     @Override
     public void setTransactions(List<Transaction> transactions){
-        transactionListViewAdapter.clear();
+        //transactionListViewAdapter.clear();
         transactionListViewAdapter.setTransaction(transactions);
     }
 

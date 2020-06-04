@@ -105,7 +105,7 @@ public class Transaction implements Parcelable, Parcelable.Creator<Transaction>,
     }
 
     public void setAmount(double amount) {
-        if(type.equals(TransactionType.REGULARINCOME) || type.equals(TransactionType.INDIVIDUALINCOME))
+        if(TransactionType.REGULARINCOME.equals(type) || TransactionType.INDIVIDUALINCOME.equals(type))
             if(amount<0)
                 amount = -amount;
         else if(amount>0)

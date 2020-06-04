@@ -31,6 +31,9 @@ public class TransactionDBOpenHelper extends SQLiteOpenHelper {
     public static final String TRANSACTION_END_DATE = "endDate";
     public static final String TRANSACTION_ORGINAL_AMOUNT = "orginalAmount";
     public static final String TRANSACTION_CHANGE = "change";
+    public static final int TRANSACTION_MODE_ADD = 1;
+    public static final int TRANSACTION_MODE_EDIT = 2;
+    public static final int TRANSACTION_MODE_REMOVE = 3;
 
     private static final String TRANSACTION_TABLE_CREATE =
             "CREATE TABLE IF NOT EXISTS " + TRANSACTION_TABLE + " ("  + TRANSACTION_INTERNAL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "

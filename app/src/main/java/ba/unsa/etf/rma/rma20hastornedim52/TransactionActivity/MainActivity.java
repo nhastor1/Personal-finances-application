@@ -19,8 +19,6 @@ public class MainActivity extends AppCompatActivity
     implements TransactionListFragment.OnItemClick, MainMVP.ActivityFuncions {
 
     private boolean twoPaneMode = false;
-    // Treba implementirati
-    private boolean isConnected = false;
 
     TransactionDetailFragment detailFragment;
     TransactionListFragment listFragment;

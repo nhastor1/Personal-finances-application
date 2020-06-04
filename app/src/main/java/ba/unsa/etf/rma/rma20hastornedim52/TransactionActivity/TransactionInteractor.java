@@ -1,6 +1,7 @@
 package ba.unsa.etf.rma.rma20hastornedim52.TransactionActivity;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,6 +20,7 @@ import java.util.List;
 
 import ba.unsa.etf.rma.rma20hastornedim52.Account;
 import ba.unsa.etf.rma.rma20hastornedim52.Budget.BudgetInteractor;
+import ba.unsa.etf.rma.rma20hastornedim52.ConnectivityBroadcastReceiver;
 import ba.unsa.etf.rma.rma20hastornedim52.DataChecker;
 import ba.unsa.etf.rma.rma20hastornedim52.JSONFunctions;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
@@ -58,66 +60,76 @@ public class TransactionInteractor extends AsyncTask<String, Integer, Void> impl
 
     @Override
     protected Void doInBackground(String... strings) {
-        // Get Transactions
-        String url1 = LINK + "account/" + KEY + "/transactions?page=";
-        try {
+        if(ConnectivityBroadcastReceiver.isConnected) {
+            // Get Transactions
+            String url1 = LINK + "account/" + KEY + "/transactions?page=";
+            Log.e("TAG", url1 + "  OOOOOJ");
+            try {
 
-            boolean notFinish = true;
-            for(int page=0; notFinish; page++) {
+                boolean notFinish = true;
+                for (int page = 0; notFinish; page++) {
 
-                URL url = new URL(url1 + page);
-                HttpURLConnection urlConnection = (HttpURLConnection)
-                        url.openConnection();
+                    URL url = new URL(url1 + page);
+                    HttpURLConnection urlConnection = (HttpURLConnection)
+                            url.openConnection();
 
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                String result = JSONFunctions.convertStreamToString(in);
+                    InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                    String result = JSONFunctions.convertStreamToString(in);
 
-                JSONArray jsonArray = (new JSONObject(result)).getJSONArray("transactions");
+                    JSONArray jsonArray = (new JSONObject(result)).getJSONArray("transactions");
 
-                for(int i=0; i<5; i++){
+                    for (int i = 0; i < 5; i++) {
 
-                    JSONObject jo = (JSONObject) jsonArray.get(i);
+                        JSONObject jo = (JSONObject) jsonArray.get(i);
 
-                    if(jo == null){
-                        notFinish = false;
-                        break;
+                        if (jo == null) {
+                            notFinish = false;
+                            break;
+                        }
+
+                        int id = jo.getInt("id");
+                        String date = jo.getString("date");
+                        String title = jo.getString("title");
+                        double amount = jo.getDouble("amount");
+                        String itemDescription = jo.optString("itemDescription", "");
+                        if (itemDescription.equals("")) itemDescription = null;
+                        int transactionInterval = jo.optInt("transactionInterval", 0);
+                        String endDate = jo.optString("endDate", "");
+                        if (endDate.equals("")) endDate = null;
+                        int accountId = jo.getInt("AccountId");
+                        int transactionTypeId = jo.getInt("TransactionTypeId");
+
+
+                        Transaction t = new Transaction();
+                        t.setId(id);
+                        t.setType(TransactionType.getType(transactionTypeId));
+                        t.setDate(DataChecker.getDateFromService(date));
+                        t.setTitle(title);
+                        t.setAmount(amount);
+                        t.setItemDescription(itemDescription);
+                        t.setTransactionInterval(transactionInterval);
+                        if (endDate != null && !endDate.equals(""))
+                            t.setEndDate(DataChecker.getDateFromService(endDate));
+
+                        transactions.add(t);
                     }
-
-                    int id = jo.getInt("id");
-                    String date = jo.getString("date");
-                    String title = jo.getString("title");
-                    double amount = jo.getDouble("amount");
-                    String itemDescription = jo.optString("itemDescription", "");
-                    if(itemDescription.equals("")) itemDescription = null;
-                    int transactionInterval = jo.optInt("transactionInterval", 0);
-                    String endDate = jo.optString("endDate", "");
-                    if(endDate.equals("")) endDate = null;
-                    int accountId = jo.getInt("AccountId");
-                    int transactionTypeId = jo.getInt("TransactionTypeId");
-
-
-                    Transaction t = new Transaction();
-                    t.setId(id);
-                    t.setType(TransactionType.getType(transactionTypeId));
-                    t.setDate(DataChecker.getDateFromService(date));
-                    t.setTitle(title);
-                    t.setAmount(amount);
-                    t.setItemDescription(itemDescription);
-                    t.setTransactionInterval(transactionInterval);
-                    if(endDate!=null && !endDate.equals(""))
-                        t.setEndDate(DataChecker.getDateFromService(endDate));
-
-                    transactions.add(t);
                 }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
+            finally {
+                if(ConnectivityBroadcastReceiver.isConnected)
+                    TransactionModel.transactions = transactions;
+                else
+                    transactions = TransactionModel.transactions;
+            }
         }
-
-        TransactionModel.transactions = transactions;
+        else{
+            transactions = TransactionModel.transactions;
+        }
 
         return null;
     }

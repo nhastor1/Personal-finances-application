@@ -15,6 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import ba.unsa.etf.rma.rma20hastornedim52.Account;
+import ba.unsa.etf.rma.rma20hastornedim52.ConnectivityBroadcastReceiver;
 import ba.unsa.etf.rma.rma20hastornedim52.JSONFunctions;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
 import ba.unsa.etf.rma.rma20hastornedim52.TransactionModel;
@@ -38,72 +39,93 @@ public class BudgetInteractor extends AsyncTask<String, Integer, Void> implement
 
     @Override
     protected Void doInBackground(String... strings) {
-        if(strings.length==0) {
-            callAfterExecution = true;
-            // GetAccount
-            String url1 = LINK + "account/" + KEY;
-            try {
-                URL url = new URL(url1);
-                HttpURLConnection urlConnection = (HttpURLConnection)
-                        url.openConnection();
+        if(ConnectivityBroadcastReceiver.isConnected) {
+            if (strings.length == 0) {
+                callAfterExecution = true;
+                // GetAccount
+                String url1 = LINK + "account/" + KEY;
+                try {
+                    URL url = new URL(url1);
+                    HttpURLConnection urlConnection = (HttpURLConnection)
+                            url.openConnection();
 
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                String result = JSONFunctions.convertStreamToString(in);
+                    InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                    String result = JSONFunctions.convertStreamToString(in);
 
-                JSONObject jo = new JSONObject(result);
+                    JSONObject jo = new JSONObject(result);
 
-                int id = jo.getInt("id");
-                double budget = jo.getDouble("budget");
-                double totalLimit = jo.getDouble("totalLimit");
-                double monthLimit = jo.getDouble("monthLimit");
+                    int id = jo.getInt("id");
+                    double budget = jo.getDouble("budget");
+                    double totalLimit = jo.getDouble("totalLimit");
+                    double monthLimit = jo.getDouble("monthLimit");
 
-                account = new Account(id, budget, totalLimit, monthLimit);
-                TransactionModel.account = account;
+                    account = new Account(id, budget, totalLimit, monthLimit);
+                    TransactionModel.account = account;
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }else if(strings[0].equals("Update")){
-            callAfterExecution = false;
-            // Update account
-            String url1 = LINK + "account/" + KEY;
-            try {
-                URL url = new URL(url1);
-                HttpURLConnection con = (HttpURLConnection)
-                        url.openConnection();
-
-                // For post method
-                con.setRequestMethod("POST");
-                con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-                con.setRequestProperty("Accept", "application/json");
-                con.setDoOutput(true);
-
-                String jsonInputString;
-                if(strings.length==3)
-                    jsonInputString = "{\"monthLimit\":" + strings[1] + ", \"totalLimit\":" + strings[2] + "}";
-                else
-                    jsonInputString = "{\"budget\":" + strings[1] + "}";
-
-                try(OutputStream os = con.getOutputStream()) {
-                    byte[] input = jsonInputString.getBytes("utf-8");
-                    os.write(input, 0, input.length);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+            } else if (strings[0].equals("Update")) {
+                callAfterExecution = false;
+                // Update account
+                String url1 = LINK + "account/" + KEY;
+                try {
+                    URL url = new URL(url1);
+                    HttpURLConnection con = (HttpURLConnection)
+                            url.openConnection();
 
-                try(BufferedReader br = new BufferedReader(
-                        new InputStreamReader(con.getInputStream(), "utf-8"))) {
-                    StringBuilder response = new StringBuilder();
-                    String responseLine = null;
-                    while ((responseLine = br.readLine()) != null) {
-                        response.append(responseLine.trim());
+                    // For post method
+                    con.setRequestMethod("POST");
+                    con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                    con.setRequestProperty("Accept", "application/json");
+                    con.setDoOutput(true);
+
+                    String jsonInputString;
+                    if (strings.length == 3)
+                        jsonInputString = "{\"monthLimit\":" + strings[1] + ", \"totalLimit\":" + strings[2] + "}";
+                    else
+                        jsonInputString = "{\"budget\":" + strings[1] + "}";
+
+                    try (OutputStream os = con.getOutputStream()) {
+                        byte[] input = jsonInputString.getBytes("utf-8");
+                        os.write(input, 0, input.length);
                     }
-                    System.out.println(response.toString());
-                }
 
-            } catch (IOException e) {
-                e.printStackTrace();
+                    try (BufferedReader br = new BufferedReader(
+                            new InputStreamReader(con.getInputStream(), "utf-8"))) {
+                        StringBuilder response = new StringBuilder();
+                        String responseLine = null;
+                        while ((responseLine = br.readLine()) != null) {
+                            response.append(responseLine.trim());
+                        }
+                        System.out.println(response.toString());
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+        }
+        else{
+            if (strings.length > 0 && strings[0].equals("Update")){
+                callAfterExecution = false;
+                if (strings.length == 3){
+                    double monthLimit = Double.parseDouble(strings[1]);
+                    double totalLimit = Double.parseDouble(strings[2]);
+                    TransactionModel.account.setMonthLimit(monthLimit);
+                    TransactionModel.account.setTotalLimit(totalLimit);
+                }
+                else {
+                    double budget = Double.parseDouble(strings[1]);
+                    TransactionModel.account.setBudget(budget);
+                }
+            }
+            else{
+                callAfterExecution = true;
+            }
+            account = TransactionModel.account;
         }
         return null;
     }

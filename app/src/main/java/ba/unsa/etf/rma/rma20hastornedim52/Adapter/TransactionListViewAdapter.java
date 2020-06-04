@@ -54,6 +54,8 @@ public class TransactionListViewAdapter extends ArrayAdapter<Transaction> {
         title.setText(transaction.getTitle());
         amount.setText(context.getResources().getString(R.string.double_to_string, transaction.getAmount()));
 
+//            if(transaction.getType()==null)
+//                return newView;
 
         switch(transaction.getType()){
             case INDIVIDUALINCOME:

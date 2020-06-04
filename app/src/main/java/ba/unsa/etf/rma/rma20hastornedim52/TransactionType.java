@@ -76,10 +76,10 @@ public enum TransactionType {
     }
 
     public static boolean isRegular(TransactionType type){
-        return type.equals(TransactionType.REGULARPAYMENT) || type.equals(TransactionType.REGULARINCOME);
+        return TransactionType.REGULARPAYMENT.equals(type) || TransactionType.REGULARINCOME.equals(type);
     }
 
     public static boolean isIncome(TransactionType type){
-        return type.equals(TransactionType.INDIVIDUALINCOME) || type.equals(TransactionType.REGULARINCOME);
+        return TransactionType.INDIVIDUALINCOME.equals(type) || TransactionType.REGULARINCOME.equals(type);
     }
 }
