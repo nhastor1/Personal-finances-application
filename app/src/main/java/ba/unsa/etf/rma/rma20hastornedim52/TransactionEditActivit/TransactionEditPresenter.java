@@ -30,7 +30,7 @@ public class TransactionEditPresenter implements TransactionEditMVP.Presenter,
         this.context = context;
         this.view = view;
         this.transaction = transaction;
-        interactor = new TransactionEditInteractor( (TransactionEditMVP.Presenter) this, transaction);
+        interactor = new TransactionEditInteractor( (TransactionEditMVP.Presenter) this, transaction, context);
     }
 
     public Transaction getTransaction() {
@@ -44,18 +44,11 @@ public class TransactionEditPresenter implements TransactionEditMVP.Presenter,
     @Override
     public void updatedBudget(double budgetChange) {
         this.budgetChange = budgetChange;
-        (new BudgetInteractor( (BudgetInteractor.OnAccountSearchDone) this)).execute();
+        (new BudgetInteractor( (BudgetInteractor.OnAccountSearchDone) this, context)).execute();
     }
 
     @Override
     public double getTotalAmount() {
-//        List<Transaction> trans = interactor.getTransactions();
-//        double total = 0;
-//
-//        for(Transaction t : trans)
-//            total += t.getAmount();
-//
-//        return total;
         if(interactor.getAccount()==null)
             return 0;
         return interactor.getAccount().getBudget();
@@ -103,17 +96,17 @@ public class TransactionEditPresenter implements TransactionEditMVP.Presenter,
 
     @Override
     public void addTransaction(Transaction transaction) {
-        (new TransactionEditInteractor((TransactionEditInteractor.OnTransactionAddDone) this, transaction)).execute();
+        (new TransactionEditInteractor((TransactionEditInteractor.OnTransactionAddDone) this, transaction, context)).execute();
     }
 
     @Override
     public void editTransaction(Transaction transaction) {
-        (new TransactionEditInteractor((TransactionEditInteractor.OnTransactionEditDone) this, transaction)).execute();
+        (new TransactionEditInteractor((TransactionEditInteractor.OnTransactionEditDone) this, transaction, context)).execute();
     }
 
     @Override
     public void removeTransaction(Transaction transaction) {
-        (new TransactionEditInteractor((TransactionEditInteractor.OnTransactionRemoveDone) this, transaction)).execute();
+        (new TransactionEditInteractor((TransactionEditInteractor.OnTransactionRemoveDone) this, transaction, context)).execute();
         double budgetChange;
 
         if(transaction.getOrginalAmount()!=0)
@@ -147,6 +140,6 @@ public class TransactionEditPresenter implements TransactionEditMVP.Presenter,
     @Override
     public void onDone(Account account) {
         budgetChange = account.getBudget() + budgetChange;
-        (new BudgetInteractor( (BudgetInteractor.OnAccountSearchDone) this)).execute("Update", Double.toString(budgetChange));
+        (new BudgetInteractor( (BudgetInteractor.OnAccountSearchDone) this, context)).execute("Update", Double.toString(budgetChange));
     }
 }

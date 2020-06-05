@@ -13,7 +13,9 @@ import ba.unsa.etf.rma.rma20hastornedim52.ConnectivityBroadcastReceiver;
 import ba.unsa.etf.rma.rma20hastornedim52.R;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
 import ba.unsa.etf.rma.rma20hastornedim52.TransactionEditActivit.TransactionDetailFragment;
+import ba.unsa.etf.rma.rma20hastornedim52.TransactionModel;
 import ba.unsa.etf.rma.rma20hastornedim52.TransactionType;
+import ba.unsa.etf.rma.rma20hastornedim52.UpdateService;
 
 public class MainActivity extends AppCompatActivity
     implements TransactionListFragment.OnItemClick, MainMVP.ActivityFuncions {
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity
     Fragment fragment;
     FragmentManager fragmentManager;
 
-    private ConnectivityBroadcastReceiver receiver = new ConnectivityBroadcastReceiver();
+    private ConnectivityBroadcastReceiver receiver = new ConnectivityBroadcastReceiver((MainMVP.ActivityFuncions) this);
     private IntentFilter filter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
 
     @Override
@@ -34,6 +36,12 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         TransactionType.getTransactionTypes();
+
+        if(ConnectivityBroadcastReceiver.isConnected){
+            UpdateService setModel = new UpdateService(getApplicationContext(), true);
+            TransactionModel.transactions = setModel.getTransactions();
+            TransactionModel.account = setModel.getAccount();
+        }
 
         fragmentManager = getSupportFragmentManager();
         FrameLayout details = findViewById(R.id.edit_transaction_frame);
@@ -136,4 +144,15 @@ public class MainActivity extends AppCompatActivity
         return listFragment.getCurrentYear();
     }
 
+    @Override
+    public void removeOfflineMode(){
+        if(detailFragment != null)
+            detailFragment.removeOfflineMode();
+    }
+
+    @Override
+    public void addOfflineMode(){
+        if(detailFragment != null)
+            detailFragment.addOfflineMode();
+    }
 }

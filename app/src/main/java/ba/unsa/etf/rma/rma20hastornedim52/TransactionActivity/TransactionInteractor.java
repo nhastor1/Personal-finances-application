@@ -1,5 +1,6 @@
 package ba.unsa.etf.rma.rma20hastornedim52.TransactionActivity;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -35,18 +36,22 @@ public class TransactionInteractor extends AsyncTask<String, Integer, Void> impl
     private MainMVP.Presenter presenter;
     private OnTransactionsSearchDone caller;
     private Account account;
+    private Context context;
 
     private List<Transaction> transactions = new ArrayList<>();
 
 
-    public TransactionInteractor(MainMVP.Presenter p) {
+    public TransactionInteractor(MainMVP.Presenter p, Context context) {
         presenter = p;
-        (new BudgetInteractor(this)).execute();
+        this.context = context;
+
+        (new BudgetInteractor(this, context)).execute();
     }
 
-    public TransactionInteractor(OnTransactionsSearchDone caller, MainMVP.Presenter presenter) {
+    public TransactionInteractor(OnTransactionsSearchDone caller, MainMVP.Presenter presenter, Context context) {
         this.presenter = presenter;
         this.caller = caller;
+        this.context = context;
     }
 
     @Override
@@ -123,11 +128,11 @@ public class TransactionInteractor extends AsyncTask<String, Integer, Void> impl
             finally {
                 if(ConnectivityBroadcastReceiver.isConnected)
                     TransactionModel.transactions = transactions;
-                else
+                else if(TransactionModel.transactions!=null)
                     transactions = TransactionModel.transactions;
             }
         }
-        else{
+        else if(TransactionModel.transactions!=null){
             transactions = TransactionModel.transactions;
         }
 
@@ -137,8 +142,9 @@ public class TransactionInteractor extends AsyncTask<String, Integer, Void> impl
     @Override
     protected void onPostExecute(Void aVoid){
         super.onPostExecute(aVoid);
+        Log.e("MOLIM TE", transactions.size() + "");
         caller.onDone(transactions);
-        (new BudgetInteractor((BudgetInteractor.OnAccountSearchDone) this)).execute();
+        (new BudgetInteractor((BudgetInteractor.OnAccountSearchDone) this, context)).execute();
     }
 
     @Override

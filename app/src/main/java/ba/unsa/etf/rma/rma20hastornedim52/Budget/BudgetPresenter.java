@@ -14,10 +14,10 @@ public class BudgetPresenter implements BudgetMVP.Presenter, BudgetInteractor.On
 
     public BudgetPresenter(BudgetMVP.View view, Context context) {
         this.context = context;
-        this.interactor = new BudgetInteractor((BudgetInteractor.OnAccountSearchDone) this);
+        this.interactor = new BudgetInteractor((BudgetInteractor.OnAccountSearchDone) this, context);
         this.view = view;
 
-        (new BudgetInteractor(this)).execute();
+        (new BudgetInteractor(this, context)).execute();
     }
 
     @Override
@@ -27,7 +27,7 @@ public class BudgetPresenter implements BudgetMVP.Presenter, BudgetInteractor.On
 
     @Override
     public void updateAccount(double monthLimit, double yearLimtit){
-        (new BudgetInteractor(this)).execute("Update", Double.toString(monthLimit), Double.toString(yearLimtit));
+        (new BudgetInteractor(this, context)).execute("Update", Double.toString(monthLimit), Double.toString(yearLimtit));
     }
 
     @Override

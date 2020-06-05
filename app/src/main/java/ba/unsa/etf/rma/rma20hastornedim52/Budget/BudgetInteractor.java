@@ -1,5 +1,10 @@
 package ba.unsa.etf.rma.rma20hastornedim52.Budget;
 
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.Context;
+import android.net.Uri;
 import android.os.AsyncTask;
 
 import org.json.JSONException;
@@ -16,8 +21,10 @@ import java.net.URL;
 
 import ba.unsa.etf.rma.rma20hastornedim52.Account;
 import ba.unsa.etf.rma.rma20hastornedim52.ConnectivityBroadcastReceiver;
+import ba.unsa.etf.rma.rma20hastornedim52.DataChecker;
 import ba.unsa.etf.rma.rma20hastornedim52.JSONFunctions;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
+import ba.unsa.etf.rma.rma20hastornedim52.TransactionDBOpenHelper;
 import ba.unsa.etf.rma.rma20hastornedim52.TransactionModel;
 
 public class BudgetInteractor extends AsyncTask<String, Integer, Void> implements BudgetMVP.Interactor {
@@ -27,10 +34,12 @@ public class BudgetInteractor extends AsyncTask<String, Integer, Void> implement
 
     private BudgetInteractor.OnAccountSearchDone caller;
     private Account account;
+    private Context context;
     private boolean callAfterExecution = false;
 
-    public BudgetInteractor(OnAccountSearchDone caller) {
+    public BudgetInteractor(OnAccountSearchDone caller, Context context) {
         this.caller = caller;
+        this.context = context;
     }
 
     public interface OnAccountSearchDone{
@@ -121,6 +130,17 @@ public class BudgetInteractor extends AsyncTask<String, Integer, Void> implement
                     double budget = Double.parseDouble(strings[1]);
                     TransactionModel.account.setBudget(budget);
                 }
+
+                // Adding to database
+                ContentResolver cr = context.getApplicationContext().getContentResolver();
+                Uri uri = Uri.parse("content://rma.provider.accounts/elements");
+                ContentValues values = new ContentValues();
+                values.put(TransactionDBOpenHelper.ACCOUNT_ID, TransactionModel.account.getId());
+                values.put(TransactionDBOpenHelper.ACCOUNT_MONTH_LIMIT, TransactionModel.account.getMonthLimit());
+                values.put(TransactionDBOpenHelper.ACCOUNT_TOTAL_LIMIT, TransactionModel.account.getTotalLimit());
+                values.put(TransactionDBOpenHelper.ACCOUNT_BUDGET, TransactionModel.account.getBudget());
+                cr.delete(ContentUris.withAppendedId(uri, TransactionModel.account.getId()),null,null);
+                cr.insert(uri, values);
             }
             else{
                 callAfterExecution = true;

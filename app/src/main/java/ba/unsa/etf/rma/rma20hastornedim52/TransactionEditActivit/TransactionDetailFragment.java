@@ -45,6 +45,7 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
     private EditText editTextDescription;
     private EditText editTextDate;
     private EditText editTextTransactionInterval;
+    private TextView textViewOfflineMode;
 
     private Spinner spinnerTransactionType;
 
@@ -78,6 +79,8 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
                 activity = "edit";
             }
 
+            textViewOfflineMode = (TextView) view.findViewById(R.id.textViewOflineMode);
+
             if (activity.equals("edit")) {
                 ((TextView) view.findViewById(R.id.textViewEditOrAdd)).setText(R.string.edit_transaction);
                 if(!ConnectivityBroadcastReceiver.isConnected)
@@ -87,9 +90,9 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
             } else {
                 ((TextView) view.findViewById(R.id.textViewEditOrAdd)).setText(R.string.add_transaction);
                 if(!ConnectivityBroadcastReceiver.isConnected)
-                    ((TextView) view.findViewById(R.id.textViewOflineMode)).setText(R.string.offline_adding);
+                    addOfflineMode();
                 else
-                    ((TextView) view.findViewById(R.id.textViewOflineMode)).setText("");
+                    removeOfflineMode();
                 transaction = new Transaction(new Date(), 0, "Transaction", TransactionType.INDIVIDUALINCOME,
                         "");
             }
@@ -498,5 +501,14 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
         else{
             getActivity().getSupportFragmentManager().popBackStack();
         }
+    }
+
+
+    public void removeOfflineMode(){
+        textViewOfflineMode.setText("");
+    }
+
+    public void addOfflineMode(){
+        textViewOfflineMode.setText(R.string.offline_adding);
     }
 }

@@ -1,8 +1,14 @@
 package ba.unsa.etf.rma.rma20hastornedim52.TransactionEditActivit;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.SurfaceControl;
+
+import androidx.core.graphics.drawable.IconCompat;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,6 +28,7 @@ import ba.unsa.etf.rma.rma20hastornedim52.ConnectivityBroadcastReceiver;
 import ba.unsa.etf.rma.rma20hastornedim52.DataChecker;
 import ba.unsa.etf.rma.rma20hastornedim52.JSONFunctions;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
+import ba.unsa.etf.rma.rma20hastornedim52.TransactionDBOpenHelper;
 import ba.unsa.etf.rma.rma20hastornedim52.TransactionModel;
 import ba.unsa.etf.rma.rma20hastornedim52.TransactionType;
 
@@ -36,25 +43,30 @@ public class TransactionEditInteractor extends AsyncTask<String, Integer, Void> 
     private TransactionEditMVP.Presenter presenter;
     private Account account;
     private Transaction transaction;
+    private Context context;
 
-    public TransactionEditInteractor(TransactionEditMVP.Presenter p, Transaction transaction) {
+    public TransactionEditInteractor(TransactionEditMVP.Presenter p, Transaction transaction, Context context) {
         this.transaction = transaction;
         this.presenter = p;
+        this.context = context;
     }
 
-    public TransactionEditInteractor(OnTransactionEditDone caller, Transaction transaction) {
+    public TransactionEditInteractor(OnTransactionEditDone caller, Transaction transaction, Context context) {
         this.transaction = transaction;
         this.caller1 = caller;
+        this.context = context;
     }
 
-    public TransactionEditInteractor(OnTransactionRemoveDone caller, Transaction transaction) {
+    public TransactionEditInteractor(OnTransactionRemoveDone caller, Transaction transaction, Context context) {
         this.transaction = transaction;
         this.caller2 = caller;
+        this.context = context;
     }
 
-    public TransactionEditInteractor(OnTransactionAddDone caller, Transaction transaction) {
+    public TransactionEditInteractor(OnTransactionAddDone caller, Transaction transaction, Context context) {
         this.transaction = transaction;
         this.caller3 = caller;
+        this.context = context;
     }
 
     public interface OnTransactionEditDone{
@@ -92,6 +104,7 @@ public class TransactionEditInteractor extends AsyncTask<String, Integer, Void> 
                 }
             } else {
                 // Add transactions
+                Log.e("A_T", "Da dodaje se");
                 String url1 = LINK + "account/" + KEY + "/transactions";
 
                 // Edit transactions
@@ -140,19 +153,42 @@ public class TransactionEditInteractor extends AsyncTask<String, Integer, Void> 
             }
         }
         else {
+            ContentResolver cr = context.getApplicationContext().getContentResolver();
+            Uri uri = Uri.parse("content://rma.provider.transactions/elements");
+            ContentValues values = new ContentValues();
+            values.put(TransactionDBOpenHelper.TRANSACTION_ID, transaction.getId());
+            values.put(TransactionDBOpenHelper.TRANSACTION_DATE, DataChecker.getStringDateForService(transaction.getDate()));
+            values.put(TransactionDBOpenHelper.TRANSACTION_AMOUNT, transaction.getAmount());
+            values.put(TransactionDBOpenHelper.TRANSACTION_TITLE, transaction.getTitle());
+            values.put(TransactionDBOpenHelper.TRANSACTION_TYPE, TransactionType.getId(transaction.getType()));
+            values.put(TransactionDBOpenHelper.TRANSACTION_INTERVAL, transaction.getTransactionInterval());
+            if (TransactionType.isRegular(transaction.getType())) {
+                values.put(TransactionDBOpenHelper.TRANSACTION_END_DATE, DataChecker.getStringDateForService(transaction.getEndDate()));
+            } else {
+                values.put(TransactionDBOpenHelper.TRANSACTION_END_DATE, "");
+            }
+            values.put(TransactionDBOpenHelper.TRANSACTION_ORGINAL_AMOUNT, transaction.getOrginalAmount());
+
             if (caller2 != null) {
                 // Remove transaction
                 TransactionModel.transactions.remove(transaction);
+
+                values.put(TransactionDBOpenHelper.TRANSACTION_CHANGE, TransactionDBOpenHelper.TRANSACTION_MODE_REMOVE);
+                cr.insert(uri, values);
             }
-            else if (caller3 != null){
+            else if (caller3 != null) {
                 // Adding transaction
-                Log.e("DODAVANJE TRANSAKCIJE", "dodo");
                 TransactionModel.transactions.add(transaction);
+
+                values.put(TransactionDBOpenHelper.TRANSACTION_CHANGE, TransactionDBOpenHelper.TRANSACTION_MODE_ADD);
+                cr.insert(uri, values);
             }
-            else{
+            else {
                 // Editing transaction
-                // transaction is alreardy editing
+                values.put(TransactionDBOpenHelper.TRANSACTION_CHANGE, TransactionDBOpenHelper.TRANSACTION_MODE_EDIT);
+                cr.insert(uri, values);
             }
+
         }
         return null;
     }

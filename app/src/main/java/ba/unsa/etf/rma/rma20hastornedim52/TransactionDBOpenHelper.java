@@ -35,7 +35,7 @@ public class TransactionDBOpenHelper extends SQLiteOpenHelper {
 
     private static final String TRANSACTION_TABLE_CREATE =
             "CREATE TABLE IF NOT EXISTS " + TRANSACTION_TABLE + " ("  + TRANSACTION_INTERNAL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + TRANSACTION_ID + " INTEGER UNIQUE, "
+                    + TRANSACTION_ID + " INTEGER, "
                     + TRANSACTION_TITLE + " TEXT NOT NULL, "
                     + TRANSACTION_DATE + " TEXT NOT NULL, "
                     + TRANSACTION_AMOUNT + " REAL NOT NULL, "

@@ -68,5 +68,9 @@ public interface MainMVP {
         int getCurrentMonth();
 
         int getCurrentYear();
+
+        void removeOfflineMode();
+
+        void addOfflineMode();
     }
 }

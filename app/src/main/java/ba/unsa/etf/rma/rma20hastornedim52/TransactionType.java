@@ -72,7 +72,14 @@ public enum TransactionType {
     }
 
     public static void getTransactionTypes() {
-        (new GetTransactionType()).execute();
+        map = new HashMap<Integer, TransactionType>();
+        map.put(4, TransactionType.INDIVIDUALINCOME);
+        map.put(5, TransactionType.INDIVIDUALPAYMENT);
+        map.put(2, TransactionType.REGULARINCOME);
+        map.put(1, TransactionType.REGULARPAYMENT);
+        map.put(3, TransactionType.PURCHASE);
+        if(ConnectivityBroadcastReceiver.isConnected)
+            (new GetTransactionType()).execute();
     }
 
     public static boolean isRegular(TransactionType type){

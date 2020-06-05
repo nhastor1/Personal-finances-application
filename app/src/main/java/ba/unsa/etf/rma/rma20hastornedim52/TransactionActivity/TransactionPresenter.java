@@ -3,6 +3,7 @@ package ba.unsa.etf.rma.rma20hastornedim52.TransactionActivity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.text.format.DateFormat;
+import android.util.Log;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -35,9 +36,9 @@ public class TransactionPresenter implements MainMVP.Presenter, TransactionInter
     public TransactionPresenter(MainMVP.View view, Context context) {
         this.context = context;
         this.view = view;
-        interactor = new TransactionInteractor( (MainMVP.Presenter) this);
+        interactor = new TransactionInteractor( (MainMVP.Presenter) this, context);
 
-        (new TransactionInteractor((TransactionInteractor.OnTransactionsSearchDone) this, (MainMVP.Presenter) this)).execute();
+        (new TransactionInteractor((TransactionInteractor.OnTransactionsSearchDone) this, (MainMVP.Presenter) this, context)).execute();
     }
 
     @Override
@@ -226,7 +227,7 @@ public class TransactionPresenter implements MainMVP.Presenter, TransactionInter
 
     @Override
     public void refreshList(){
-        (new TransactionInteractor((TransactionInteractor.OnTransactionsSearchDone) this, (MainMVP.Presenter) this)).execute();
+        (new TransactionInteractor((TransactionInteractor.OnTransactionsSearchDone) this, (MainMVP.Presenter) this, context)).execute();
     }
 
     @Override

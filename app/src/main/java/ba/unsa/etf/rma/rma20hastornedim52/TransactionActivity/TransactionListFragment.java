@@ -1,6 +1,7 @@
 package ba.unsa.etf.rma.rma20hastornedim52.TransactionActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -183,7 +184,6 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
             view.setOnTouchListener(onSwipeTouchListener);
             listViewTransaction.setOnTouchListener(onSwipeTouchListener);
         }
-
 
         return view;
     }
