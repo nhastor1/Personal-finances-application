@@ -39,6 +39,7 @@ public class ConnectivityBroadcastReceiver extends BroadcastReceiver {
             new UpdateService(context, false);
             isConnected = true;
             mainActivity.removeOfflineMode();
+            mainActivity.refreshTransactions();
             Log.e("Connectivity", "Connected");
         }
     }
