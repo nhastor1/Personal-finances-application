@@ -12,7 +12,7 @@ import ba.unsa.etf.rma.rma20hastornedim52.TransactionActivity.MainMVP;
 public class ConnectivityBroadcastReceiver extends BroadcastReceiver {
 
     public static boolean isConnected = false;
-    private MainMVP.ActivityFuncions mainActivity;
+    public static MainMVP.ActivityFuncions mainActivity;
 
     public ConnectivityBroadcastReceiver(MainMVP.ActivityFuncions activity){
         mainActivity = activity;
@@ -29,7 +29,7 @@ public class ConnectivityBroadcastReceiver extends BroadcastReceiver {
             toast.show();
 
             isConnected = false;
-            //mainActivity.addOfflineMode();
+            mainActivity.addOfflineMode();
             Log.e("Connectivity", "Disconnected");
         }
         else {
@@ -38,7 +38,7 @@ public class ConnectivityBroadcastReceiver extends BroadcastReceiver {
 
             new UpdateService(context, false);
             isConnected = true;
-            //mainActivity.removeOfflineMode();
+            mainActivity.removeOfflineMode();
             Log.e("Connectivity", "Connected");
         }
     }

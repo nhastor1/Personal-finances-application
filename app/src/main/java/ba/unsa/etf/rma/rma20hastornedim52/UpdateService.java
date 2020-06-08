@@ -21,7 +21,6 @@ public class UpdateService  implements TransactionEditInteractor.OnTransactionAd
         BudgetInteractor.OnAccountSearchDone {
 
     private Context context;
-    private boolean needAccountUpdate = false;
     private boolean getModel;
     private List<Transaction> transactions = new ArrayList<>();
     private Account account;
@@ -30,8 +29,7 @@ public class UpdateService  implements TransactionEditInteractor.OnTransactionAd
         this.context = context;
         this.getModel = getModel;
         updateTransactions();
-        if(needAccountUpdate || getModel)
-            updateAccount();
+        updateAccount();
     }
 
     private void updateTransactions() {
@@ -50,7 +48,6 @@ public class UpdateService  implements TransactionEditInteractor.OnTransactionAd
         Cursor cursor = cr.query(uri, columns, null, null, null);
 
         while(cursor.moveToNext()){
-            needAccountUpdate = true;
             Transaction transaction = new Transaction();
             transaction.setId(cursor.getInt(cursor.getColumnIndex(TransactionDBOpenHelper.TRANSACTION_ID)));
             transaction.setTitle(cursor.getString(cursor.getColumnIndex(TransactionDBOpenHelper.TRANSACTION_TITLE)));

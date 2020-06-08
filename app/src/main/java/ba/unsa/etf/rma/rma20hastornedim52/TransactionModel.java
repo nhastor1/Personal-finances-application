@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 public class TransactionModel {
-    public static Account account = new Account(1, 1000, 1000, 100);
+    public static Account account = new Account(1, 0, 0, 0);
 
     public static List<Transaction> transactions = new ArrayList<Transaction>(){
         {
