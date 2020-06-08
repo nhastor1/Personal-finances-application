@@ -99,11 +99,12 @@ public class UpdateService  implements TransactionEditInteractor.OnTransactionAd
             account.setMonthLimit(cursor.getDouble(cursor.getColumnIndex(TransactionDBOpenHelper.ACCOUNT_MONTH_LIMIT)));
             account.setTotalLimit(cursor.getDouble(cursor.getColumnIndex(TransactionDBOpenHelper.ACCOUNT_TOTAL_LIMIT)));
 
+            this.account = account;
+
             if(!getModel) {
                 Log.e("A_A", "DA");
                 (new BudgetInteractor((BudgetInteractor.OnAccountSearchDone) this, context)).execute("Update", Double.toString(account.getBudget()));
                 (new BudgetInteractor((BudgetInteractor.OnAccountSearchDone) this, context)).execute("Update", Double.toString(account.getMonthLimit()), Double.toString(account.getTotalLimit()));
-                this.account = account;
             }
         }
     }

@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity
 
         TransactionType.getTransactionTypes();
 
-        if(ConnectivityBroadcastReceiver.isConnected){
+        if(!ConnectivityBroadcastReceiver.isConnected){
             UpdateService setModel = new UpdateService(getApplicationContext(), true);
             TransactionModel.transactions = setModel.getTransactions();
             TransactionModel.account = setModel.getAccount();

@@ -318,12 +318,14 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
     }
 
     private void saveChanges() {
+        Log.e("Offline save", "0");
         double budgetChange = 0;
         try {
             budgetChange = validate();
         } catch (Exception e) {
             return;
         }
+        Log.e("Offline save", "1");
         transaction.setTitle(editTextTitle.getText().toString());
         transaction.setType(TransactionType.getType(spinnerTransactionType.getSelectedItem().toString()));
         transaction.setAmount(Double.parseDouble(editTextAmount.getText().toString()));
@@ -334,7 +336,7 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
         Calendar cal = Calendar.getInstance();
         cal.set(Integer.parseInt(date[2]), Integer.parseInt(date[1])-1, Integer.parseInt(date[0]));
         transaction.setDate(cal.getTime());
-
+        Log.e("Offline save", "2");
         if(transaction.getType()==TransactionType.REGULARINCOME || transaction.getType()==TransactionType.REGULARPAYMENT){
             transaction.setTransactionInterval(Integer.parseInt(editTextTransactionInterval.getText().toString()));
 
@@ -349,6 +351,7 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
             transaction.setEndDate(null);
             editTextEndDateEdit.setText("");
         }
+        Log.e("Offline save", "3");
         editTextTitle.setBackgroundColor(getResources().getColor(R.color.no_color));
         editTextAmount.setBackgroundColor(getResources().getColor(R.color.no_color));
         editTextDescription.setBackgroundColor(getResources().getColor(R.color.no_color));
@@ -367,6 +370,7 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
             }
         }
 
+        Log.e("Offline save", "4");
         getPresenter().updatedBudget(budgetChange);
 
         ((MainMVP.ActivityFuncions) getActivity()).refreshTransactions();
@@ -509,6 +513,9 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
     }
 
     public void addOfflineMode(){
-        textViewOfflineMode.setText(R.string.offline_adding);
+        if(transaction==null)
+            textViewOfflineMode.setText(R.string.offline_adding);
+        else
+            textViewOfflineMode.setText(R.string.offline_editing);
     }
 }
