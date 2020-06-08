@@ -9,6 +9,8 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
+import java.util.List;
+
 import ba.unsa.etf.rma.rma20hastornedim52.ConnectivityBroadcastReceiver;
 import ba.unsa.etf.rma.rma20hastornedim52.R;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity
         if(!ConnectivityBroadcastReceiver.isConnected){
             UpdateService setModel = new UpdateService(getApplicationContext(), true);
             TransactionModel.transactions = setModel.getTransactions();
+            removeDuplicates(TransactionModel.transactions);
             TransactionModel.account = setModel.getAccount();
         }
 
@@ -154,5 +157,18 @@ public class MainActivity extends AppCompatActivity
     public void addOfflineMode(){
         if(detailFragment != null)
             detailFragment.addOfflineMode();
+    }
+
+    private void removeDuplicates(List<Transaction> list){
+        for(int i=0; i<list.size(); i++){
+            Transaction t = list.get(i);
+            for(int j=0; j<i; j++){
+                if(list.get(j).getId() == t.getId()){
+                    list.remove(j);
+                    j--;
+                    i--;
+                }
+            }
+        }
     }
 }
