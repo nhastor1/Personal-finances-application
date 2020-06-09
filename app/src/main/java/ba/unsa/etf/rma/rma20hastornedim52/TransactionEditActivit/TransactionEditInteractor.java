@@ -1,6 +1,7 @@
 package ba.unsa.etf.rma.rma20hastornedim52.TransactionEditActivit;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
@@ -185,6 +186,11 @@ public class TransactionEditInteractor extends AsyncTask<String, Integer, Void> 
             }
             else {
                 // Editing transaction
+                for(int i=0; i<TransactionModel.transactions.size(); i++){
+                    if(TransactionModel.transactions.get(i).getId() == transaction.getId())
+                        TransactionModel.transactions.set(i, transaction);
+                }
+
                 values.put(TransactionDBOpenHelper.TRANSACTION_CHANGE, TransactionDBOpenHelper.TRANSACTION_MODE_EDIT);
                 cr.insert(uri, values);
             }

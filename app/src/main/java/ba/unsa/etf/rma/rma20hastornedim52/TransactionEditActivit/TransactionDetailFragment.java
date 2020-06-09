@@ -29,6 +29,7 @@ import ba.unsa.etf.rma.rma20hastornedim52.DataChecker;
 import ba.unsa.etf.rma.rma20hastornedim52.R;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
 import ba.unsa.etf.rma.rma20hastornedim52.TransactionActivity.MainMVP;
+import ba.unsa.etf.rma.rma20hastornedim52.TransactionModel;
 import ba.unsa.etf.rma.rma20hastornedim52.TransactionType;
 
 public class TransactionDetailFragment extends Fragment implements TransactionEditMVP.View {
@@ -149,10 +150,12 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
                                         finish();
                                     } else {
                                         transaction.setDeleted(true);
+                                        setDeleted(true);
                                         enableTransactionEdit(false);
                                     }
                                 }else{
                                     transaction.setDeleted(false);
+                                    setDeleted(false);
                                     enableTransactionEdit(true);
                                     getPresenter().undoOfflineTransaction(transaction);
                                 }
@@ -553,5 +556,11 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
             textViewOfflineMode.setText(R.string.offline_deleting);
             buttonDelete.setText(R.string.undo);
         }
+    }
+
+    private void setDeleted(boolean deleted){
+        for(Transaction t : TransactionModel.transactions)
+            if(t.getId() == transaction.getId())
+                t.setDeleted(deleted);
     }
 }

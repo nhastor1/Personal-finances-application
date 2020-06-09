@@ -123,12 +123,7 @@ public class TransactionEditPresenter implements TransactionEditMVP.Presenter,
     public void undoOfflineTransaction(Transaction transaction) {
         undo = true;
         (new TransactionEditInteractor((TransactionEditInteractor.OnTransactionAddDone) this, transaction, context)).execute();
-        double budgetChange = transaction.getTotalAmount();
-
-        if(!TransactionType.isIncome(transaction.getType()))
-            budgetChange = -budgetChange;
-
-        updatedBudget(budgetChange);
+        updatedBudget(transaction.getTotalAmount());
     }
 
     @Override

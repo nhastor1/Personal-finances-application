@@ -117,36 +117,35 @@ public class BudgetInteractor extends AsyncTask<String, Integer, Void> implement
                 }
             }
         }
-        else{
-            if (strings.length > 0 && strings[0].equals("Update")){
-                callAfterExecution = false;
-                if (strings.length == 3){
-                    double monthLimit = Double.parseDouble(strings[1]);
-                    double totalLimit = Double.parseDouble(strings[2]);
-                    TransactionModel.account.setMonthLimit(monthLimit);
-                    TransactionModel.account.setTotalLimit(totalLimit);
-                }
-                else {
-                    double budget = Double.parseDouble(strings[1]);
-                    TransactionModel.account.setBudget(budget);
-                }
+        if (strings.length > 0 && strings[0].equals("Update")){
+            callAfterExecution = false;
+            if (strings.length == 3){
+                double monthLimit = Double.parseDouble(strings[1]);
+                double totalLimit = Double.parseDouble(strings[2]);
+                TransactionModel.account.setMonthLimit(monthLimit);
+                TransactionModel.account.setTotalLimit(totalLimit);
+            }
+            else {
+                double budget = Double.parseDouble(strings[1]);
+                TransactionModel.account.setBudget(budget);
+            }
 
-                // Adding to database
-                ContentResolver cr = context.getApplicationContext().getContentResolver();
-                Uri uri = Uri.parse("content://rma.provider.accounts/elements");
-                ContentValues values = new ContentValues();
-                values.put(TransactionDBOpenHelper.ACCOUNT_ID, TransactionModel.account.getId());
-                values.put(TransactionDBOpenHelper.ACCOUNT_MONTH_LIMIT, TransactionModel.account.getMonthLimit());
-                values.put(TransactionDBOpenHelper.ACCOUNT_TOTAL_LIMIT, TransactionModel.account.getTotalLimit());
-                values.put(TransactionDBOpenHelper.ACCOUNT_BUDGET, TransactionModel.account.getBudget());
-                cr.delete(ContentUris.withAppendedId(uri, TransactionModel.account.getId()),null,null);
-                cr.insert(uri, values);
-            }
-            else{
-                callAfterExecution = true;
-            }
-            account = TransactionModel.account;
+            // Adding to database
+            ContentResolver cr = context.getApplicationContext().getContentResolver();
+            Uri uri = Uri.parse("content://rma.provider.accounts/elements");
+            ContentValues values = new ContentValues();
+            values.put(TransactionDBOpenHelper.ACCOUNT_ID, TransactionModel.account.getId());
+            values.put(TransactionDBOpenHelper.ACCOUNT_MONTH_LIMIT, TransactionModel.account.getMonthLimit());
+            values.put(TransactionDBOpenHelper.ACCOUNT_TOTAL_LIMIT, TransactionModel.account.getTotalLimit());
+            values.put(TransactionDBOpenHelper.ACCOUNT_BUDGET, TransactionModel.account.getBudget());
+            cr.delete(ContentUris.withAppendedId(uri, TransactionModel.account.getId()),null,null);
+            cr.insert(uri, values);
         }
+        else{
+            callAfterExecution = true;
+        }
+        account = TransactionModel.account;
+
         return null;
     }
 
