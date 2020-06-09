@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#8217FA">
+    android:background="#8217FA"
+    android:id="@+id/budgetFragment">
 
     <TextView
         android:id="@+id/textViewBudgetTitle"
@@ -129,4 +130,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/buttonSaveBudget" />
+
+    <TextView
+        android:id="@+id/textViewOflineModeBudget"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="50dp"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:text="@string/offline_editing"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

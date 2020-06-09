@@ -191,7 +191,7 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
     private View.OnTouchListener onSwipeTouchListener =  new OnSwipeTouchListener(getContext()) {
         @Override
         public void onSwipeLeft() {
-            Fragment fragment = new BudgetFragment();
+            Fragment fragment = BudgetFragment.budgetFragment = new BudgetFragment();
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.transaction_list_frame, fragment).addToBackStack(null)
                     .commit();

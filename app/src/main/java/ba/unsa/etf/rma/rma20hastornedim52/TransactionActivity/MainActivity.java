@@ -7,10 +7,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 import java.util.List;
 
+import ba.unsa.etf.rma.rma20hastornedim52.Budget.BudgetFragment;
 import ba.unsa.etf.rma.rma20hastornedim52.ConnectivityBroadcastReceiver;
 import ba.unsa.etf.rma.rma20hastornedim52.R;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
@@ -151,12 +153,20 @@ public class MainActivity extends AppCompatActivity
     public void removeOfflineMode(){
         if(detailFragment != null)
             detailFragment.removeOfflineMode();
+        BudgetFragment budgetFragment = BudgetFragment.budgetFragment;
+        if(budgetFragment != null) {
+            budgetFragment.offlineMode();
+        }
     }
 
     @Override
     public void addOfflineMode(){
         if(detailFragment != null)
             detailFragment.addOfflineMode();
+        BudgetFragment budgetFragment = BudgetFragment.budgetFragment;
+        if(budgetFragment != null) {
+            budgetFragment.offlineMode();
+        }
     }
 
     private void removeDuplicates(List<Transaction> list){

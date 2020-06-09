@@ -14,11 +14,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import ba.unsa.etf.rma.rma20hastornedim52.ConnectivityBroadcastReceiver;
 import ba.unsa.etf.rma.rma20hastornedim52.Graphs.GraphsFragment;
 import ba.unsa.etf.rma.rma20hastornedim52.R;
 import ba.unsa.etf.rma.rma20hastornedim52.OnSwipeTouchListener;
 
 public class BudgetFragment extends Fragment implements BudgetMVP.View {
+
+    public static BudgetFragment budgetFragment;
 
     private BudgetMVP.Presenter presenter;
     private View view;
@@ -26,6 +29,7 @@ public class BudgetFragment extends Fragment implements BudgetMVP.View {
     private EditText editTextYearLimit;
     private TextView textViewTotalAmount;
     private Button buttonSaveBudget;
+    private TextView textViewOfflineModeBudget;
 
     @Override
     public BudgetMVP.Presenter getPresenter(){
@@ -45,6 +49,7 @@ public class BudgetFragment extends Fragment implements BudgetMVP.View {
         editTextYearLimit = (EditText) view.findViewById(R.id.editTextYearLimit);
         textViewTotalAmount = (TextView) view.findViewById(R.id.textViewTotalAmount);
         buttonSaveBudget = (Button) view.findViewById(R.id.buttonSaveBudget);
+        textViewOfflineModeBudget = (TextView) view.findViewById(R.id.textViewOflineModeBudget);
 
         buttonSaveBudget.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,11 +79,13 @@ public class BudgetFragment extends Fragment implements BudgetMVP.View {
         view.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
             @Override
             public void onSwipeRight() {
+                BudgetFragment.budgetFragment = null;
                 finish();
             }
 
             @Override
             public void onSwipeLeft() {
+                BudgetFragment.budgetFragment = null;
                 finish();
                 Fragment fragment = new GraphsFragment();
                 getActivity().getSupportFragmentManager().beginTransaction()
@@ -87,14 +94,30 @@ public class BudgetFragment extends Fragment implements BudgetMVP.View {
             }
         });
 
+        offlineMode();
+
         return view;
     }
 
     @Override
     public void refresh(){
-        editTextMonthlimit.setText(getString(R.string.double_to_string, getPresenter().getAccount().getMonthLimit()));
-        editTextYearLimit.setText(getString(R.string.double_to_string, getPresenter().getAccount().getTotalLimit()));
-        textViewTotalAmount.setText(getString(R.string.double_to_string, getPresenter().getAccount().getBudget()));
+        try {
+            editTextMonthlimit.setText(getString(R.string.double_to_string, getPresenter().getAccount().getMonthLimit()));
+            editTextYearLimit.setText(getString(R.string.double_to_string, getPresenter().getAccount().getTotalLimit()));
+            textViewTotalAmount.setText(getString(R.string.double_to_string, getPresenter().getAccount().getBudget()));
+        }
+        catch (IllegalStateException e){
+            // If fragment is not attached do nothing
+        }
+    }
+
+    public void offlineMode(){
+        if(ConnectivityBroadcastReceiver.isConnected){
+            textViewOfflineModeBudget.setText("");
+        }
+        else{
+            textViewOfflineModeBudget.setText(R.string.offline_editing);
+        }
     }
 
     private void finish() {

@@ -121,7 +121,7 @@ public class GraphsFragment extends Fragment implements GraphsMVP.View{
         @Override
         public void onSwipeRight() {
             finish();
-            Fragment fragment = new BudgetFragment();
+            Fragment fragment = BudgetFragment.budgetFragment = new BudgetFragment();
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.transaction_list_frame, fragment).addToBackStack(null)
                     .commit();

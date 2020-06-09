@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -530,6 +531,8 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
 
     public void removeOfflineMode(){
         textViewOfflineMode.setText("");
+        Toast toast = Toast.makeText(view.getContext(), "Online mode", Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     public void addOfflineMode(){
@@ -537,6 +540,9 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
             textViewOfflineMode.setText(R.string.offline_adding);
         else
             textViewOfflineMode.setText(R.string.offline_editing);
+
+        Toast toast = Toast.makeText(view.getContext(), "Offline mode", Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     private void enableTransactionEdit(boolean enable){
