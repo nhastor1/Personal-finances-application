@@ -33,6 +33,8 @@ public class TransactionDBOpenHelper extends SQLiteOpenHelper {
     public static final int TRANSACTION_MODE_EDIT = 2;
     public static final int TRANSACTION_MODE_REMOVE = 3;
 
+    public static int newTransationID = 0;
+
     private static final String TRANSACTION_TABLE_CREATE =
             "CREATE TABLE IF NOT EXISTS " + TRANSACTION_TABLE + " ("  + TRANSACTION_INTERNAL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + TRANSACTION_ID + " INTEGER, "

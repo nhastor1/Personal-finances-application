@@ -4,11 +4,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.util.Log;
-
-import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,16 +19,19 @@ public class UpdateService  implements TransactionEditInteractor.OnTransactionAd
     private Context context;
     private boolean getModel;
     private List<Transaction> transactions = new ArrayList<>();
+    private List<Integer> typeOfChangeList = new ArrayList<>();
     private Account account;
 
     public UpdateService(Context context, boolean getModel) {
         this.context = context;
         this.getModel = getModel;
-        updateTransactions();
+        getTransactionFromDatabase();
+        if(!getModel)
+            updateTransactions();
         updateAccount();
     }
 
-    private void updateTransactions() {
+    private void getTransactionFromDatabase() {
         ContentResolver cr = context.getApplicationContext().getContentResolver();
         Uri uri = Uri.parse("content://rma.provider.transactions/elements");
         String[] columns = {TransactionDBOpenHelper.TRANSACTION_ID,
@@ -65,26 +64,101 @@ public class UpdateService  implements TransactionEditInteractor.OnTransactionAd
 
 
             transactions.add(transaction);
+            if(typeOfChange == TransactionDBOpenHelper.TRANSACTION_MODE_ADD)
+                typeOfChangeList.add(TransactionDBOpenHelper.TRANSACTION_MODE_ADD);
+            else if(typeOfChange == TransactionDBOpenHelper.TRANSACTION_MODE_EDIT)
+                typeOfChangeList.add(TransactionDBOpenHelper.TRANSACTION_MODE_EDIT);
+            else if (typeOfChange == TransactionDBOpenHelper.TRANSACTION_MODE_REMOVE)
+                typeOfChangeList.add(TransactionDBOpenHelper.TRANSACTION_MODE_REMOVE);
 
-            Log.e("TRANSA", transaction.getId() + " " + transaction.getTitle() + " " + transaction.getDate() + " " + transaction.getAmount() + " " + transaction.getType());
+//            Log.e("TRANSA", transaction.getId() + " " + transaction.getTitle() + " " + transaction.getDate() + " " + transaction.getAmount() + " " + transaction.getType());
 
-            if(!getModel) {
-                Log.e("A_T", "DA");
-                if (typeOfChange == TransactionDBOpenHelper.TRANSACTION_MODE_ADD) {
-                    (new TransactionEditInteractor((TransactionEditInteractor.OnTransactionAddDone) this, transaction, context)).execute();
-                    Log.e("ADD", transaction.getId() + "");
-                } else if (typeOfChange == TransactionDBOpenHelper.TRANSACTION_MODE_EDIT) {
-                    (new TransactionEditInteractor((TransactionEditInteractor.OnTransactionEditDone) this, transaction, context)).execute();
-                    Log.e("EDIT", transaction.getId() + "");
-                } else if (typeOfChange == TransactionDBOpenHelper.TRANSACTION_MODE_REMOVE) {
-                    (new TransactionEditInteractor((TransactionEditInteractor.OnTransactionRemoveDone) this, transaction, context)).execute();
-                    Log.e("REMOVE", transaction.getId() + "");
+//            if(!getModel) {
+//                Log.e("A_T", "DA");
+//                if (typeOfChange == TransactionDBOpenHelper.TRANSACTION_MODE_ADD) {
+//                    (new TransactionEditInteractor((TransactionEditInteractor.OnTransactionAddDone) this, transaction, context)).execute();
+//                    Log.e("ADD", transaction.getId() + "");
+//                } else if (typeOfChange == TransactionDBOpenHelper.TRANSACTION_MODE_EDIT) {
+//                    (new TransactionEditInteractor((TransactionEditInteractor.OnTransactionEditDone) this, transaction, context)).execute();
+//                    Log.e("EDIT", transaction.getId() + "");
+//                } else if (typeOfChange == TransactionDBOpenHelper.TRANSACTION_MODE_REMOVE) {
+//                    (new TransactionEditInteractor((TransactionEditInteractor.OnTransactionRemoveDone) this, transaction, context)).execute();
+//                    Log.e("REMOVE", transaction.getId() + "");
+//                }
+//            }
+        }
+
+//        if(!getModel)
+//            cr.delete(uri, null, null);
+    }
+
+    private void updateTransactions(){
+        ContentResolver cr = context.getApplicationContext().getContentResolver();
+        Uri uri = Uri.parse("content://rma.provider.transactions/elements");
+
+        // Do not update remove and undo transactions
+        for(int i=0; i<transactions.size(); i++){
+            if(typeOfChangeList.get(i) == TransactionDBOpenHelper.TRANSACTION_MODE_ADD){
+                for(int j=i-1; j>=0; j--){
+                    if(transactions.get(j).getId() == transactions.get(i).getId() && typeOfChangeList.get(j) == TransactionDBOpenHelper.TRANSACTION_MODE_REMOVE){
+                        transactions.remove(j);
+                        typeOfChangeList.remove(j);
+                        i--;
+                        transactions.remove(i);
+                        typeOfChangeList.remove(i);
+                        i--;
+                        break;
+                    }
                 }
             }
         }
 
-        if(!getModel)
-            cr.delete(uri, null, null);
+        // Do not update remove and undo transactions
+        for(int i=0; i<transactions.size(); i++){
+            if(typeOfChangeList.get(i) == TransactionDBOpenHelper.TRANSACTION_MODE_REMOVE){
+                for(int j=i-1; j>=0; j--){
+                    if(transactions.get(j).getId() == transactions.get(i).getId() && typeOfChangeList.get(j) == TransactionDBOpenHelper.TRANSACTION_MODE_ADD){
+                        transactions.remove(j);
+                        typeOfChangeList.remove(j);
+                        i--;
+                        transactions.remove(i);
+                        typeOfChangeList.remove(i);
+                        i--;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Just once update transactions which are multiple times edited
+        for(int i=transactions.size()-1; i>0; i--){
+            if(typeOfChangeList.get(i) == TransactionDBOpenHelper.TRANSACTION_MODE_EDIT){
+                for(int j=i-1; j>=0; j--){
+                    if(transactions.get(j).getId() == transactions.get(i).getId() && typeOfChangeList.get(j) == TransactionDBOpenHelper.TRANSACTION_MODE_EDIT){
+                        transactions.remove(j);
+                        typeOfChangeList.remove(j);
+                        i--;
+                    }
+                }
+            }
+        }
+
+        for(int i=0; i<transactions.size(); i++){
+            Log.e("A_T", "DA");
+            if (typeOfChangeList.get(i) == TransactionDBOpenHelper.TRANSACTION_MODE_ADD) {
+                (new TransactionEditInteractor((TransactionEditInteractor.OnTransactionAddDone) this, transactions.get(i), context)).execute();
+                Log.e("ADD", transactions.get(i).getId() + "");
+            } else if (typeOfChangeList.get(i) == TransactionDBOpenHelper.TRANSACTION_MODE_EDIT) {
+                (new TransactionEditInteractor((TransactionEditInteractor.OnTransactionEditDone) this, transactions.get(i), context)).execute();
+                Log.e("EDIT", transactions.get(i).getId() + "");
+            } else if (typeOfChangeList.get(i) == TransactionDBOpenHelper.TRANSACTION_MODE_REMOVE) {
+                (new TransactionEditInteractor((TransactionEditInteractor.OnTransactionRemoveDone) this, transactions.get(i), context)).execute();
+                Log.e("REMOVE", transactions.get(i).getId() + "");
+            }
+        }
+
+        TransactionDBOpenHelper.newTransationID = 0;
+        cr.delete(uri, null, null);
     }
 
     private void updateAccount() {

@@ -258,7 +258,7 @@ public class TransactionListFragment extends Fragment implements MainMVP.View {
             // If fragment is not attached do nothing
         }
 
-        getPresenter().refreshTransactions();
+        //getPresenter().refreshTransactions();
     }
 
     private void setDate(){

@@ -65,10 +65,10 @@ public class TransactionInteractor extends AsyncTask<String, Integer, Void> impl
 
     @Override
     protected Void doInBackground(String... strings) {
+        Log.e("Daj transakcije", "1");
         if(ConnectivityBroadcastReceiver.isConnected) {
             // Get Transactions
             String url1 = LINK + "account/" + KEY + "/transactions?page=";
-            Log.e("TAG", url1 + "  OOOOOJ");
             try {
 
                 boolean notFinish = true;
@@ -142,7 +142,7 @@ public class TransactionInteractor extends AsyncTask<String, Integer, Void> impl
     @Override
     protected void onPostExecute(Void aVoid){
         super.onPostExecute(aVoid);
-        Log.e("MOLIM TE", transactions.size() + "");
+
         caller.onDone(transactions);
         (new BudgetInteractor((BudgetInteractor.OnAccountSearchDone) this, context)).execute();
     }

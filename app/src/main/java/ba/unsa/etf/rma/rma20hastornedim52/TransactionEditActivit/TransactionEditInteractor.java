@@ -87,7 +87,9 @@ public class TransactionEditInteractor extends AsyncTask<String, Integer, Void> 
         if(ConnectivityBroadcastReceiver.isConnected) {
             if (caller2 != null) {
                 // Remove Transaction
+                Log.e("A_T", "Da brise se");
                 String url1 = LINK + "account/" + KEY + "/transactions/" + transaction.getId();
+                Log.e("A_T", url1);
                 try {
                     URL url = new URL(url1);
                     HttpURLConnection con = (HttpURLConnection)
@@ -99,7 +101,7 @@ public class TransactionEditInteractor extends AsyncTask<String, Integer, Void> 
                     con.setRequestProperty("Accept", "application/json");
                     con.setDoOutput(true);
                     System.out.println(con.getResponseCode());
-
+                    Log.e("A_T", "Obrisano");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -107,7 +109,7 @@ public class TransactionEditInteractor extends AsyncTask<String, Integer, Void> 
                 // Add transactions
                 Log.e("A_T", "Da dodaje se");
                 String url1 = LINK + "account/" + KEY + "/transactions";
-
+                Log.e("A_T", url1);
                 // Edit transactions
                 if (caller1 != null)
                     url1 += "/" + transaction.getId();
@@ -147,7 +149,7 @@ public class TransactionEditInteractor extends AsyncTask<String, Integer, Void> 
                         }
                         System.out.println(response.toString());
                     }
-
+                    Log.e("A_T", "Dodano");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -157,7 +159,6 @@ public class TransactionEditInteractor extends AsyncTask<String, Integer, Void> 
             ContentResolver cr = context.getApplicationContext().getContentResolver();
             Uri uri = Uri.parse("content://rma.provider.transactions/elements");
             ContentValues values = new ContentValues();
-            values.put(TransactionDBOpenHelper.TRANSACTION_ID, transaction.getId());
             values.put(TransactionDBOpenHelper.TRANSACTION_DATE, DataChecker.getStringDateForService(transaction.getDate()));
             values.put(TransactionDBOpenHelper.TRANSACTION_AMOUNT, transaction.getAmount());
             values.put(TransactionDBOpenHelper.TRANSACTION_TITLE, transaction.getTitle());
@@ -173,12 +174,15 @@ public class TransactionEditInteractor extends AsyncTask<String, Integer, Void> 
             if (caller2 != null) {
                 // Remove transaction
                 //TransactionModel.transactions.remove(transaction);
-
+                values.put(TransactionDBOpenHelper.TRANSACTION_ID, transaction.getId());
                 values.put(TransactionDBOpenHelper.TRANSACTION_CHANGE, TransactionDBOpenHelper.TRANSACTION_MODE_REMOVE);
                 cr.insert(uri, values);
             }
             else if (caller3 != null) {
                 // Adding transaction
+                TransactionDBOpenHelper.newTransationID--;
+                transaction.setId(TransactionDBOpenHelper.newTransationID);
+                values.put(TransactionDBOpenHelper.TRANSACTION_ID, transaction.getId());
                 TransactionModel.transactions.add(transaction);
 
                 values.put(TransactionDBOpenHelper.TRANSACTION_CHANGE, TransactionDBOpenHelper.TRANSACTION_MODE_ADD);
@@ -186,6 +190,7 @@ public class TransactionEditInteractor extends AsyncTask<String, Integer, Void> 
             }
             else {
                 // Editing transaction
+                values.put(TransactionDBOpenHelper.TRANSACTION_ID, transaction.getId());
                 for(int i=0; i<TransactionModel.transactions.size(); i++){
                     if(TransactionModel.transactions.get(i).getId() == transaction.getId())
                         TransactionModel.transactions.set(i, transaction);
