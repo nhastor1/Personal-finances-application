@@ -135,13 +135,27 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
                     @Override
                     public void onClick(View v) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setMessage(R.string.dialog_message_delete).setTitle(R.string.dialog_title);
+                        if(buttonDelete.getText().toString().equals("Delete"))
+                            builder.setMessage(R.string.dialog_message_delete).setTitle(R.string.dialog_title);
+                        else
+                            builder.setMessage(R.string.dialog_message_undo).setTitle(R.string.dialog_title);
 
                         builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                getPresenter().removeTransaction(transaction);
-                                ((MainMVP.ActivityFuncions) getActivity()).refreshTransactions();
-                                finish();
+                                if(buttonDelete.getText().toString().equals("Delete")) {
+                                    getPresenter().removeTransaction(transaction);
+                                    if (ConnectivityBroadcastReceiver.isConnected) {
+                                        ((MainMVP.ActivityFuncions) getActivity()).refreshTransactions();
+                                        finish();
+                                    } else {
+                                        transaction.setDeleted(true);
+                                        enableTransactionEdit(false);
+                                    }
+                                }else{
+                                    transaction.setDeleted(false);
+                                    enableTransactionEdit(true);
+                                    getPresenter().undoOfflineTransaction(transaction);
+                                }
                             }
                         });
                         builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -312,20 +326,23 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
                 }
             });
 
+            if(activity.equals("edit") && transaction.isDeleted()){
+                enableTransactionEdit(false);
+            }
+
         }
 
         return view;
     }
 
     private void saveChanges() {
-        Log.e("Offline save", "0");
         double budgetChange = 0;
         try {
             budgetChange = validate();
         } catch (Exception e) {
             return;
         }
-        Log.e("Offline save", "1");
+
         transaction.setTitle(editTextTitle.getText().toString());
         transaction.setType(TransactionType.getType(spinnerTransactionType.getSelectedItem().toString()));
         transaction.setAmount(Double.parseDouble(editTextAmount.getText().toString()));
@@ -336,7 +353,7 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
         Calendar cal = Calendar.getInstance();
         cal.set(Integer.parseInt(date[2]), Integer.parseInt(date[1])-1, Integer.parseInt(date[0]));
         transaction.setDate(cal.getTime());
-        Log.e("Offline save", "2");
+
         if(transaction.getType()==TransactionType.REGULARINCOME || transaction.getType()==TransactionType.REGULARPAYMENT){
             transaction.setTransactionInterval(Integer.parseInt(editTextTransactionInterval.getText().toString()));
 
@@ -351,7 +368,7 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
             transaction.setEndDate(null);
             editTextEndDateEdit.setText("");
         }
-        Log.e("Offline save", "3");
+
         editTextTitle.setBackgroundColor(getResources().getColor(R.color.no_color));
         editTextAmount.setBackgroundColor(getResources().getColor(R.color.no_color));
         editTextDescription.setBackgroundColor(getResources().getColor(R.color.no_color));
@@ -370,7 +387,7 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
             }
         }
 
-        Log.e("Offline save", "4");
+
         getPresenter().updatedBudget(budgetChange);
 
         ((MainMVP.ActivityFuncions) getActivity()).refreshTransactions();
@@ -517,5 +534,24 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
             textViewOfflineMode.setText(R.string.offline_adding);
         else
             textViewOfflineMode.setText(R.string.offline_editing);
+    }
+
+    private void enableTransactionEdit(boolean enable){
+        buttonSave.setEnabled(enable);
+        editTextTitle.setEnabled(enable);
+        editTextAmount.setEnabled(enable);
+        editTextDate.setEnabled(enable);
+        editTextDescription.setEnabled(enable);
+        editTextEndDateEdit.setEnabled(enable);
+        editTextTransactionInterval.setEnabled(enable);
+        spinnerTransactionType.setEnabled(enable);
+        if(enable) {
+            textViewOfflineMode.setText(R.string.offline_editing);
+            buttonDelete.setText(R.string.delete);
+        }
+        else {
+            textViewOfflineMode.setText(R.string.offline_deleting);
+            buttonDelete.setText(R.string.undo);
+        }
     }
 }

@@ -59,22 +59,26 @@ public class UpdateService  implements TransactionEditInteractor.OnTransactionAd
             transaction.setEndDate(DataChecker.getDateFromService(cursor.getString(cursor.getColumnIndex(TransactionDBOpenHelper.TRANSACTION_END_DATE))));
             transaction.setOrginalAmount(cursor.getDouble(cursor.getColumnIndex(TransactionDBOpenHelper.TRANSACTION_ORGINAL_AMOUNT)));
 
+            int typeOfChange = cursor.getInt(cursor.getColumnIndex(TransactionDBOpenHelper.TRANSACTION_CHANGE));
+            if(typeOfChange == TransactionDBOpenHelper.TRANSACTION_MODE_REMOVE)
+                transaction.setDeleted(true);
+
+
             transactions.add(transaction);
 
             Log.e("TRANSA", transaction.getId() + " " + transaction.getTitle() + " " + transaction.getDate() + " " + transaction.getAmount() + " " + transaction.getType());
 
             if(!getModel) {
                 Log.e("A_T", "DA");
-                int typeOfChange = cursor.getInt(cursor.getColumnIndex(TransactionDBOpenHelper.TRANSACTION_CHANGE));
                 if (typeOfChange == TransactionDBOpenHelper.TRANSACTION_MODE_ADD) {
                     (new TransactionEditInteractor((TransactionEditInteractor.OnTransactionAddDone) this, transaction, context)).execute();
-                    Log.e("A_T", "ADD");
+                    Log.e("ADD", transaction.getId() + "");
                 } else if (typeOfChange == TransactionDBOpenHelper.TRANSACTION_MODE_EDIT) {
                     (new TransactionEditInteractor((TransactionEditInteractor.OnTransactionEditDone) this, transaction, context)).execute();
-                    Log.e("A_T", "EDIT");
+                    Log.e("EDIT", transaction.getId() + "");
                 } else if (typeOfChange == TransactionDBOpenHelper.TRANSACTION_MODE_REMOVE) {
                     (new TransactionEditInteractor((TransactionEditInteractor.OnTransactionRemoveDone) this, transaction, context)).execute();
-                    Log.e("A_T", "REMOVE");
+                    Log.e("REMOVE", transaction.getId() + "");
                 }
             }
         }

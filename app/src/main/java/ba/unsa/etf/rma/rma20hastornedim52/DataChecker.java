@@ -104,7 +104,7 @@ public class DataChecker {
 
     public static Date getDateFromService(String date){
         //date = date.substring(0, 9);
-        if(date==null)
+        if(date==null || date.isEmpty())
             return null;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         Date d = null;

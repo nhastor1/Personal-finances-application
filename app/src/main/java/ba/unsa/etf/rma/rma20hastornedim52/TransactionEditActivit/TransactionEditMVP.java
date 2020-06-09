@@ -22,6 +22,9 @@ public interface TransactionEditMVP {
         void editTransaction(Transaction transaction);
 
         public void removeTransaction(Transaction transaction);
+
+        void undoOfflineTransaction(Transaction transaction);
+
         public Account getAccount();
         public Transaction getTransaction();
         public void setTransaction(Transaction transaction);

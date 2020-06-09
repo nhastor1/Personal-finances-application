@@ -24,6 +24,7 @@
     <string name="delete">Delete</string>
     <string name="no_date">No end date</string>
     <string name="dialog_message_delete">Are you sure you want to delete transaction?</string>
+    <string name="dialog_message_undo">Are you sure you want to undo delete transaction?</string>
     <string name="dialog_message_save">Are you sure you want to save transaction?</string>
     <string name="dialog_title">Allert Dialog box</string>
     <string name="yes">Yes</string>
@@ -38,4 +39,5 @@
     <string name="offline_adding">Offline adding</string>
     <string name="offline_editing">Offline editing</string>
     <string name="offline_deleting">Offline deleting</string>
+    <string name="undo">Undo</string>
 </resources>

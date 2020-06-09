@@ -21,6 +21,7 @@ public class Transaction implements Parcelable, Parcelable.Creator<Transaction>,
     private int transactionInterval;
     private Date endDate;
     private double orginalAmount;
+    private boolean deleted = false;
 
     public Transaction(){};
 
@@ -61,6 +62,7 @@ public class Transaction implements Parcelable, Parcelable.Creator<Transaction>,
         itemDescription = in.readString();
         transactionInterval = in.readInt();
         orginalAmount = in.readDouble();
+        deleted = in.readBoolean();
     }
 
     public static final Creator<Transaction> CREATOR = new Creator<Transaction>() {
@@ -209,6 +211,7 @@ public class Transaction implements Parcelable, Parcelable.Creator<Transaction>,
         dest.writeString(itemDescription);
         dest.writeInt(transactionInterval);
         dest.writeDouble(orginalAmount);
+        dest.writeBoolean(deleted);
     }
 
     @Override
@@ -236,5 +239,13 @@ public class Transaction implements Parcelable, Parcelable.Creator<Transaction>,
 
     public double getOrginalAmount() {
         return orginalAmount;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

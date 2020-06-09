@@ -171,7 +171,7 @@ public class TransactionEditInteractor extends AsyncTask<String, Integer, Void> 
 
             if (caller2 != null) {
                 // Remove transaction
-                TransactionModel.transactions.remove(transaction);
+                //TransactionModel.transactions.remove(transaction);
 
                 values.put(TransactionDBOpenHelper.TRANSACTION_CHANGE, TransactionDBOpenHelper.TRANSACTION_MODE_REMOVE);
                 cr.insert(uri, values);

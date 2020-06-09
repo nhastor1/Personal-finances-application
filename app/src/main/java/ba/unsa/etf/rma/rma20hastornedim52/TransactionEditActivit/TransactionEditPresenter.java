@@ -13,6 +13,7 @@ import ba.unsa.etf.rma.rma20hastornedim52.Budget.BudgetInteractor;
 import ba.unsa.etf.rma.rma20hastornedim52.DataChecker;
 import ba.unsa.etf.rma.rma20hastornedim52.Transaction;
 import ba.unsa.etf.rma.rma20hastornedim52.TransactionActivity.TransactionInteractor;
+import ba.unsa.etf.rma.rma20hastornedim52.TransactionModel;
 import ba.unsa.etf.rma.rma20hastornedim52.TransactionType;
 
 public class TransactionEditPresenter implements TransactionEditMVP.Presenter,
@@ -23,6 +24,7 @@ public class TransactionEditPresenter implements TransactionEditMVP.Presenter,
     private TransactionEditMVP.View view;
     private TransactionEditMVP.Interactor interactor;
     private Transaction transaction;
+    private boolean undo = false;
 
     private double budgetChange = 0;
 
@@ -118,13 +120,28 @@ public class TransactionEditPresenter implements TransactionEditMVP.Presenter,
     }
 
     @Override
+    public void undoOfflineTransaction(Transaction transaction) {
+        undo = true;
+        (new TransactionEditInteractor((TransactionEditInteractor.OnTransactionAddDone) this, transaction, context)).execute();
+        double budgetChange = transaction.getTotalAmount();
+
+        if(!TransactionType.isIncome(transaction.getType()))
+            budgetChange = -budgetChange;
+
+        updatedBudget(budgetChange);
+    }
+
+    @Override
     public Account getAccount() {
         return interactor.getAccount();
     }
 
     @Override
     public void onAddDone(Transaction transaction) {
-        // Add transaction in list
+        if(undo) {
+            TransactionModel.transactions.remove(TransactionModel.transactions.size() - 1);
+            undo = false;
+        }
     }
 
     @Override
