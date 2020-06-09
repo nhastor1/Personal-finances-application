@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -95,6 +96,11 @@ public class BudgetFragment extends Fragment implements BudgetMVP.View {
         });
 
         offlineMode();
+
+        if(!ConnectivityBroadcastReceiver.isConnected){
+            Toast toast = Toast.makeText(view.getContext(), "Offline mode", Toast.LENGTH_SHORT);
+            toast.show();
+        }
 
         return view;
     }

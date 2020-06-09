@@ -85,16 +85,22 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
 
             if (activity.equals("edit")) {
                 ((TextView) view.findViewById(R.id.textViewEditOrAdd)).setText(R.string.edit_transaction);
-                if(!ConnectivityBroadcastReceiver.isConnected)
-                    ((TextView) view.findViewById(R.id.textViewOflineMode)).setText(R.string.offline_editing);
+                if(!ConnectivityBroadcastReceiver.isConnected) {
+                    addOfflineMode();
+                    Toast toast = Toast.makeText(view.getContext(), "Offline mode", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
                 else
-                    ((TextView) view.findViewById(R.id.textViewOflineMode)).setText("");
+                    textViewOfflineMode.setText("");
             } else {
                 ((TextView) view.findViewById(R.id.textViewEditOrAdd)).setText(R.string.add_transaction);
-                if(!ConnectivityBroadcastReceiver.isConnected)
+                if(!ConnectivityBroadcastReceiver.isConnected) {
                     addOfflineMode();
+                    Toast toast = Toast.makeText(view.getContext(), "Offline mode", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
                 else
-                    removeOfflineMode();
+                    textViewOfflineMode.setText("");
                 transaction = new Transaction(new Date(), 0, "Transaction", TransactionType.INDIVIDUALINCOME,
                         "");
             }
@@ -531,8 +537,6 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
 
     public void removeOfflineMode(){
         textViewOfflineMode.setText("");
-        Toast toast = Toast.makeText(view.getContext(), "Online mode", Toast.LENGTH_SHORT);
-        toast.show();
     }
 
     public void addOfflineMode(){
@@ -540,9 +544,6 @@ public class TransactionDetailFragment extends Fragment implements TransactionEd
             textViewOfflineMode.setText(R.string.offline_adding);
         else
             textViewOfflineMode.setText(R.string.offline_editing);
-
-        Toast toast = Toast.makeText(view.getContext(), "Offline mode", Toast.LENGTH_SHORT);
-        toast.show();
     }
 
     private void enableTransactionEdit(boolean enable){
