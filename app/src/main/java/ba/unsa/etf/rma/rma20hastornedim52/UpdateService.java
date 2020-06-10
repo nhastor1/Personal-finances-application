@@ -139,6 +139,13 @@ public class UpdateService  implements TransactionEditInteractor.OnTransactionAd
                         typeOfChangeList.remove(j);
                         i--;
                     }
+                    else if(transactions.get(j).getId() == transactions.get(i).getId() && typeOfChangeList.get(j) == TransactionDBOpenHelper.TRANSACTION_MODE_ADD){
+                        transactions.remove(j);
+                        typeOfChangeList.remove(j);
+                        i--;
+                        typeOfChangeList.set(i, TransactionDBOpenHelper.TRANSACTION_MODE_ADD);
+                        break;
+                    }
                 }
             }
         }
